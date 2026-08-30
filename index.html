@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>My Lesko Zone — Lesko Help</title>
+    <meta
+      name="description"
+      content="Your private zone inside Lesko Help. Ask a question, build a call sheet, and keep every answer in one place."
+    />
+    <meta name="theme-color" content="#fbf6e9" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,600&family=JetBrains+Mono:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232c3fa0'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='23' font-weight='700' fill='%23fdc830' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="assets/css/app.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to the main part of this page</a>
+
+    <div class="app">
+      <!-- ============ Sidebar (desktop) ============ -->
+      <aside class="side">
+        <div class="side-head">
+          <p class="suits" aria-hidden="true">
+            <i class="s">&#9824;</i><i class="h">&#9829;</i><i class="d">&#9830;</i><i class="c">&#9827;</i>
+          </p>
+          <p class="wordmark">
+            <span class="lesko">Lesko</span><span class="q" aria-hidden="true">?</span><span>Help</span>
+          </p>
+          <h1 class="zone" id="app-name">My Lesko Zone</h1>
+          <p class="promise" id="app-promise"></p>
+        </div>
+
+        <div class="member">
+          <div class="avatar" id="member-avatar" aria-hidden="true">A</div>
+          <div>
+            <div class="member-name" id="member-name">Aaron Gavenda</div>
+            <div class="member-meta" id="member-meta">Rochester, NY</div>
+          </div>
+        </div>
+
+        <nav class="side-nav" id="side-nav" aria-label="Main"></nav>
+
+        <div class="side-foot">
+          <div class="stripe" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <p class="signoff" id="foot-signoff">Questions are free. Always were.</p>
+          <p class="tiny" id="foot-line" style="margin: 6px 0 0"></p>
+          <button class="linkbtn tiny" data-act="reset" style="margin-top: 10px">
+            Start the demo over
+          </button>
+        </div>
+      </aside>
+
+      <!-- ============ Main ============ -->
+      <div class="main">
+        <div class="topbar">
+          <div style="display: flex; align-items: center; gap: 10px">
+            <p class="suits" aria-hidden="true" style="margin: 0">
+              <i class="s">&#9824;</i><i class="h">&#9829;</i><i class="d">&#9830;</i><i class="c">&#9827;</i>
+            </p>
+            <p class="wordmark" style="font-size: 17px">
+              <span class="lesko">Lesko</span><span class="q" aria-hidden="true">?</span><span>Help</span>
+            </p>
+          </div>
+          <div class="avatar" id="member-avatar-m" aria-hidden="true">A</div>
+        </div>
+
+        <main class="wrap" id="main" tabindex="-1"></main>
+      </div>
+    </div>
+
+    <!-- ============ Bottom tabs (mobile) ============ -->
+    <nav class="tabbar" id="tabbar" aria-label="Main"></nav>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="assets/js/seed.js"></script>
+    <script src="assets/js/store.js"></script>
+    <script src="assets/js/views.js"></script>
+    <script src="assets/js/app.js"></script>
+  </body>
+</html>

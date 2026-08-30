@@ -1,0 +1,4 @@
+# nothing here is built by a package manager, but keep the usual noise out
+node_modules/
+.DS_Store
+*.log

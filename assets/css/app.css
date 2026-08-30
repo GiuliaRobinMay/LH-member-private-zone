@@ -1,0 +1,2280 @@
+/* ==========================================================================
+   My Lesko Zone — Lesko Help member private zone
+   Brand design system. Cream paper, navy ink, four card suits.
+   Type: DM Sans everywhere functional · Fraunces for display only · JetBrains
+   Mono for small kicker labels.
+   ========================================================================== */
+
+:root {
+  /* --- paper & ink ----------------------------------------------------- */
+  --paper: #fbf6e9;
+  --paper-2: #f4ecd4;
+  --paper-3: #f0e7d3;
+  --card: #ffffff;
+  --ink: #18234a;
+  --ink-2: #2a3548;
+  --ink-soft: #586577;
+  --rule: #e6dfca;
+  --rule-soft: #efe8d6;
+
+  /* --- the four suits -------------------------------------------------- */
+  --spade: #2c3fa0; /* blue   — primary action / links */
+  --heart: #e63946; /* red    — the Lesko wordmark, alerts */
+  --diamond: #fdc830; /* gold   — the "?" and the CTA pill */
+  --diamond-ink: #b07f00; /* gold, dark enough for text on cream */
+  --club: #4fa84f; /* green  — done / success */
+  --club-ink: #2f7c34;
+
+  /* --- soft tints ------------------------------------------------------ */
+  --tint-blue: #eef1ff;
+  --tint-red: #fde8ea;
+  --tint-gold: #fff5d6;
+  --tint-green: #e7f4e7;
+
+  /* --- type ------------------------------------------------------------ */
+  --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --suits: "DejaVu Sans", "Segoe UI Symbol", "Apple Symbols", var(--sans);
+
+  /* --- metrics --------------------------------------------------------- */
+  --r: 12px;
+  --r-lg: 18px;
+  --shadow-hard: 3px 3px 0 var(--ink);
+  --shadow-soft: 0 1px 2px rgba(24, 35, 74, 0.06), 0 6px 20px rgba(24, 35, 74, 0.06);
+  --sidebar: 268px;
+  --wrap: 940px;
+  --tap: 48px;
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink-2);
+  font-family: var(--sans);
+  /* Deliberately large: this audience skews older and reads on phones. */
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+a {
+  color: var(--spade);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 2px;
+}
+
+a:hover {
+  color: var(--heart);
+}
+
+:focus-visible {
+  outline: 3px solid var(--spade);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* The main landmark is focused after each route change so screen readers land
+   in the new page. That move should not paint a ring around everything. */
+[tabindex="-1"]:focus,
+[tabindex="-1"]:focus-visible {
+  outline: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 18px;
+  border-radius: 0 0 var(--r) 0;
+}
+
+.skip-link:focus {
+  left: 0;
+}
+
+/* ==========================================================================
+   Brand atoms
+   ========================================================================== */
+
+/* The four card suits — the core Lesko motif. */
+.suits {
+  font-family: var(--suits);
+  letter-spacing: 0.16em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.suits i {
+  font-style: normal;
+}
+
+.suits .s {
+  color: var(--spade);
+}
+.suits .h {
+  color: var(--heart);
+}
+.suits .d {
+  color: var(--diamond);
+}
+.suits .c {
+  color: var(--club);
+}
+
+/* Lesko?Help wordmark: red "Lesko", blue circular "?" badge, navy "Help". */
+.wordmark {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 19px;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.wordmark .lesko {
+  color: var(--heart);
+}
+
+.wordmark .q {
+  display: inline-grid;
+  place-items: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: var(--spade);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  padding-bottom: 1px;
+}
+
+/* Four-colour stripe divider. */
+.stripe {
+  display: flex;
+  height: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.stripe span {
+  flex: 1;
+}
+
+.stripe span:nth-child(1) {
+  background: var(--spade);
+}
+.stripe span:nth-child(2) {
+  background: var(--heart);
+}
+.stripe span:nth-child(3) {
+  background: var(--diamond);
+}
+.stripe span:nth-child(4) {
+  background: var(--club);
+}
+
+/* Small uppercase mono kicker. */
+.kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--spade);
+  margin: 0 0 8px;
+}
+
+.kicker.red {
+  color: var(--heart);
+}
+.kicker.gold {
+  color: var(--diamond-ink);
+}
+.kicker.green {
+  color: var(--club-ink);
+}
+
+/* Giant tonal "?" watermark bleeding off a corner. */
+.watermark {
+  position: absolute;
+  right: -18px;
+  top: -46px;
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 190px;
+  line-height: 1;
+  color: var(--diamond);
+  opacity: 0.22;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0 0 12px;
+}
+
+/* Fraunces is reserved for large display titles only — every functional
+   element (buttons, labels, fields, rows) stays in DM Sans. */
+.display {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(28px, 4.4vw, 40px);
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+}
+
+.display em {
+  font-style: italic;
+  color: var(--heart);
+}
+
+h2 {
+  font-size: 23px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.lede {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+.small {
+  font-size: 15px;
+}
+
+.tiny {
+  font-size: 13.5px;
+}
+
+/* ==========================================================================
+   App frame
+   ========================================================================== */
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar) 1fr;
+  min-height: 100vh;
+}
+
+/* --- sidebar (desktop) ------------------------------------------------- */
+
+.side {
+  background: var(--paper-2);
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.side-head {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.side-head .suits {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.side-head .zone {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--ink);
+  margin: 10px 0 2px;
+  line-height: 1.15;
+}
+
+.side-head .promise {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.side-nav {
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav-item {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--tap);
+  padding: 9px 12px;
+  border: 1px solid transparent;
+  border-radius: var(--r);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink-2);
+  width: 100%;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.nav-item[aria-current="page"] {
+  background: var(--card);
+  border-color: var(--rule);
+  box-shadow: var(--shadow-soft);
+}
+
+.nav-ico {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  font-size: 17px;
+  line-height: 1;
+}
+
+.nav-item[aria-current="page"] .nav-ico {
+  background: var(--tint-gold);
+  border-color: var(--diamond);
+}
+
+.nav-label {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+.nav-desc {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+
+.nav-count {
+  margin-left: 6px;
+  display: inline-block;
+  min-width: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--heart);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 20px;
+}
+
+.side-foot {
+  padding: 16px 20px 22px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.side-foot .signoff {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink);
+  margin: 10px 0 0;
+}
+
+/* --- member chip ------------------------------------------------------- */
+
+.member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #fff;
+  background: var(--spade);
+  flex: none;
+}
+
+.avatar.team {
+  background: var(--heart);
+}
+
+.avatar.lg {
+  width: 44px;
+  height: 44px;
+  font-size: 16px;
+}
+
+.member-name {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.member-meta {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* --- main -------------------------------------------------------------- */
+
+.main {
+  min-width: 0;
+  padding: 0 0 120px;
+}
+
+.topbar {
+  display: none;
+}
+
+.wrap {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 30px 26px 0;
+}
+
+.page-head {
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 26px 28px 24px;
+  margin-bottom: 24px;
+}
+
+.page-head > *:not(.watermark) {
+  position: relative;
+}
+
+.page-head .stripe {
+  margin-top: 18px;
+}
+
+/* ==========================================================================
+   Cards, callouts, chips
+   ========================================================================== */
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 22px 24px;
+  margin-bottom: 18px;
+}
+
+/* Tinted callout with a thick coloured left border — the Lesko callout. */
+.callout {
+  border: 1px solid var(--rule);
+  border-left: 6px solid var(--ink-soft);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 0 0 16px;
+  background: var(--paper-2);
+}
+
+.callout p:last-child {
+  margin-bottom: 0;
+}
+
+.callout .callout-t {
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.callout.gold {
+  border-left-color: var(--diamond);
+  background: var(--tint-gold);
+}
+.callout.red {
+  border-left-color: var(--heart);
+  background: var(--tint-red);
+}
+.callout.green {
+  border-left-color: var(--club);
+  background: var(--tint-green);
+}
+.callout.blue {
+  border-left-color: var(--spade);
+  background: var(--tint-blue);
+}
+
+/* Small pill chips. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.chip.blue {
+  background: var(--tint-blue);
+  border-color: #cdd6f7;
+  color: var(--spade);
+}
+.chip.red {
+  background: var(--tint-red);
+  border-color: #f6c9ce;
+  color: var(--heart);
+}
+.chip.gold {
+  background: var(--tint-gold);
+  border-color: #f2dfa4;
+  color: var(--diamond-ink);
+}
+.chip.green {
+  background: var(--tint-green);
+  border-color: #bfe3bf;
+  color: var(--club-ink);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Numbered section tag — 28px square, cycling blue/red/gold/green. */
+.numtag {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  flex: none;
+}
+
+.numtag.n1 {
+  background: var(--spade);
+}
+.numtag.n2 {
+  background: var(--heart);
+}
+.numtag.n3 {
+  background: var(--diamond);
+  color: var(--ink);
+}
+.numtag.n4 {
+  background: var(--club);
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--tap);
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 2px solid var(--ink);
+  background: var(--card);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 16.5px;
+  line-height: 1.2;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.06s ease, box-shadow 0.06s ease;
+}
+
+/* The signature yellow pill with a hard ink drop-shadow. */
+.btn.primary {
+  background: var(--diamond);
+  box-shadow: var(--shadow-hard);
+}
+
+.btn.primary:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.btn.primary:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
+.btn.ghost {
+  border-color: var(--rule);
+  background: var(--card);
+  font-weight: 600;
+}
+
+.btn.ghost:hover {
+  border-color: var(--ink);
+}
+
+.btn.sm {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 15px;
+}
+
+.btn[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+/* A plain text button that still meets the tap target. */
+.linkbtn {
+  background: none;
+  border: 0;
+  padding: 6px 2px;
+  color: var(--spade);
+  font-weight: 600;
+  font-size: 15.5px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.linkbtn:hover {
+  color: var(--heart);
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+.field {
+  margin-bottom: 22px;
+}
+
+.field label,
+.field .label {
+  display: block;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.field .help {
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  margin: 0 0 9px;
+  line-height: 1.45;
+}
+
+.input,
+.select,
+.textarea {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 12px 14px;
+  border: 2px solid var(--rule);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font-size: 17px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #9aa3b2;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--spade);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--tint-blue);
+}
+
+.textarea {
+  min-height: 140px;
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%2318234a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  padding-right: 42px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+/* Big segmented choice — "Zip code" vs "City & State". */
+.segmented {
+  display: inline-flex;
+  padding: 4px;
+  gap: 4px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+
+.segmented button {
+  min-height: 40px;
+  padding: 8px 20px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.segmented button[aria-pressed="true"] {
+  background: var(--card);
+  color: var(--ink);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Topic picker as big tappable cards, not a lonely dropdown. */
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+}
+
+.topic {
+  text-align: left;
+  border: 2px solid var(--rule);
+  background: var(--card);
+  border-radius: var(--r);
+  padding: 13px 15px;
+  cursor: pointer;
+  min-height: 74px;
+}
+
+.topic:hover {
+  border-color: var(--ink-soft);
+}
+
+.topic[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--tint-gold);
+}
+
+.topic .t {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.topic .d {
+  display: block;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   Checkbox rows — core Lesko pattern
+   ========================================================================== */
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  cursor: pointer;
+  padding: 7px 0;
+  min-height: 40px;
+}
+
+.check input {
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  margin: 2px 0 0;
+  border: 2px solid var(--ink-soft);
+  border-radius: 6px;
+  background: var(--card);
+  cursor: pointer;
+  position: relative;
+}
+
+.check input:checked {
+  background: var(--club);
+  border-color: var(--club-ink);
+}
+
+.check input:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 11px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(42deg);
+}
+
+.check input:focus-visible {
+  outline: 3px solid var(--spade);
+  outline-offset: 2px;
+}
+
+.check span {
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.check input:checked + span {
+  color: var(--ink-soft);
+  text-decoration: line-through;
+  text-decoration-color: var(--club);
+}
+
+/* ==========================================================================
+   Empty states
+   ========================================================================== */
+
+.empty {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: var(--card);
+  border: 1px dashed var(--rule);
+  border-radius: var(--r-lg);
+  padding: 52px 30px 46px;
+}
+
+.empty > *:not(.watermark) {
+  position: relative;
+}
+
+.empty .q {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 78px;
+  line-height: 1;
+  color: var(--diamond);
+  margin-bottom: 8px;
+}
+
+.empty h2 {
+  margin-bottom: 8px;
+}
+
+.empty p {
+  max-width: 46ch;
+  margin: 0 auto 20px;
+  color: var(--ink-soft);
+}
+
+/* ==========================================================================
+   Home
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 30px 30px 28px;
+  margin-bottom: 20px;
+}
+
+.hero > *:not(.watermark) {
+  position: relative;
+}
+
+.hero .display {
+  max-width: 20ch;
+}
+
+.hero .lede {
+  max-width: 54ch;
+  margin: 10px 0 0;
+}
+
+.action-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-top: 5px solid var(--spade);
+  border-radius: var(--r-lg);
+  padding: 20px 22px 22px;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.action-card:nth-child(2) {
+  border-top-color: var(--heart);
+}
+.action-card:nth-child(3) {
+  border-top-color: var(--club);
+}
+
+.action-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+.action-card .ico {
+  font-size: 27px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.action-card .t {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1.25;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.action-card .d {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 15.5px;
+  margin: 0 0 16px;
+  flex: 1;
+}
+
+.action-card .go {
+  font-weight: 700;
+  color: var(--spade);
+  font-size: 15.5px;
+}
+
+.action-card:hover .go {
+  color: var(--heart);
+}
+
+/* Small stat strip. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r);
+  padding: 15px 17px;
+}
+
+.stat .n {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.stat .l {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 5px;
+}
+
+/* ==========================================================================
+   Lists (questions + call sheets)
+   ========================================================================== */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: border-color 0.08s ease, box-shadow 0.08s ease;
+}
+
+.row:hover {
+  border-color: var(--ink-soft);
+  box-shadow: var(--shadow-soft);
+}
+
+.row-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+}
+
+.row-title {
+  display: block;
+  font-weight: 700;
+  font-size: 17.5px;
+  color: var(--ink);
+  line-height: 1.35;
+  margin: 0 0 5px;
+}
+
+.row-sub {
+  display: block;
+  font-size: 15px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.row-foot {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 11px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* Filter bar. */
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.filters button {
+  min-height: 40px;
+  padding: 7px 16px;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+
+.filters button[aria-pressed="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* ==========================================================================
+   Question thread
+   ========================================================================== */
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.msg {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+}
+
+.msg-body {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 4px 14px 14px 14px;
+  padding: 16px 19px;
+}
+
+/* Team answers are visually distinct — cream, gold-edged, clearly "the team". */
+.msg.team .msg-body {
+  background: var(--tint-gold);
+  border-color: #f0dda6;
+}
+
+.msg-head {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 7px;
+}
+
+.msg-name {
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.msg-role {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--heart);
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+
+.msg-time {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.msg-text {
+  margin: 0;
+  white-space: pre-wrap;
+  font-size: 16.5px;
+  line-height: 1.6;
+}
+
+.msg-text a {
+  word-break: break-word;
+}
+
+/* "Waiting for an answer" state. */
+.waiting-note {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--tint-blue);
+  border: 1px dashed #c3cdf2;
+  border-radius: var(--r);
+  padding: 15px 18px;
+  color: var(--spade);
+  font-weight: 600;
+}
+
+.reply-box {
+  margin-top: 6px;
+}
+
+/* ==========================================================================
+   Call sheet — the showpiece
+   ========================================================================== */
+
+.sheet-head {
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 26px 28px 24px;
+  margin-bottom: 20px;
+}
+
+.sheet-head > *:not(.watermark) {
+  position: relative;
+}
+
+/* The member's own words, quoted back at them. */
+.quote {
+  border-left: 5px solid var(--spade);
+  background: var(--tint-blue);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin: 18px 0 0;
+}
+
+.quote .who {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--spade);
+  margin: 0 0 5px;
+}
+
+.quote p {
+  margin: 0;
+  font-size: 17px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+/* "Start with this one call" — the hero recommendation. */
+.first-call {
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-hard);
+  padding: 0;
+  margin-bottom: 24px;
+}
+
+.first-call-bar {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 11px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.first-call-bar .suits {
+  font-size: 13px;
+}
+
+.first-call-body {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 24px 24px;
+}
+
+.first-call-body > *:not(.watermark) {
+  position: relative;
+}
+
+/* the "?" sits behind the content in this card, clipped to it */
+.first-call-body .watermark {
+  top: -58px;
+  right: -24px;
+  font-size: 168px;
+  opacity: 0.16;
+}
+
+.first-call h3 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+}
+
+/* Big tappable phone number. */
+.phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 10px 20px;
+  border-radius: 999px;
+  background: var(--tint-green);
+  border: 2px solid var(--club);
+  color: var(--club-ink);
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.phone:hover {
+  background: var(--club);
+  color: #fff;
+}
+
+.phone.sm {
+  font-size: 17px;
+  min-height: 42px;
+  padding: 7px 15px;
+}
+
+/* Where an organisation publishes no direct line, the route is spelled out
+   in words instead of faked as a number. */
+.phone-note {
+  flex: 1 1 260px;
+  min-width: 200px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+/* The read-aloud script box. */
+.script {
+  position: relative;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  border-left: 6px solid var(--diamond);
+  border-radius: 10px;
+  padding: 15px 18px 14px;
+  margin-top: 14px;
+}
+
+.script .script-t {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--diamond-ink);
+  margin: 0 0 7px;
+}
+
+.script .script-text {
+  margin: 0;
+  font-size: 17.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.script .script-text::before {
+  content: "\201C";
+}
+
+.script .script-text::after {
+  content: "\201D";
+}
+
+.copy {
+  margin-top: 10px;
+}
+
+/* Plan steps. */
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: step;
+}
+
+.steps li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.steps li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.steps h4 {
+  margin: 0 0 3px;
+  font-size: 17px;
+}
+
+.steps p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 16px;
+}
+
+/* Organisation cards. */
+.orgs {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.org {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+.org.done {
+  background: var(--tint-green);
+  border-color: #bfe3bf;
+}
+
+.org-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 13px;
+  padding: 16px 18px;
+}
+
+.org-check {
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  margin-top: 2px;
+  padding-top: 2px;
+}
+
+/* A tiny label under the tick box: an unlabelled checkbox is guesswork for a
+   member who is not confident with screens. */
+.org-check .cl {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  line-height: 1;
+}
+
+.org-check input:checked ~ .cl {
+  color: var(--club-ink);
+  text-decoration: none;
+}
+
+.org-name {
+  font-weight: 700;
+  font-size: 17.5px;
+  color: var(--ink);
+  line-height: 1.3;
+  margin: 0 0 4px;
+}
+
+.org.done .org-name {
+  text-decoration: line-through;
+  text-decoration-color: var(--club);
+  color: var(--ink-soft);
+}
+
+.org-what {
+  margin: 0 0 9px;
+  font-size: 16px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.org-toggle {
+  flex: none;
+  min-height: 40px;
+  min-width: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--rule);
+  border-radius: 9px;
+  background: var(--card);
+  cursor: pointer;
+  color: var(--ink);
+  font-size: 15px;
+}
+
+.org-toggle:hover {
+  border-color: var(--ink);
+}
+
+.org-detail {
+  padding: 4px 18px 18px;
+  border-top: 1px solid var(--rule-soft);
+  margin-top: 2px;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 2px 20px;
+  margin: 14px 0 4px;
+}
+
+.fact {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.fact dt {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 3px;
+}
+
+.fact dd {
+  margin: 0;
+  font-size: 15.5px;
+  color: var(--ink-2);
+  line-height: 1.45;
+}
+
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 12px 0 2px;
+}
+
+/* Sticky per-sheet action bar. */
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding: 18px 0 4px;
+}
+
+/* ==========================================================================
+   Progress / generating
+   ========================================================================== */
+
+.generating {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 54px 30px;
+}
+
+.generating > *:not(.watermark) {
+  position: relative;
+}
+
+.spinner {
+  font-family: var(--suits);
+  font-size: 36px;
+  letter-spacing: 0.3em;
+  margin-bottom: 18px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.97);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.progress-msg {
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--ink);
+  min-height: 30px;
+}
+
+.bar {
+  max-width: 340px;
+  height: 8px;
+  margin: 20px auto 0;
+  background: var(--paper-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--spade), var(--club));
+  transition: width 0.45s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+    opacity: 1;
+  }
+  .bar > i,
+  .action-card,
+  .btn {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Tracker
+   ========================================================================== */
+
+.track {
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+  padding: 18px 20px;
+  margin-bottom: 12px;
+}
+
+.track.overdue {
+  border-color: #f3bfc4;
+  background: #fffafa;
+}
+
+.track-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.track-name {
+  font-weight: 700;
+  font-size: 17.5px;
+  color: var(--ink);
+  margin: 0 0 3px;
+  line-height: 1.3;
+}
+
+.track-src {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.status-select {
+  min-height: 42px;
+  padding: 8px 38px 8px 14px;
+  font-size: 15.5px;
+  font-weight: 600;
+  border-width: 2px;
+  border-radius: 999px;
+  width: auto;
+  min-width: 190px;
+}
+
+.status-not-started {
+  background-color: var(--card);
+  border-color: var(--rule);
+}
+.status-called {
+  background-color: var(--tint-blue);
+  border-color: #c3cdf2;
+}
+.status-applied {
+  background-color: var(--tint-gold);
+  border-color: #f0dda6;
+}
+.status-waiting {
+  background-color: var(--tint-gold);
+  border-color: #f0dda6;
+}
+.status-got-help {
+  background-color: var(--tint-green);
+  border-color: #bfe3bf;
+}
+.status-said-no {
+  background-color: var(--tint-red);
+  border-color: #f6c9ce;
+}
+
+.track-nudge {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  margin: 13px 0 0;
+  padding: 11px 14px;
+  border-radius: 10px;
+  background: var(--paper-2);
+  font-size: 15.5px;
+  color: var(--ink-2);
+}
+
+.track-nudge.warn {
+  background: var(--tint-red);
+  color: var(--ink);
+}
+
+/* The postal address, for the members who write letters. */
+.track-address {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+}
+
+.track-note {
+  margin: 12px 0 0;
+  font-size: 15.5px;
+  font-style: italic;
+  color: var(--ink-soft);
+  border-left: 3px solid var(--rule);
+  padding-left: 12px;
+}
+
+.track-checks {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.progress-mini {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+.progress-mini .track-bar {
+  flex: 1;
+  max-width: 180px;
+  height: 7px;
+  background: var(--paper-3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-mini .track-bar > i {
+  display: block;
+  height: 100%;
+  background: var(--club);
+  border-radius: 999px;
+}
+
+/* ==========================================================================
+   Toast + demo banner
+   ========================================================================== */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%) translateY(140%);
+  z-index: 90;
+  background: var(--ink);
+  color: var(--paper);
+  padding: 14px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 10px 30px rgba(24, 35, 74, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease,
+    visibility 0s linear 0.28s;
+  max-width: calc(100vw - 32px);
+  text-align: center;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+  transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease,
+    visibility 0s;
+}
+
+.demo-note {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  background: var(--paper-2);
+  border: 1px dashed var(--rule);
+  border-radius: var(--r);
+  padding: 12px 16px;
+  margin: 0 0 20px;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+}
+
+.demo-note b {
+  color: var(--ink);
+}
+
+/* Back link. */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  margin-bottom: 6px;
+  background: none;
+  border: 0;
+  padding: 6px 2px;
+  color: var(--spade);
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.back:hover {
+  color: var(--heart);
+}
+
+/* ==========================================================================
+   Mobile — bottom tab bar, big targets
+   ========================================================================== */
+
+.tabbar {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .side {
+    display: none;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 18px;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .topbar .suits {
+    font-size: 13px;
+  }
+
+  .wrap {
+    padding: 20px 16px 0;
+  }
+
+  .main {
+    padding-bottom: 112px;
+  }
+
+  .page-head,
+  .hero,
+  .sheet-head {
+    padding: 22px 18px 20px;
+  }
+
+  .card {
+    padding: 18px 16px;
+  }
+
+  .watermark {
+    font-size: 140px;
+    top: -34px;
+    right: -14px;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .first-call-body,
+  .org-head,
+  .org-detail {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .first-call-bar {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .org-head {
+    grid-template-columns: auto 1fr;
+  }
+
+  .org-toggle {
+    grid-column: 1 / -1;
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .msg {
+    grid-template-columns: 36px 1fr;
+    gap: 10px;
+  }
+
+  .avatar.lg {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .toast {
+    bottom: 96px;
+  }
+
+  /* Bottom tab bar. */
+  .tabbar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background: var(--card);
+    border-top: 1px solid var(--rule);
+    padding-bottom: env(safe-area-inset-bottom);
+    box-shadow: 0 -2px 14px rgba(24, 35, 74, 0.07);
+  }
+
+  .tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: 62px;
+    padding: 8px 2px 7px;
+    border: 0;
+    border-top: 3px solid transparent;
+    background: none;
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+
+  .tab .ti {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .tab .tl {
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  .tab[aria-current="page"] {
+    color: var(--ink);
+    border-top-color: var(--diamond);
+    background: var(--tint-gold);
+  }
+
+  .tab .tab-count {
+    position: absolute;
+    top: 5px;
+    right: 50%;
+    transform: translateX(20px);
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--heart);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+  }
+}
+
+@media (max-width: 420px) {
+  body {
+    font-size: 16.5px;
+  }
+
+  .phone {
+    font-size: 18px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .btn-row .btn {
+    width: 100%;
+  }
+
+  .sheet-actions .btn {
+    width: 100%;
+  }
+
+  .topic-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   Print — members print their call sheets and carry them to the phone
+   ========================================================================== */
+
+@media print {
+  :root {
+    --paper: #fff;
+    --card: #fff;
+  }
+
+  body {
+    background: #fff;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+
+  /* Printing is meant to be cheap: tighten everything and drop the tints so a
+     ten-organisation sheet is a handful of pages, not twenty. */
+  .card,
+  .org,
+  .first-call,
+  .sheet-head,
+  .page-head,
+  .hero {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+  }
+
+  .org-head,
+  .org-detail,
+  .first-call-body {
+    padding: 8px 10px;
+  }
+
+  .first-call-bar {
+    padding: 5px 10px;
+  }
+
+  .callout {
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    background: #fff;
+  }
+
+  .script {
+    padding: 8px 12px;
+    margin-top: 8px;
+    background: #fff;
+  }
+
+  .script .script-text {
+    font-size: 10.5pt;
+  }
+
+  .display {
+    font-size: 19pt;
+  }
+
+  .lede {
+    font-size: 11pt;
+  }
+
+  .org-name {
+    font-size: 11.5pt;
+  }
+
+  .org-what,
+  .steps p,
+  .fact dd {
+    font-size: 9.5pt;
+  }
+
+  .facts {
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+  }
+
+  .fact {
+    padding: 4px 0;
+  }
+
+  .phone,
+  .phone.sm {
+    min-height: 0;
+    padding: 2px 8px;
+    font-size: 11pt;
+    background: #fff;
+    border-width: 1px;
+  }
+
+  .steps li {
+    padding: 6px 0;
+  }
+
+  .quote {
+    padding: 8px 12px;
+    background: #fff;
+  }
+
+  .org.done {
+    background: #fff;
+  }
+
+  .msg.team .msg-body {
+    background: #fff;
+  }
+
+  .stripe {
+    height: 2px;
+  }
+
+  .side,
+  .tabbar,
+  .topbar,
+  .sheet-actions,
+  .org-toggle,
+  .back,
+  .btn,
+  .copy,
+  .demo-note,
+  .toast,
+  .filters {
+    display: none !important;
+  }
+
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .wrap {
+    max-width: none;
+    padding: 0;
+  }
+
+  .card,
+  .org,
+  .first-call,
+  .sheet-head {
+    break-inside: avoid;
+    box-shadow: none;
+    border-color: #bbb;
+  }
+
+  .org-detail {
+    display: block !important;
+  }
+
+  .watermark {
+    display: none;
+  }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 9pt;
+    color: #555;
+    word-break: break-all;
+  }
+}
