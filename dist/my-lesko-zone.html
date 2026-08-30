@@ -1,137 +1,103 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>My Lesko Zone</title>
-    <meta
-      name="description"
-      content="Your private zone inside Lesko Help. Ask a question, build a call sheet, and keep every answer in one place."
-    />
-    <meta name="theme-color" content="#fbf6e9" />
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Lesko Zone</title>
+<meta name="description" content="Ask a question or build a call sheet — and keep every answer in one private place. A Lesko Help member tool.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>?</text></svg>">
+<style>
+/* ==================================================================
+   Lesko Help — My Lesko Zone
+   Same visual language as the other Lesko App Lab tools (Credit
+   Score Coach): cream paper, navy ink, red italic accents, yellow
+   spots, card suits, hairline borders. System fonts only — nothing
+   to load, nothing to break inside an embed.
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,600&family=JetBrains+Mono:wght@500;700&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232c3fa0'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='23' font-weight='700' fill='%23fdc830' text-anchor='middle'%3E?%3C/text%3E%3C/svg%3E"
-    />
-    <style>
-/* ==========================================================================
-   My Lesko Zone — Lesko Help member private zone
-   Brand design system. Cream paper, navy ink, four card suits.
-   Type: DM Sans everywhere functional · Fraunces for display only · JetBrains
-   Mono for small kicker labels.
-   ========================================================================== */
+   This is a compact embeddable widget, not a full-page site: one
+   narrow column, mono pill tabs at the top, everything else stacked.
+   ================================================================== */
 
 :root {
-  /* --- paper & ink ----------------------------------------------------- */
-  --paper: #fbf6e9;
-  --paper-2: #f4ecd4;
-  --paper-3: #f0e7d3;
-  --card: #ffffff;
-  --ink: #18234a;
-  --ink-2: #2a3548;
-  --ink-soft: #586577;
-  --rule: #e6dfca;
-  --rule-soft: #efe8d6;
+  --paper: #faf6ec;
+  --paper-2: #fffefa;
+  --ink: #16223f;
+  --ink-soft: #4a5570;
+  --ink-faint: #8a93a8;
+  --hairline: rgba(22, 34, 63, 0.22);
+  --hairline-soft: rgba(22, 34, 63, 0.12);
 
-  /* --- the four suits -------------------------------------------------- */
-  --spade: #2c3fa0; /* blue   — primary action / links */
-  --heart: #e63946; /* red    — the Lesko wordmark, alerts */
-  --diamond: #fdc830; /* gold   — the "?" and the CTA pill */
-  --diamond-ink: #b07f00; /* gold, dark enough for text on cream */
-  --club: #4fa84f; /* green  — done / success */
-  --club-ink: #2f7c34;
+  --red: #e8453c;
+  --yellow: #f6c544;
+  --blue: #2e43c8;
+  --green: #2e9e5b;
+  --gold-2: #e9a725;
 
-  /* --- soft tints ------------------------------------------------------ */
-  --tint-blue: #eef1ff;
-  --tint-red: #fde8ea;
-  --tint-gold: #fff5d6;
-  --tint-green: #e7f4e7;
+  --tint-yellow: #fdf1d4;
+  --tint-red: #fce7e5;
+  --tint-blue: #e9edfc;
+  --tint-green: #e3f3e9;
 
-  /* --- type ------------------------------------------------------------ */
-  --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-  --serif: "Fraunces", Georgia, "Times New Roman", serif;
-  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
-  --suits: "DejaVu Sans", "Segoe UI Symbol", "Apple Symbols", var(--sans);
+  --radius: 16px;
+  --radius-sm: 10px;
 
-  /* --- metrics --------------------------------------------------------- */
-  --r: 12px;
-  --r-lg: 18px;
-  --shadow-hard: 3px 3px 0 var(--ink);
-  --shadow-soft: 0 1px 2px rgba(24, 35, 74, 0.06), 0 6px 20px rgba(24, 35, 74, 0.06);
-  --sidebar: 268px;
-  --wrap: 940px;
-  --tap: 48px;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia,
+    "Times New Roman", serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --suit-font: "DejaVu Sans", "Segoe UI Symbol", "Apple Symbols", var(--sans);
 }
 
-/* ==========================================================================
-   Reset & base
-   ========================================================================== */
-
-*,
-*::before,
-*::after {
+* {
   box-sizing: border-box;
 }
 
 html {
-  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   background: var(--paper);
-  color: var(--ink-2);
+  color: var(--ink);
   font-family: var(--sans);
-  /* Deliberately large: this audience skews older and reads on phones. */
-  font-size: 17px;
-  line-height: 1.6;
+  /* members skew older and read on phones — keep the base generous */
+  font-size: 16px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-img {
-  max-width: 100%;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-  color: inherit;
-}
-
-[hidden] {
-  display: none !important;
+/* The whole app is one narrow rectangle. */
+.wrap {
+  width: min(720px, 94vw);
+  margin: 0 auto;
+  padding-bottom: 8px;
 }
 
 a {
-  color: var(--spade);
-  text-decoration-thickness: 1.5px;
-  text-underline-offset: 2px;
+  color: var(--red);
 }
 
-a:hover {
-  color: var(--heart);
+.mono-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.fine {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  margin: 10px 0 0;
 }
 
 :focus-visible {
-  outline: 3px solid var(--spade);
+  outline: 2px solid var(--blue);
   outline-offset: 2px;
   border-radius: 4px;
-}
-
-/* The main landmark is focused after each route change so screen readers land
-   in the new page. That move should not paint a ring around everything. */
-[tabindex="-1"]:focus,
-[tabindex="-1"]:focus-visible {
-  outline: none;
 }
 
 .sr-only {
@@ -146,1341 +112,833 @@ a:hover {
   border: 0;
 }
 
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 999;
-  background: var(--ink);
-  color: var(--paper);
-  padding: 12px 18px;
-  border-radius: 0 0 var(--r) 0;
-}
+/* ---------------------------------------------------------------- header */
 
-.skip-link:focus {
-  left: 0;
-}
-
-/* ==========================================================================
-   Brand atoms
-   ========================================================================== */
-
-/* The four card suits — the core Lesko motif. */
-.suits {
-  font-family: var(--suits);
-  letter-spacing: 0.16em;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.suits i {
-  font-style: normal;
-}
-
-.suits .s {
-  color: var(--spade);
-}
-.suits .h {
-  color: var(--heart);
-}
-.suits .d {
-  color: var(--diamond);
-}
-.suits .c {
-  color: var(--club);
-}
-
-/* Lesko?Help wordmark: red "Lesko", blue circular "?" badge, navy "Help". */
-.wordmark {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 19px;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-  display: inline-flex;
+.topbar {
+  display: flex;
   align-items: center;
-  gap: 3px;
-  white-space: nowrap;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0 2px;
 }
 
-.wordmark .lesko {
-  color: var(--heart);
-}
-
-.wordmark .q {
-  display: inline-grid;
-  place-items: center;
-  width: 19px;
-  height: 19px;
-  border-radius: 50%;
-  background: var(--spade);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1;
-  padding-bottom: 1px;
-}
-
-/* Four-colour stripe divider. */
-.stripe {
-  display: flex;
-  height: 4px;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.stripe span {
-  flex: 1;
-}
-
-.stripe span:nth-child(1) {
-  background: var(--spade);
-}
-.stripe span:nth-child(2) {
-  background: var(--heart);
-}
-.stripe span:nth-child(3) {
-  background: var(--diamond);
-}
-.stripe span:nth-child(4) {
-  background: var(--club);
-}
-
-/* Small uppercase mono kicker. */
-.kicker {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--spade);
-  margin: 0 0 8px;
-}
-
-.kicker.red {
-  color: var(--heart);
-}
-.kicker.gold {
-  color: var(--diamond-ink);
-}
-.kicker.green {
-  color: var(--club-ink);
-}
-
-/* Giant tonal "?" watermark bleeding off a corner. */
-.watermark {
-  position: absolute;
-  right: -18px;
-  top: -46px;
-  font-family: var(--serif);
-  font-weight: 900;
-  font-size: 190px;
-  line-height: 1;
-  color: var(--diamond);
-  opacity: 0.22;
-  pointer-events: none;
-  user-select: none;
-}
-
-/* ==========================================================================
-   Typography
-   ========================================================================== */
-
-h1,
-h2,
-h3,
-h4 {
-  color: var(--ink);
-  line-height: 1.2;
-  margin: 0 0 12px;
-}
-
-/* Fraunces is reserved for large display titles only — every functional
-   element (buttons, labels, fields, rows) stays in DM Sans. */
-.display {
-  font-family: var(--serif);
-  font-weight: 600;
-  font-size: clamp(28px, 4.4vw, 40px);
-  letter-spacing: -0.015em;
-  line-height: 1.12;
-}
-
-.display em {
-  font-style: italic;
-  color: var(--heart);
-}
-
-h2 {
-  font-size: 23px;
-  font-weight: 700;
-}
-
-h3 {
-  font-size: 19px;
-  font-weight: 700;
-}
-
-.lede {
-  font-size: 19px;
-  line-height: 1.55;
-  color: var(--ink-2);
-}
-
-.muted {
-  color: var(--ink-soft);
-}
-
-.small {
-  font-size: 15px;
-}
-
-.tiny {
-  font-size: 13.5px;
-}
-
-/* ==========================================================================
-   App frame
-   ========================================================================== */
-
-.app {
-  display: grid;
-  grid-template-columns: var(--sidebar) 1fr;
-  min-height: 100vh;
-}
-
-/* --- sidebar (desktop) ------------------------------------------------- */
-
-.side {
-  background: var(--paper-2);
-  border-right: 1px solid var(--rule);
-  display: flex;
-  flex-direction: column;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.side-head {
-  padding: 20px 20px 16px;
-  border-bottom: 1px solid var(--rule);
-}
-
-.side-head .suits {
-  font-size: 15px;
-  margin-bottom: 10px;
-}
-
-.side-head .zone {
-  font-family: var(--serif);
-  font-weight: 600;
-  font-size: 22px;
-  color: var(--ink);
-  margin: 10px 0 2px;
-  line-height: 1.15;
-}
-
-.side-head .promise {
-  font-size: 14px;
-  color: var(--ink-soft);
-  margin: 0;
-  line-height: 1.4;
-}
-
-.side-nav {
-  padding: 14px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
-
-.nav-item {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  align-items: center;
-  gap: 12px;
-  min-height: var(--tap);
-  padding: 9px 12px;
-  border: 1px solid transparent;
-  border-radius: var(--r);
-  background: transparent;
-  text-align: left;
-  cursor: pointer;
-  color: var(--ink-2);
-  width: 100%;
-}
-
-.nav-item:hover {
-  background: rgba(255, 255, 255, 0.72);
-}
-
-.nav-item[aria-current="page"] {
-  background: var(--card);
-  border-color: var(--rule);
-  box-shadow: var(--shadow-soft);
-}
-
-.nav-ico {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  font-size: 17px;
-  line-height: 1;
-}
-
-.nav-item[aria-current="page"] .nav-ico {
-  background: var(--tint-gold);
-  border-color: var(--diamond);
-}
-
-.nav-label {
-  display: block;
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--ink);
-  line-height: 1.25;
-}
-
-.nav-desc {
-  display: block;
-  font-size: 13px;
-  color: var(--ink-soft);
-  line-height: 1.3;
-}
-
-.nav-count {
-  margin-left: 6px;
-  display: inline-block;
-  min-width: 20px;
-  padding: 0 6px;
-  border-radius: 999px;
-  background: var(--heart);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  text-align: center;
-  line-height: 20px;
-}
-
-.side-foot {
-  padding: 16px 20px 22px;
-  border-top: 1px solid var(--rule);
-  font-size: 13px;
-  color: var(--ink-soft);
-}
-
-.side-foot .signoff {
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 15px;
-  color: var(--ink);
-  margin: 10px 0 0;
-}
-
-/* --- member chip ------------------------------------------------------- */
-
-.member {
+.brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 20px;
-  border-bottom: 1px solid var(--rule);
 }
 
-.avatar {
-  width: 36px;
-  height: 36px;
+.brand-mark {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
   display: grid;
   place-items: center;
+  font-family: var(--serif);
+  font-size: 17px;
   font-weight: 700;
-  font-size: 14px;
-  color: #fff;
-  background: var(--spade);
-  flex: none;
+  user-select: none;
+  transition: transform 0.18s ease;
 }
 
-.avatar.team {
-  background: var(--heart);
+.brand-mark:hover {
+  transform: rotate(-12deg) scale(1.08);
 }
 
-.avatar.lg {
-  width: 44px;
-  height: 44px;
-  font-size: 16px;
+.brand-name {
+  font-family: var(--serif);
+  line-height: 1.05;
 }
 
-.member-name {
-  font-weight: 600;
+.brand-name i {
+  display: block;
+  color: var(--red);
+  font-size: 18px;
+  font-style: italic;
+}
+
+.brand-name b {
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.suits {
+  display: flex;
+  gap: 9px;
+  font-size: 17px;
+  font-family: var(--suit-font);
+}
+
+.suits span {
+  animation: bob 3.4s ease-in-out infinite;
+}
+
+.suits span:nth-child(1) {
+  color: var(--blue);
+}
+.suits span:nth-child(2) {
+  color: var(--red);
+  animation-delay: 0.25s;
+}
+.suits span:nth-child(3) {
+  color: var(--yellow);
+  animation-delay: 0.5s;
+}
+.suits span:nth-child(4) {
+  color: var(--green);
+  animation-delay: 0.75s;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(8deg);
+  }
+}
+
+/* -------------------------------------------------------------- masthead */
+
+.masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 250px;
+  gap: 18px;
+  align-items: center;
+  padding: 12px 0 14px;
+}
+
+h1 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(24px, 4.4vw, 33px);
+  line-height: 1.08;
+  margin: 0 0 5px;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+h1 em,
+h2 em,
+h3 em {
+  color: var(--red);
+  font-style: italic;
+}
+
+.hero-copy {
   font-size: 15px;
-  color: var(--ink);
-  line-height: 1.2;
+  color: var(--ink-soft);
+  margin: 0;
 }
 
-.member-meta {
+.side-note {
+  border: 1px solid rgba(46, 158, 91, 0.4);
+  background: var(--tint-green);
+  border-radius: var(--radius);
+  padding: 10px 14px;
   font-size: 13px;
+}
+
+.side-note p {
+  margin: 3px 0 0;
   color: var(--ink-soft);
 }
 
-/* --- main -------------------------------------------------------------- */
+/* ----------------------------------------------------------------- tabs */
 
-.main {
-  min-width: 0;
-  padding: 0 0 120px;
+.tabbar {
+  display: flex;
+  gap: 7px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 2px 2px 12px;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 20px;
+  scrollbar-width: none;
 }
 
-.topbar {
+.tabbar::-webkit-scrollbar {
   display: none;
 }
 
-.wrap {
-  max-width: var(--wrap);
-  margin: 0 auto;
-  padding: 30px 26px 0;
-}
-
-.page-head {
+.tab {
   position: relative;
-  overflow: hidden;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 26px 28px 24px;
-  margin-bottom: 24px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 
-.page-head > *:not(.watermark) {
-  position: relative;
+.tab:hover {
+  transform: translateY(-1px);
+  background: var(--tint-yellow);
 }
 
-.page-head .stripe {
-  margin-top: 18px;
+.tab.active {
+  background: var(--yellow);
+  border-color: var(--ink);
+  color: var(--ink);
+  font-weight: 700;
 }
 
-/* ==========================================================================
-   Cards, callouts, chips
-   ========================================================================== */
+/* Unread answers / new sheet count. */
+.tab .bub {
+  display: inline-grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font-size: 9.5px;
+  letter-spacing: 0;
+  vertical-align: 1px;
+}
+
+.tab .bub.quiet {
+  background: rgba(22, 34, 63, 0.14);
+  color: var(--ink-soft);
+}
+
+/* --------------------------------------------------------------- panels */
+
+.panel {
+  animation: panel-in 0.28s ease;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.section-head h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(21px, 3.4vw, 28px);
+  line-height: 1.06;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+.section-copy {
+  max-width: 62ch;
+  color: var(--ink-soft);
+  font-size: 14.5px;
+  margin: 0 0 18px;
+}
+
+/* ---------------------------------------------------------------- cards */
 
 .card {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 22px 24px;
-  margin-bottom: 18px;
-}
-
-/* Tinted callout with a thick coloured left border — the Lesko callout. */
-.callout {
-  border: 1px solid var(--rule);
-  border-left: 6px solid var(--ink-soft);
-  border-radius: 10px;
-  padding: 14px 18px;
-  margin: 0 0 16px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
   background: var(--paper-2);
-}
-
-.callout p:last-child {
-  margin-bottom: 0;
-}
-
-.callout .callout-t {
-  font-weight: 700;
-  color: var(--ink);
-  margin: 0 0 4px;
-  font-size: 16px;
-}
-
-.callout.gold {
-  border-left-color: var(--diamond);
-  background: var(--tint-gold);
-}
-.callout.red {
-  border-left-color: var(--heart);
-  background: var(--tint-red);
-}
-.callout.green {
-  border-left-color: var(--club);
-  background: var(--tint-green);
-}
-.callout.blue {
-  border-left-color: var(--spade);
-  background: var(--tint-blue);
-}
-
-/* Small pill chips. */
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 11px;
-  border-radius: 999px;
-  border: 1px solid var(--rule);
-  background: var(--paper-2);
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--ink-2);
-  white-space: nowrap;
-}
-
-.chip.blue {
-  background: var(--tint-blue);
-  border-color: #cdd6f7;
-  color: var(--spade);
-}
-.chip.red {
-  background: var(--tint-red);
-  border-color: #f6c9ce;
-  color: var(--heart);
-}
-.chip.gold {
-  background: var(--tint-gold);
-  border-color: #f2dfa4;
-  color: var(--diamond-ink);
-}
-.chip.green {
-  background: var(--tint-green);
-  border-color: #bfe3bf;
-  color: var(--club-ink);
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* Numbered section tag — 28px square, cycling blue/red/gold/green. */
-.numtag {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 15px;
-  color: #fff;
-  flex: none;
-}
-
-.numtag.n1 {
-  background: var(--spade);
-}
-.numtag.n2 {
-  background: var(--heart);
-}
-.numtag.n3 {
-  background: var(--diamond);
-  color: var(--ink);
-}
-.numtag.n4 {
-  background: var(--club);
-}
-
-/* ==========================================================================
-   Buttons
-   ========================================================================== */
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: var(--tap);
-  padding: 12px 22px;
-  border-radius: 999px;
-  border: 2px solid var(--ink);
-  background: var(--card);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 16.5px;
-  line-height: 1.2;
-  cursor: pointer;
-  text-decoration: none;
-  transition: transform 0.06s ease, box-shadow 0.06s ease;
-}
-
-/* The signature yellow pill with a hard ink drop-shadow. */
-.btn.primary {
-  background: var(--diamond);
-  box-shadow: var(--shadow-hard);
-}
-
-.btn.primary:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--ink);
-}
-
-.btn.primary:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 var(--ink);
-}
-
-.btn.ghost {
-  border-color: var(--rule);
-  background: var(--card);
-  font-weight: 600;
-}
-
-.btn.ghost:hover {
-  border-color: var(--ink);
-}
-
-.btn.sm {
-  min-height: 40px;
-  padding: 8px 16px;
-  font-size: 15px;
-}
-
-.btn[disabled] {
-  opacity: 0.45;
-  cursor: not-allowed;
-  box-shadow: none;
-  transform: none;
-}
-
-.btn-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-}
-
-/* A plain text button that still meets the tap target. */
-.linkbtn {
-  background: none;
-  border: 0;
-  padding: 6px 2px;
-  color: var(--spade);
-  font-weight: 600;
-  font-size: 15.5px;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.linkbtn:hover {
-  color: var(--heart);
-}
-
-/* ==========================================================================
-   Forms
-   ========================================================================== */
-
-.field {
-  margin-bottom: 22px;
-}
-
-.field label,
-.field .label {
-  display: block;
-  font-weight: 700;
-  font-size: 17px;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
-
-.field .help {
-  font-size: 14.5px;
-  color: var(--ink-soft);
-  margin: 0 0 9px;
-  line-height: 1.45;
-}
-
-.input,
-.select,
-.textarea {
-  width: 100%;
-  min-height: var(--tap);
-  padding: 12px 14px;
-  border: 2px solid var(--rule);
-  border-radius: 10px;
-  background: var(--card);
-  color: var(--ink);
-  font-size: 17px;
-}
-
-.input::placeholder,
-.textarea::placeholder {
-  color: #9aa3b2;
-}
-
-.input:focus,
-.select:focus,
-.textarea:focus {
-  border-color: var(--spade);
-  outline: none;
-  box-shadow: 0 0 0 3px var(--tint-blue);
-}
-
-.textarea {
-  min-height: 140px;
-  resize: vertical;
-  line-height: 1.55;
-}
-
-.select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'><path d='M1 1l6 6 6-6' fill='none' stroke='%2318234a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 15px center;
-  padding-right: 42px;
-}
-
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-/* Big segmented choice — "Zip code" vs "City & State". */
-.segmented {
-  display: inline-flex;
-  padding: 4px;
-  gap: 4px;
-  background: var(--paper-2);
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-}
-
-.segmented button {
-  min-height: 40px;
-  padding: 8px 20px;
-  border: 0;
-  border-radius: 999px;
-  background: transparent;
-  font-weight: 600;
-  font-size: 15.5px;
-  color: var(--ink-soft);
-  cursor: pointer;
-}
-
-.segmented button[aria-pressed="true"] {
-  background: var(--card);
-  color: var(--ink);
-  box-shadow: var(--shadow-soft);
-}
-
-/* Topic picker as big tappable cards, not a lonely dropdown. */
-.topic-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 10px;
-}
-
-.topic {
-  text-align: left;
-  border: 2px solid var(--rule);
-  background: var(--card);
-  border-radius: var(--r);
-  padding: 13px 15px;
-  cursor: pointer;
-  min-height: 74px;
-}
-
-.topic:hover {
-  border-color: var(--ink-soft);
-}
-
-.topic[aria-pressed="true"] {
-  border-color: var(--ink);
-  background: var(--tint-gold);
-}
-
-.topic .t {
-  display: block;
-  font-weight: 700;
-  color: var(--ink);
-  font-size: 16px;
-  line-height: 1.25;
-}
-
-.topic .d {
-  display: block;
-  font-size: 13.5px;
-  color: var(--ink-soft);
-  line-height: 1.35;
-  margin-top: 2px;
-}
-
-/* ==========================================================================
-   Checkbox rows — core Lesko pattern
-   ========================================================================== */
-
-.check {
-  display: flex;
-  align-items: flex-start;
-  gap: 11px;
-  cursor: pointer;
-  padding: 7px 0;
-  min-height: 40px;
-}
-
-.check input {
-  appearance: none;
-  width: 24px;
-  height: 24px;
-  flex: none;
-  margin: 2px 0 0;
-  border: 2px solid var(--ink-soft);
-  border-radius: 6px;
-  background: var(--card);
-  cursor: pointer;
-  position: relative;
-}
-
-.check input:checked {
-  background: var(--club);
-  border-color: var(--club-ink);
-}
-
-.check input:checked::after {
-  content: "";
-  position: absolute;
-  left: 6px;
-  top: 2px;
-  width: 6px;
-  height: 11px;
-  border: solid #fff;
-  border-width: 0 3px 3px 0;
-  transform: rotate(42deg);
-}
-
-.check input:focus-visible {
-  outline: 3px solid var(--spade);
-  outline-offset: 2px;
-}
-
-.check span {
-  font-size: 16px;
-  line-height: 1.45;
-}
-
-.check input:checked + span {
-  color: var(--ink-soft);
-  text-decoration: line-through;
-  text-decoration-color: var(--club);
-}
-
-/* ==========================================================================
-   Empty states
-   ========================================================================== */
-
-.empty {
-  position: relative;
-  overflow: hidden;
-  text-align: center;
-  background: var(--card);
-  border: 1px dashed var(--rule);
-  border-radius: var(--r-lg);
-  padding: 52px 30px 46px;
-}
-
-.empty > *:not(.watermark) {
-  position: relative;
-}
-
-.empty .q {
-  font-family: var(--serif);
-  font-weight: 900;
-  font-size: 78px;
-  line-height: 1;
-  color: var(--diamond);
-  margin-bottom: 8px;
-}
-
-.empty h2 {
-  margin-bottom: 8px;
-}
-
-.empty p {
-  max-width: 46ch;
-  margin: 0 auto 20px;
-  color: var(--ink-soft);
-}
-
-/* ==========================================================================
-   Home
-   ========================================================================== */
-
-.hero {
-  position: relative;
-  overflow: hidden;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 30px 30px 28px;
-  margin-bottom: 20px;
-}
-
-.hero > *:not(.watermark) {
-  position: relative;
-}
-
-.hero .display {
-  max-width: 20ch;
-}
-
-.hero .lede {
-  max-width: 54ch;
-  margin: 10px 0 0;
-}
-
-.action-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px;
-  margin-bottom: 26px;
-}
-
-.action-card {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-top: 5px solid var(--spade);
-  border-radius: var(--r-lg);
-  padding: 20px 22px 22px;
-  cursor: pointer;
-  transition: transform 0.08s ease, box-shadow 0.08s ease;
-}
-
-.action-card:nth-child(2) {
-  border-top-color: var(--heart);
-}
-.action-card:nth-child(3) {
-  border-top-color: var(--club);
-}
-
-.action-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-soft);
-}
-
-.action-card .ico {
-  font-size: 27px;
-  line-height: 1;
-  margin-bottom: 12px;
-}
-
-.action-card .t {
-  display: block;
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 19px;
-  line-height: 1.25;
-  color: var(--ink);
-  margin-bottom: 6px;
-}
-
-.action-card .d {
-  display: block;
-  color: var(--ink-soft);
-  font-size: 15.5px;
-  margin: 0 0 16px;
-  flex: 1;
-}
-
-.action-card .go {
-  font-weight: 700;
-  color: var(--spade);
-  font-size: 15.5px;
-}
-
-.action-card:hover .go {
-  color: var(--heart);
-}
-
-/* Small stat strip. */
-.stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 14px;
-  margin-bottom: 26px;
-}
-
-.stat {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r);
-  padding: 15px 17px;
-}
-
-.stat .n {
-  font-family: var(--serif);
-  font-weight: 700;
-  font-size: 30px;
-  line-height: 1;
-  color: var(--ink);
-}
-
-.stat .l {
-  font-size: 14px;
-  color: var(--ink-soft);
-  margin-top: 5px;
-}
-
-/* ==========================================================================
-   Lists (questions + call sheets)
-   ========================================================================== */
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.row {
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 18px 20px;
-  cursor: pointer;
-  transition: border-color 0.08s ease, box-shadow 0.08s ease;
-}
-
-.row:hover {
-  border-color: var(--ink-soft);
-  box-shadow: var(--shadow-soft);
-}
-
-.row-top {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 7px;
-}
-
-.row-title {
-  display: block;
-  font-weight: 700;
-  font-size: 17.5px;
-  color: var(--ink);
-  line-height: 1.35;
-  margin: 0 0 5px;
-}
-
-.row-sub {
-  display: block;
-  font-size: 15px;
-  color: var(--ink-soft);
-  margin: 0;
-  line-height: 1.45;
-}
-
-.row-foot {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 11px;
-  font-size: 14px;
-  color: var(--ink-soft);
-}
-
-/* Filter bar. */
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
+    0 14px 30px -20px rgba(22, 34, 63, 0.5);
+  padding: 16px 18px;
   margin-bottom: 16px;
 }
 
-.filters button {
-  min-height: 40px;
-  padding: 7px 16px;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: var(--card);
-  font-weight: 600;
+/* The soft-tinted callout cards, with the big ghost suit in the corner. */
+.mini {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--card-line, var(--hairline));
+  border-radius: var(--radius);
+  background: var(--card-bg, var(--paper-2));
+  padding: 13px 16px;
+  margin-bottom: 12px;
+  font-size: 14.5px;
+}
+
+.mini p {
+  margin: 5px 0 0;
+  position: relative;
+  z-index: 1;
+  max-width: 68ch;
+}
+
+.mini .mono-label {
+  position: relative;
+  z-index: 1;
+}
+
+.mini::after {
+  content: attr(data-suit);
+  position: absolute;
+  right: -8px;
+  bottom: -26px;
+  font-family: var(--suit-font);
+  font-size: 84px;
+  line-height: 1;
+  color: var(--card-accent, var(--ink));
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.mini.t-yellow {
+  --card-bg: var(--tint-yellow);
+  --card-line: rgba(203, 150, 20, 0.4);
+  --card-accent: #b8860b;
+}
+
+.mini.t-red {
+  --card-bg: var(--tint-red);
+  --card-line: rgba(232, 69, 60, 0.34);
+  --card-accent: var(--red);
+}
+
+.mini.t-blue {
+  --card-bg: var(--tint-blue);
+  --card-line: rgba(46, 67, 200, 0.34);
+  --card-accent: var(--blue);
+}
+
+.mini.t-green {
+  --card-bg: var(--tint-green);
+  --card-line: rgba(46, 158, 91, 0.36);
+  --card-accent: var(--green);
+}
+
+/* Blue-edged aside for quoted words and small guidance. */
+.note {
+  border-left: 2px solid var(--blue);
+  padding: 3px 0 3px 14px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+  max-width: 70ch;
+}
+
+.note .mono-label {
+  font-size: 9.5px;
+}
+
+.note .said {
+  margin: 3px 0 0;
+  font-style: italic;
   font-size: 15px;
-  color: var(--ink-2);
+  color: var(--ink);
+}
+
+/* --------------------------------------------------------------- badges */
+
+.badge {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(22, 34, 63, 0.3);
+  border-radius: 999px;
+  padding: 4px 10px;
+  background: rgba(255, 253, 247, 0.75);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.badge.warm {
+  background: var(--yellow);
+  border-color: rgba(203, 150, 20, 0.6);
+}
+
+.badge.good {
+  background: var(--tint-green);
+  border-color: rgba(46, 158, 91, 0.5);
+  color: var(--green);
+}
+
+.badge.hot {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+
+.badge.wait {
+  background: var(--tint-blue);
+  border-color: rgba(46, 67, 200, 0.4);
+  color: var(--blue);
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 10px;
+}
+
+/* --------------------------------------------------------------- buttons */
+
+.btn {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn.ghost {
+  background: var(--paper-2);
+}
+
+/* The two main actions get a bigger, easier target. */
+.btn.big {
+  font-size: 12px;
+  padding: 12px 22px;
+  font-weight: 700;
+}
+
+.btn[disabled] {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+}
+
+.linklike {
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  font: inherit;
+  font-size: 14px;
+  color: var(--red);
+  text-decoration: underline;
+  text-underline-offset: 2px;
   cursor: pointer;
 }
 
-.filters button[aria-pressed="true"] {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
+.backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 12px;
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  cursor: pointer;
 }
 
-/* ==========================================================================
-   Question thread
-   ========================================================================== */
+.backlink:hover {
+  color: var(--red);
+}
 
-.thread {
+/* ---------------------------------------------------------------- forms */
+
+.form-card {
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--tint-yellow);
+  padding: 15px 16px 14px;
+  margin-bottom: 16px;
+}
+
+.field {
+  margin-bottom: 13px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 15.5px;
+  padding: 10px 12px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.field textarea {
+  min-height: 96px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 1px;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-faint);
+}
+
+.field .hint {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin: 5px 0 0;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 3px;
+}
+
+.form-actions .fine {
+  margin: 0;
+}
+
+.form-error {
+  display: none;
+  color: var(--red);
+  font-size: 13.5px;
+  margin: 0 0 10px;
+}
+
+.form-error.show {
+  display: block;
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2316223f' stroke-width='1.8' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 34px;
+}
+
+/* ---------------------------------------------------------------- lists */
+
+.rows {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 8px;
 }
+
+.rowbtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  background: var(--paper-2);
+  padding: 11px 14px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: transform 0.12s ease, background 0.12s ease;
+}
+
+.rowbtn:hover {
+  transform: translateY(-1px);
+  background: var(--tint-yellow);
+}
+
+.rowbtn .r-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 3px;
+}
+
+.rowbtn .r-title {
+  display: block;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.35;
+}
+
+.rowbtn .r-sub {
+  display: block;
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.rowbtn .r-meta {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 6px;
+}
+
+.empty-note {
+  text-align: center;
+  padding: 26px 18px;
+}
+
+.empty-note .q {
+  font-family: var(--serif);
+  font-size: 42px;
+  color: var(--gold-2);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.empty-note h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 20px;
+  margin: 0 0 6px;
+}
+
+.empty-note p {
+  color: var(--ink-soft);
+  font-size: 14px;
+  max-width: 44ch;
+  margin: 0 auto 14px;
+}
+
+/* --------------------------------------------------------------- thread */
 
 .msg {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  padding: 12px 15px;
+  margin-bottom: 10px;
 }
 
-.msg-body {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: 4px 14px 14px 14px;
-  padding: 16px 19px;
-}
-
-/* Team answers are visually distinct — cream, gold-edged, clearly "the team". */
-.msg.team .msg-body {
-  background: var(--tint-gold);
-  border-color: #f0dda6;
+.msg.team {
+  background: var(--tint-yellow);
+  border-color: rgba(203, 150, 20, 0.4);
 }
 
 .msg-head {
   display: flex;
   align-items: baseline;
-  gap: 9px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 7px;
+  margin-bottom: 5px;
 }
 
-.msg-name {
-  font-weight: 700;
-  color: var(--ink);
-  font-size: 16px;
+.msg-head b {
+  font-size: 14px;
 }
 
-.msg-role {
+.msg-head .badge {
+  padding: 2px 8px;
+}
+
+.msg-head .when {
   font-family: var(--mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: 10px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #fff;
-  background: var(--heart);
-  padding: 3px 7px;
-  border-radius: 4px;
+  color: var(--ink-faint);
 }
 
-.msg-time {
-  font-size: 13.5px;
-  color: var(--ink-soft);
-}
-
-.msg-text {
+.msg-body {
   margin: 0;
   white-space: pre-wrap;
-  font-size: 16.5px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
-.msg-text a {
+.msg-body a {
   word-break: break-word;
 }
 
-/* "Waiting for an answer" state. */
-.waiting-note {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  background: var(--tint-blue);
-  border: 1px dashed #c3cdf2;
-  border-radius: var(--r);
-  padding: 15px 18px;
-  color: var(--spade);
-  font-weight: 600;
+.thread-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.15;
+  margin: 0 0 4px;
 }
 
-.reply-box {
-  margin-top: 6px;
+.thread-meta {
+  margin-bottom: 14px;
 }
 
-/* ==========================================================================
-   Call sheet — the showpiece
-   ========================================================================== */
+/* ----------------------------------------------------------- call sheet */
 
-.sheet-head {
-  position: relative;
-  overflow: hidden;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 26px 28px 24px;
-  margin-bottom: 20px;
+.sheet-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(22px, 3.6vw, 27px);
+  line-height: 1.1;
+  margin: 0 0 12px;
+  letter-spacing: -0.01em;
 }
 
-.sheet-head > *:not(.watermark) {
-  position: relative;
+.opening {
+  font-size: 15px;
+  line-height: 1.6;
+  max-width: 68ch;
+  margin: 0 0 16px;
 }
 
-/* The member's own words, quoted back at them. */
-.quote {
-  border-left: 5px solid var(--spade);
-  background: var(--tint-blue);
-  border-radius: 0 10px 10px 0;
-  padding: 14px 18px;
-  margin: 18px 0 0;
-}
-
-.quote .who {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--spade);
-  margin: 0 0 5px;
-}
-
-.quote p {
-  margin: 0;
-  font-size: 17px;
-  font-style: italic;
-  color: var(--ink);
-  line-height: 1.5;
-}
-
-/* "Start with this one call" — the hero recommendation. */
+/* Start with this one call. */
 .first-call {
   position: relative;
   overflow: hidden;
-  background: var(--card);
-  border: 2px solid var(--ink);
-  border-radius: var(--r-lg);
-  box-shadow: var(--shadow-hard);
-  padding: 0;
-  margin-bottom: 24px;
+  border: 1.5px solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
+    0 14px 30px -20px rgba(22, 34, 63, 0.55);
+  padding: 15px 18px 16px;
+  margin-bottom: 16px;
 }
 
-.first-call-bar {
-  background: var(--ink);
-  color: var(--paper);
-  padding: 11px 24px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--mono);
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.first-call::after {
+  content: "\2666";
+  position: absolute;
+  right: -12px;
+  bottom: -34px;
+  font-family: var(--suit-font);
+  font-size: 110px;
+  line-height: 1;
+  color: var(--gold-2);
+  opacity: 0.12;
+  pointer-events: none;
 }
 
-.first-call-bar .suits {
-  font-size: 13px;
-}
-
-.first-call-body {
+.first-call > * {
   position: relative;
-  overflow: hidden;
-  padding: 22px 24px 24px;
+  z-index: 1;
 }
 
-.first-call-body > *:not(.watermark) {
-  position: relative;
-}
-
-/* the "?" sits behind the content in this card, clipped to it */
-.first-call-body .watermark {
-  top: -58px;
-  right: -24px;
-  font-size: 168px;
-  opacity: 0.16;
+.first-call .mono-label i {
+  font-style: normal;
+  color: var(--gold-2);
+  font-family: var(--suit-font);
 }
 
 .first-call h3 {
   font-family: var(--serif);
-  font-weight: 600;
-  font-size: 25px;
-  line-height: 1.2;
-  margin-bottom: 10px;
+  font-weight: 400;
+  font-size: 21px;
+  margin: 6px 0 6px;
 }
 
-/* Big tappable phone number. */
-.phone {
+.first-call .why {
+  font-size: 14.5px;
+  margin: 0 0 12px;
+  max-width: 66ch;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 4px;
+}
+
+.phone-pill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  min-height: var(--tap);
-  padding: 10px 20px;
-  border-radius: 999px;
+  gap: 7px;
+  border: 1px solid rgba(46, 158, 91, 0.55);
   background: var(--tint-green);
-  border: 2px solid var(--club);
-  color: var(--club-ink);
+  color: var(--green);
+  border-radius: 999px;
+  padding: 8px 15px;
   font-weight: 700;
-  font-size: 20px;
-  letter-spacing: 0.01em;
+  font-size: 15.5px;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.phone:hover {
-  background: var(--club);
+.phone-pill:hover {
+  background: var(--green);
   color: #fff;
 }
 
-.phone.sm {
-  font-size: 17px;
-  min-height: 42px;
-  padding: 7px 15px;
-}
-
-/* Where an organisation publishes no direct line, the route is spelled out
-   in words instead of faked as a number. */
 .phone-note {
-  flex: 1 1 260px;
-  min-width: 200px;
-  font-size: 14.5px;
+  flex: 1 1 220px;
+  min-width: 180px;
+  font-size: 12.5px;
   line-height: 1.45;
   color: var(--ink-soft);
 }
 
-/* The read-aloud script box. */
+/* The read-aloud script. */
 .script {
-  position: relative;
-  background: var(--paper-2);
-  border: 1px solid var(--rule);
-  border-left: 6px solid var(--diamond);
-  border-radius: 10px;
-  padding: 15px 18px 14px;
-  margin-top: 14px;
+  border-left: 2px solid var(--gold-2);
+  background: var(--paper);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 10px 14px 11px;
+  margin-top: 12px;
 }
 
-.script .script-t {
-  font-family: var(--mono);
-  font-size: 10.5px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--diamond-ink);
-  margin: 0 0 7px;
+.script .mono-label {
+  font-size: 9.5px;
+  color: #b8860b;
 }
 
-.script .script-text {
-  margin: 0;
-  font-size: 17.5px;
+.script .words {
+  margin: 5px 0 9px;
+  font-size: 15px;
   line-height: 1.55;
-  color: var(--ink);
 }
 
-.script .script-text::before {
+.script .words::before {
   content: "\201C";
 }
 
-.script .script-text::after {
+.script .words::after {
   content: "\201D";
-}
-
-.copy {
-  margin-top: 10px;
 }
 
 /* Plan steps. */
@@ -1488,226 +946,275 @@ h3 {
   list-style: none;
   margin: 0;
   padding: 0;
-  counter-reset: step;
 }
 
 .steps li {
   display: grid;
-  grid-template-columns: 28px 1fr;
-  gap: 14px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--rule-soft);
+  grid-template-columns: 24px 1fr;
+  gap: 11px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline-soft);
 }
 
 .steps li:last-child {
   border-bottom: 0;
-  padding-bottom: 0;
+  padding-bottom: 2px;
 }
 
-.steps h4 {
-  margin: 0 0 3px;
-  font-size: 17px;
+.steps .n {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 1px;
+}
+
+.steps li:nth-child(4n + 1) .n {
+  background: var(--blue);
+}
+.steps li:nth-child(4n + 2) .n {
+  background: var(--red);
+}
+.steps li:nth-child(4n + 3) .n {
+  background: var(--gold-2);
+}
+.steps li:nth-child(4n + 4) .n {
+  background: var(--green);
+}
+
+.steps b {
+  display: block;
+  font-size: 14.5px;
+  margin-bottom: 1px;
 }
 
 .steps p {
   margin: 0;
-  color: var(--ink-2);
-  font-size: 16px;
+  font-size: 14px;
+  color: var(--ink-soft);
 }
 
 /* Organisation cards. */
 .orgs {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 9px;
 }
 
 .org {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
   overflow: hidden;
 }
 
 .org.done {
   background: var(--tint-green);
-  border-color: #bfe3bf;
+  border-color: rgba(46, 158, 91, 0.4);
 }
 
 .org-head {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: start;
-  gap: 13px;
-  padding: 16px 18px;
+  gap: 11px;
+  padding: 12px 13px;
 }
 
-.org-check {
+.called-box {
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  margin-top: 2px;
-  padding-top: 2px;
+  cursor: pointer;
+  padding-top: 1px;
 }
 
-/* A tiny label under the tick box: an unlabelled checkbox is guesswork for a
-   member who is not confident with screens. */
-.org-check .cl {
+.called-box input {
+  appearance: none;
+  width: 21px;
+  height: 21px;
+  border: 1.5px solid var(--hairline);
+  border-radius: 6px;
+  background: var(--paper-2);
+  cursor: pointer;
+  position: relative;
+  margin: 0;
+}
+
+.called-box input:checked {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.called-box input:checked::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(42deg);
+}
+
+.called-box .cl {
   font-family: var(--mono);
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 8px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--ink-soft);
-  line-height: 1;
+  color: var(--ink-faint);
 }
 
-.org-check input:checked ~ .cl {
-  color: var(--club-ink);
-  text-decoration: none;
+.called-box input:checked ~ .cl {
+  color: var(--green);
 }
 
 .org-name {
-  font-weight: 700;
-  font-size: 17.5px;
-  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
   line-height: 1.3;
-  margin: 0 0 4px;
+  margin: 0 0 3px;
 }
 
 .org.done .org-name {
   text-decoration: line-through;
-  text-decoration-color: var(--club);
+  text-decoration-color: var(--green);
   color: var(--ink-soft);
 }
 
 .org-what {
-  margin: 0 0 9px;
-  font-size: 16px;
-  color: var(--ink-2);
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--ink-soft);
   line-height: 1.5;
 }
 
+.org-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.phone-pill.sm {
+  padding: 4px 11px;
+  font-size: 13.5px;
+}
+
 .org-toggle {
-  flex: none;
-  min-height: 40px;
-  min-width: 40px;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: var(--paper-2);
   display: grid;
   place-items: center;
-  border: 1px solid var(--rule);
-  border-radius: 9px;
-  background: var(--card);
   cursor: pointer;
   color: var(--ink);
-  font-size: 15px;
+  font-size: 12px;
+  padding: 0;
 }
 
 .org-toggle:hover {
-  border-color: var(--ink);
+  background: var(--tint-yellow);
 }
 
 .org-detail {
-  padding: 4px 18px 18px;
-  border-top: 1px solid var(--rule-soft);
-  margin-top: 2px;
+  border-top: 1px solid var(--hairline-soft);
+  padding: 12px 14px 14px;
 }
 
 .facts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 2px 20px;
-  margin: 14px 0 4px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1px 18px;
+  margin: 0 0 6px;
 }
 
 .fact {
-  padding: 9px 0;
-  border-bottom: 1px solid var(--rule-soft);
+  padding: 7px 0;
+  border-bottom: 1px solid var(--hairline-soft);
 }
 
 .fact dt {
   font-family: var(--mono);
-  font-size: 10.5px;
-  font-weight: 700;
+  font-size: 9px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-bottom: 3px;
+  color: var(--ink-faint);
+  margin-bottom: 2px;
 }
 
 .fact dd {
   margin: 0;
-  font-size: 15.5px;
-  color: var(--ink-2);
+  font-size: 13.5px;
   line-height: 1.45;
 }
 
-.contact-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin: 12px 0 2px;
+.org-detail .note {
+  margin: 10px 0 0;
 }
 
-/* Sticky per-sheet action bar. */
+.org-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.org-address {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  margin: 10px 0 0;
+}
+
 .sheet-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
   align-items: center;
-  padding: 18px 0 4px;
+  gap: 10px;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--hairline);
+  padding-top: 14px;
+  margin-top: 18px;
 }
 
-/* ==========================================================================
-   Progress / generating
-   ========================================================================== */
+/* ----------------------------------------------------------- generating */
 
 .generating {
-  position: relative;
-  overflow: hidden;
   text-align: center;
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 54px 30px;
+  padding: 40px 18px 36px;
 }
 
-.generating > *:not(.watermark) {
-  position: relative;
+.generating .suits {
+  justify-content: center;
+  font-size: 26px;
+  margin-bottom: 14px;
 }
 
-.spinner {
-  font-family: var(--suits);
-  font-size: 36px;
-  letter-spacing: 0.3em;
-  margin-bottom: 18px;
-  animation: pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 0.35;
-    transform: scale(0.97);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.generating .suits span {
+  animation-duration: 1.2s;
 }
 
 .progress-msg {
+  font-family: var(--serif);
   font-size: 19px;
-  font-weight: 600;
-  color: var(--ink);
-  min-height: 30px;
+  min-height: 26px;
+  margin: 0 0 16px;
 }
 
 .bar {
-  max-width: 340px;
-  height: 8px;
-  margin: 20px auto 0;
-  background: var(--paper-3);
+  max-width: 280px;
+  height: 7px;
+  margin: 0 auto;
+  background: rgba(22, 34, 63, 0.1);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -1717,694 +1224,238 @@ h3 {
   height: 100%;
   width: 0;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--spade), var(--club));
-  transition: width 0.45s ease;
+  background: linear-gradient(90deg, var(--yellow), var(--gold-2));
+  transition: width 0.4s ease;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation: none;
-    opacity: 1;
-  }
-  .bar > i,
-  .action-card,
-  .btn {
-    transition: none;
-  }
-}
+/* --------------------------------------------------------------- footer */
 
-/* ==========================================================================
-   Tracker
-   ========================================================================== */
-
-.track {
-  background: var(--card);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-lg);
-  padding: 18px 20px;
-  margin-bottom: 12px;
-}
-
-.track.overdue {
-  border-color: #f3bfc4;
-  background: #fffafa;
-}
-
-.track-head {
+.foot {
+  margin-top: 36px;
+  border-top: 1px solid var(--hairline);
+  padding: 16px 0 30px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: start;
   gap: 14px;
   flex-wrap: wrap;
 }
 
-.track-name {
-  font-weight: 700;
-  font-size: 17.5px;
-  color: var(--ink);
-  margin: 0 0 3px;
-  line-height: 1.3;
+.foot .reset-link {
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.track-src {
+.foot .reset-link:hover {
+  color: var(--red);
+}
+
+.foot-suit {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--blue);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
   font-size: 14px;
-  color: var(--ink-soft);
-  margin: 0;
+  user-select: none;
 }
 
-.status-select {
-  min-height: 42px;
-  padding: 8px 38px 8px 14px;
-  font-size: 15.5px;
-  font-weight: 600;
-  border-width: 2px;
-  border-radius: 999px;
-  width: auto;
-  min-width: 190px;
-}
-
-.status-not-started {
-  background-color: var(--card);
-  border-color: var(--rule);
-}
-.status-called {
-  background-color: var(--tint-blue);
-  border-color: #c3cdf2;
-}
-.status-applied {
-  background-color: var(--tint-gold);
-  border-color: #f0dda6;
-}
-.status-waiting {
-  background-color: var(--tint-gold);
-  border-color: #f0dda6;
-}
-.status-got-help {
-  background-color: var(--tint-green);
-  border-color: #bfe3bf;
-}
-.status-said-no {
-  background-color: var(--tint-red);
-  border-color: #f6c9ce;
-}
-
-.track-nudge {
-  display: flex;
-  gap: 9px;
-  align-items: flex-start;
-  margin: 13px 0 0;
-  padding: 11px 14px;
-  border-radius: 10px;
-  background: var(--paper-2);
-  font-size: 15.5px;
-  color: var(--ink-2);
-}
-
-.track-nudge.warn {
-  background: var(--tint-red);
-  color: var(--ink);
-}
-
-/* Editing happens in the page, not in a browser dialog: dialogs are blocked in
-   embedded viewers, and they are a poor experience on a phone besides. */
-.inline-edit {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-}
-
-.inline-edit .input {
-  width: auto;
-  min-width: 190px;
-  flex: 0 1 auto;
-}
-
-.inline-edit.block {
-  display: block;
-  margin-top: 12px;
-}
-
-.inline-edit.block .textarea {
-  min-height: 96px;
-  margin-bottom: 10px;
-}
-
-.confirm-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 12px;
-  padding: 13px 16px;
-  border-radius: 10px;
-  background: var(--tint-red);
-  border: 1px solid #f3bfc4;
-  font-size: 15.5px;
-}
-
-/* The postal address, for the members who write letters. */
-.track-address {
-  margin: 10px 0 0;
-  font-size: 14px;
-  color: var(--ink-soft);
-  line-height: 1.45;
-}
-
-.track-note {
-  margin: 12px 0 0;
-  font-size: 15.5px;
-  font-style: italic;
-  color: var(--ink-soft);
-  border-left: 3px solid var(--rule);
-  padding-left: 12px;
-}
-
-.track-checks {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid var(--rule-soft);
-}
-
-.progress-mini {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 14px;
-  color: var(--ink-soft);
-  margin-top: 10px;
-}
-
-.progress-mini .track-bar {
-  flex: 1;
-  max-width: 180px;
-  height: 7px;
-  background: var(--paper-3);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.progress-mini .track-bar > i {
-  display: block;
-  height: 100%;
-  background: var(--club);
-  border-radius: 999px;
-}
-
-/* ==========================================================================
-   Toast + demo banner
-   ========================================================================== */
+/* ---------------------------------------------------------------- toast */
 
 .toast {
   position: fixed;
   left: 50%;
-  bottom: 26px;
-  transform: translateX(-50%) translateY(140%);
-  z-index: 90;
+  bottom: 30px;
+  transform: translateX(-50%);
   background: var(--ink);
-  color: var(--paper);
-  padding: 14px 24px;
+  color: var(--paper-2);
   border-radius: 999px;
-  font-weight: 600;
-  font-size: 16px;
-  box-shadow: 0 10px 30px rgba(24, 35, 74, 0.3);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease,
-    visibility 0s linear 0.28s;
-  max-width: calc(100vw - 32px);
+  padding: 10px 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 200;
+  animation: toast-in 0.25s ease;
+  max-width: 88vw;
   text-align: center;
 }
 
-.toast.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-  visibility: visible;
-  transition: transform 0.28s cubic-bezier(0.2, 0.9, 0.3, 1), opacity 0.2s ease,
-    visibility 0s;
-}
-
-.demo-note {
-  display: flex;
-  gap: 10px;
-  align-items: baseline;
-  background: var(--paper-2);
-  border: 1px dashed var(--rule);
-  border-radius: var(--r);
-  padding: 12px 16px;
-  margin: 0 0 20px;
-  font-size: 14.5px;
-  color: var(--ink-soft);
-}
-
-.demo-note b {
-  color: var(--ink);
-}
-
-/* Back link. */
-.back {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 42px;
-  margin-bottom: 6px;
-  background: none;
-  border: 0;
-  padding: 6px 2px;
-  color: var(--spade);
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.back:hover {
-  color: var(--heart);
-}
-
-/* ==========================================================================
-   Mobile — bottom tab bar, big targets
-   ========================================================================== */
-
-.tabbar {
+.toast[hidden] {
   display: none;
 }
 
-@media (max-width: 860px) {
-  body {
-    padding-bottom: env(safe-area-inset-bottom);
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 14px);
   }
+  to {
+    opacity: 1;
+  }
+}
 
-  .app {
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 560px) {
+  .masthead {
     grid-template-columns: 1fr;
-  }
-
-  .side {
-    display: none;
-  }
-
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 18px;
-    background: var(--paper-2);
-    border-bottom: 1px solid var(--rule);
-    position: sticky;
-    top: 0;
-    z-index: 40;
-  }
-
-  .topbar .suits {
-    font-size: 13px;
-  }
-
-  .wrap {
-    padding: 20px 16px 0;
-  }
-
-  .main {
-    padding-bottom: 112px;
-  }
-
-  .page-head,
-  .hero,
-  .sheet-head {
-    padding: 22px 18px 20px;
-  }
-
-  .card {
-    padding: 18px 16px;
-  }
-
-  .watermark {
-    font-size: 140px;
-    top: -34px;
-    right: -14px;
-  }
-
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
-
-  .first-call-body,
-  .org-head,
-  .org-detail {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .first-call-bar {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .org-head {
-    grid-template-columns: auto 1fr;
-  }
-
-  .org-toggle {
-    grid-column: 1 / -1;
-    justify-self: stretch;
-    width: 100%;
-  }
-
-  .msg {
-    grid-template-columns: 36px 1fr;
     gap: 10px;
+    padding: 8px 0 12px;
   }
 
-  .avatar.lg {
-    width: 36px;
-    height: 36px;
-    font-size: 14px;
-  }
-
-  .toast {
-    bottom: 96px;
-  }
-
-  /* Bottom tab bar. */
-  .tabbar {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 50;
-    background: var(--card);
-    border-top: 1px solid var(--rule);
-    padding-bottom: env(safe-area-inset-bottom);
-    box-shadow: 0 -2px 14px rgba(24, 35, 74, 0.07);
-  }
-
-  .tab {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    min-height: 62px;
-    padding: 8px 2px 7px;
-    border: 0;
-    border-top: 3px solid transparent;
-    background: none;
-    cursor: pointer;
-    color: var(--ink-soft);
-  }
-
-  .tab .ti {
-    font-size: 20px;
-    line-height: 1;
-  }
-
-  .tab .tl {
-    font-size: 11.5px;
-    font-weight: 600;
-    line-height: 1.15;
-    text-align: center;
-  }
-
-  .tab[aria-current="page"] {
-    color: var(--ink);
-    border-top-color: var(--diamond);
-    background: var(--tint-gold);
-  }
-
-  .tab .tab-count {
-    position: absolute;
-    top: 5px;
-    right: 50%;
-    transform: translateX(20px);
-    min-width: 18px;
-    height: 18px;
-    padding: 0 5px;
-    border-radius: 999px;
-    background: var(--heart);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 18px;
-    text-align: center;
-  }
-}
-
-@media (max-width: 420px) {
-  body {
-    font-size: 16.5px;
-  }
-
-  .phone {
-    font-size: 18px;
-    width: 100%;
-    justify-content: center;
-  }
-
-  .btn {
-    width: 100%;
-  }
-
-  .btn-row .btn {
-    width: 100%;
-  }
-
-  .sheet-actions .btn {
-    width: 100%;
-  }
-
-  .topic-grid {
+  .field-row {
     grid-template-columns: 1fr;
   }
+
+  .facts {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btn.big {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
-/* ==========================================================================
-   Print — members print their call sheets and carry them to the phone
-   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------- print
+   Members print their call sheets and carry them to the phone. Cheap to
+   print: white paper, light ink, everything expanded. */
 
 @media print {
-  :root {
-    --paper: #fff;
-    --card: #fff;
-  }
-
   body {
     background: #fff;
     font-size: 10pt;
     line-height: 1.4;
   }
 
-  /* Printing is meant to be cheap: tighten everything and drop the tints so a
-     ten-organisation sheet is a handful of pages, not twenty. */
-  .card,
-  .org,
-  .first-call,
-  .sheet-head,
-  .page-head,
-  .hero {
-    padding: 10px 12px;
-    margin-bottom: 8px;
-    border-radius: 6px;
+  .wrap {
+    width: 100%;
   }
 
-  .org-head,
-  .org-detail,
-  .first-call-body {
-    padding: 8px 10px;
-  }
-
-  .first-call-bar {
-    padding: 5px 10px;
-  }
-
-  .callout {
-    padding: 8px 12px;
-    margin-bottom: 8px;
-    background: #fff;
-  }
-
-  .script {
-    padding: 8px 12px;
-    margin-top: 8px;
-    background: #fff;
-  }
-
-  .script .script-text {
-    font-size: 10.5pt;
-  }
-
-  .display {
-    font-size: 19pt;
-  }
-
-  .lede {
-    font-size: 11pt;
-  }
-
-  .org-name {
-    font-size: 11.5pt;
-  }
-
-  .org-what,
-  .steps p,
-  .fact dd {
-    font-size: 9.5pt;
-  }
-
-  .facts {
-    grid-template-columns: 1fr 1fr;
-    gap: 0 16px;
-  }
-
-  .fact {
-    padding: 4px 0;
-  }
-
-  .phone,
-  .phone.sm {
-    min-height: 0;
-    padding: 2px 8px;
-    font-size: 11pt;
-    background: #fff;
-    border-width: 1px;
-  }
-
-  .steps li {
-    padding: 6px 0;
-  }
-
-  .quote {
-    padding: 8px 12px;
-    background: #fff;
-  }
-
-  .org.done {
-    background: #fff;
-  }
-
-  .msg.team .msg-body {
-    background: #fff;
-  }
-
-  .stripe {
-    height: 2px;
-  }
-
-  .side,
+  .topbar .suits,
+  .masthead .side-note,
   .tabbar,
-  .topbar,
-  .sheet-actions,
-  .org-toggle,
-  .back,
-  .btn,
-  .copy,
-  .demo-note,
+  .foot,
   .toast,
-  .filters {
+  .backlink,
+  .org-toggle,
+  .sheet-actions,
+  .script .btn,
+  .form-card,
+  .section-head,
+  .fine {
     display: none !important;
   }
 
-  .app {
-    grid-template-columns: 1fr;
-  }
-
-  .wrap {
-    max-width: none;
-    padding: 0;
-  }
-
   .card,
   .org,
   .first-call,
-  .sheet-head {
+  .mini {
     break-inside: avoid;
     box-shadow: none;
-    border-color: #bbb;
+    background: #fff;
+    padding: 8px 10px;
+    margin-bottom: 8px;
   }
 
   .org-detail {
     display: block !important;
+    padding: 6px 10px 8px;
   }
 
-  .watermark {
-    display: none;
+  .msg.team {
+    background: #fff;
+  }
+
+  .phone-pill {
+    background: #fff;
+  }
+
+  .script {
+    background: #fff;
   }
 
   a[href^="http"]::after {
     content: " (" attr(href) ")";
-    font-size: 9pt;
+    font-size: 8pt;
     color: #555;
     word-break: break-all;
   }
 }
 
 </style>
-  </head>
+</head>
+<body>
 
-  <body>
-    <a class="skip-link" href="#main">Skip to the main part of this page</a>
+<div class="wrap">
 
-    <div class="app">
-      <!-- ============ Sidebar (desktop) ============ -->
-      <aside class="side">
-        <div class="side-head">
-          <p class="suits" aria-hidden="true">
-            <i class="s">&#9824;</i><i class="h">&#9829;</i><i class="d">&#9830;</i><i class="c">&#9827;</i>
-          </p>
-          <p class="wordmark">
-            <span class="lesko">Lesko</span><span class="q" aria-hidden="true">?</span><span>Help</span>
-          </p>
-          <h1 class="zone" id="app-name">My Lesko Zone</h1>
-          <p class="promise" id="app-promise"></p>
-        </div>
-
-        <div class="member">
-          <div class="avatar" id="member-avatar" aria-hidden="true">A</div>
-          <div>
-            <div class="member-name" id="member-name">Aaron Gavenda</div>
-            <div class="member-meta" id="member-meta">Rochester, NY</div>
-          </div>
-        </div>
-
-        <nav class="side-nav" id="side-nav" aria-label="Main"></nav>
-
-        <div class="side-foot">
-          <div class="stripe" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-          <p class="signoff" id="foot-signoff">Questions are free. Always were.</p>
-          <p class="tiny" id="foot-line" style="margin: 6px 0 0"></p>
-          <button class="linkbtn tiny" data-act="reset" style="margin-top: 10px">
-            Start the demo over
-          </button>
-        </div>
-      </aside>
-
-      <!-- ============ Main ============ -->
-      <div class="main">
-        <div class="topbar">
-          <div style="display: flex; align-items: center; gap: 10px">
-            <p class="suits" aria-hidden="true" style="margin: 0">
-              <i class="s">&#9824;</i><i class="h">&#9829;</i><i class="d">&#9830;</i><i class="c">&#9827;</i>
-            </p>
-            <p class="wordmark" style="font-size: 17px">
-              <span class="lesko">Lesko</span><span class="q" aria-hidden="true">?</span><span>Help</span>
-            </p>
-          </div>
-          <div class="avatar" id="member-avatar-m" aria-hidden="true">A</div>
-        </div>
-
-        <main class="wrap" id="main" tabindex="-1"></main>
-      </div>
+  <!-- ---------------------------------------------------------- topbar -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" title="Lesko Help">?</div>
+      <div class="brand-name"><i>Lesko</i><b>Help</b></div>
     </div>
+    <div class="suits" aria-hidden="true">
+      <span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span>
+    </div>
+  </header>
 
-    <!-- ============ Bottom tabs (mobile) ============ -->
-    <nav class="tabbar" id="tabbar" aria-label="Main"></nav>
+  <!-- -------------------------------------------------------- masthead -->
+  <section class="masthead">
+    <div>
+      <h1>Ask anything. <em>Keep every answer.</em></h1>
+      <p class="hero-copy" id="mast-copy">Your questions and your call sheets, saved in one private place.</p>
+    </div>
+    <aside class="side-note" role="note">
+      <span class="mono-label">&#128274; Private</span>
+      <p>Only you and the Lesko Help team can see anything in here.</p>
+    </aside>
+  </section>
 
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- ------------------------------------------------------------ tabs -->
+  <nav class="tabbar" role="tablist" aria-label="Sections" id="tabbar"></nav>
 
-    <script>
+  <!-- ------------------------------------------------------------ face -->
+  <main id="face"></main>
+
+  <!-- ---------------------------------------------------------- footer -->
+  <footer class="foot">
+    <div class="mono-label" id="foot-line">Lesko Help &middot; questions are free. always were.</div>
+    <button class="reset-link" data-act="reset" type="button">Start the demo over</button>
+    <div class="foot-suit" title="?">?</div>
+  </footer>
+
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
 /* ==========================================================================
    seed.js — all demo content for the My Lesko Zone mock-up.
 
@@ -4375,21 +3426,21 @@ window.LZ_SEED = {
 };
 
 </script>
-    <script>
-/* ==========================================================================
-   store.js — all app state for My Lesko Zone.
+<script>
+/* ==================================================================
+   store.js — all state for My Lesko Zone.
 
-   This is a MOCK-UP. There is no server and no database. Everything the member
-   does is kept in this browser's localStorage so the demo survives a refresh,
-   and "Start the demo over" puts it back to the seeded state.
-   ========================================================================== */
+   This is a MOCK-UP. There is no server and no database. Everything
+   the member does is kept in this browser's localStorage so the demo
+   survives a refresh, and "Start the demo over" reseeds it.
+   ================================================================== */
 
 (function (global) {
   "use strict";
 
-  var KEY = "lesko-zone.v1";
+  var KEY = "lesko-zone.v2";
 
-  /* --- helpers ---------------------------------------------------------- */
+  /* ---------------------------------------------------------- helpers */
 
   function clone(v) {
     return JSON.parse(JSON.stringify(v));
@@ -4397,19 +3448,12 @@ window.LZ_SEED = {
 
   function uid(prefix) {
     return (
-      prefix +
-      "-" +
-      Date.now().toString(36) +
-      "-" +
+      prefix + "-" + Date.now().toString(36) + "-" +
       Math.random().toString(36).slice(2, 7)
     );
   }
 
-  function todayISO() {
-    return new Date().toISOString().slice(0, 10);
-  }
-
-  /** Human "3 days ago" from an ISO date, for seeded and new content alike. */
+  /** Human "3 days ago" from an ISO date. */
   function ago(iso) {
     if (!iso) return "";
     var then = new Date(iso).getTime();
@@ -4426,25 +3470,24 @@ window.LZ_SEED = {
     return Math.round(months / 12) + " year ago";
   }
 
-  /* --- state ------------------------------------------------------------ */
+  function shorten(text, n) {
+    var s = String(text || "").replace(/\s+/g, " ").trim();
+    if (s.length <= n) return s;
+    return s.slice(0, n - 1).replace(/[\s,.;:]+$/, "") + "…";
+  }
+
+  /* ------------------------------------------------------------ state */
 
   var state = null;
 
   function fresh() {
     var seed = clone(global.LZ_SEED);
     return {
-      version: 1,
+      version: 2,
       member: seed.member,
       questions: seed.threads,
       sheets: seed.callSheets,
-      tracker: seed.tracker.rows,
       copy: seed.microcopy,
-      trackerMeta: {
-        intro: seed.tracker.intro,
-        checklist: seed.tracker.checklist,
-        nextActions: seed.tracker.nextActions,
-        nudges: seed.tracker.nudges,
-      },
     };
   }
 
@@ -4458,17 +3501,10 @@ window.LZ_SEED = {
     if (raw) {
       try {
         var parsed = JSON.parse(raw);
-        if (parsed && parsed.version === 1 && parsed.sheets) {
-          // Copy and tracker metadata always come from the seed so that
-          // editing seed.js is reflected without clearing storage.
-          var seed = clone(global.LZ_SEED);
-          parsed.copy = seed.microcopy;
-          parsed.trackerMeta = {
-            intro: seed.tracker.intro,
-            checklist: seed.tracker.checklist,
-            nextActions: seed.tracker.nextActions,
-            nudges: seed.tracker.nudges,
-          };
+        if (parsed && parsed.version === 2 && parsed.sheets) {
+          // Copy always comes from the seed, so editing seed.js shows up
+          // without clearing storage.
+          parsed.copy = clone(global.LZ_SEED).microcopy;
           return parsed;
         }
       } catch (e) {
@@ -4482,16 +3518,12 @@ window.LZ_SEED = {
     try {
       global.localStorage.setItem(KEY, JSON.stringify(state));
     } catch (e) {
-      /* Storage full or blocked. The demo still works for this session. */
+      /* storage full or blocked — the demo still works this session */
     }
   }
 
-  /* --- questions -------------------------------------------------------- */
+  /* -------------------------------------------------------- questions */
 
-  /**
-   * Post a new private question. Returns the new thread.
-   * The team reply is simulated later by `simulateAnswer`.
-   */
   function addQuestion(fields) {
     var nowISO = new Date().toISOString();
     var thread = {
@@ -4519,7 +3551,6 @@ window.LZ_SEED = {
     return thread;
   }
 
-  /** Add the member's own follow-up message to an existing thread. */
   function addReply(threadId, body) {
     var t = getQuestion(threadId);
     if (!t) return null;
@@ -4537,21 +3568,18 @@ window.LZ_SEED = {
     return t;
   }
 
-  /**
-   * Simulated team answer. In the real product this arrives from the
-   * question-answering dashboard when a team member replies.
-   */
+  /** Simulated team answer — in the real product this arrives from the
+      team's question-answering dashboard. */
   function simulateAnswer(threadId) {
     var t = getQuestion(threadId);
     if (!t) return null;
-    var nowISO = new Date().toISOString();
     var responder = global.LZ_SEED.autoReply;
     t.messages.push({
       role: "team",
       name: responder.name,
       roleLabel: responder.roleLabel,
       body: responder.body.replace(/\{name\}/g, state.member.name.split(" ")[0]),
-      createdAt: nowISO,
+      createdAt: new Date().toISOString(),
       ago: "just now",
     });
     t.status = "answered";
@@ -4566,13 +3594,24 @@ window.LZ_SEED = {
     return null;
   }
 
-  function shorten(text, n) {
-    var s = String(text || "").replace(/\s+/g, " ").trim();
-    if (s.length <= n) return s;
-    return s.slice(0, n - 1).replace(/[\s,.;:]+$/, "") + "…";
+  function markRead(threadId) {
+    var t = getQuestion(threadId);
+    if (t && t.unread) {
+      t.unread = false;
+      save();
+    }
   }
 
-  /* --- call sheets ------------------------------------------------------ */
+  /** The "we have your question" note is shown once, then retired. */
+  function clearNew(threadId) {
+    var t = getQuestion(threadId);
+    if (t && t.isNew) {
+      t.isNew = false;
+      save();
+    }
+  }
+
+  /* ------------------------------------------------------ call sheets */
 
   function getSheet(id) {
     for (var i = 0; i < state.sheets.length; i++) {
@@ -4584,10 +3623,10 @@ window.LZ_SEED = {
   /**
    * Build a new call sheet from the member's inputs.
    *
-   * MOCK-UP BEHAVIOUR: the research itself is simulated. We take the seeded
-   * sheet that best matches the chosen topic, then re-personalise it with the
-   * member's own words and location so the demo reads as if it were made for
-   * them. In the real product this is where the AI research call goes.
+   * MOCK-UP: the research is simulated. We take the prepared sheet that
+   * best matches the chosen topic and re-address it with the member's own
+   * words and place. In the real product this is where the AI research
+   * call goes.
    */
   function buildSheet(input) {
     var library = global.LZ_SEED.callSheets;
@@ -4595,9 +3634,6 @@ window.LZ_SEED = {
     var base = null;
     var i;
 
-    /* Every topic in the picker resolves to a prepared sheet — its own where
-       one exists, otherwise the nearest neighbour — so no choice ever returns
-       something unrelated. */
     var wanted = input.topicKey;
     if (map[wanted]) {
       for (i = 0; i < library.length; i++) {
@@ -4614,7 +3650,7 @@ window.LZ_SEED = {
     var sheet = clone(base);
     var first = state.member.name.split(" ")[0];
 
-    /* The sheet is labelled with the topic the member actually chose. */
+    /* Label the sheet with the topic the member actually chose. */
     var topics = (state.copy && state.copy.topics) || [];
     for (i = 0; i < topics.length; i++) {
       if (topics[i].key === wanted) {
@@ -4626,7 +3662,6 @@ window.LZ_SEED = {
     sheet.id = uid("cs");
     sheet.createdAt = new Date().toISOString();
     sheet.ago = "just now";
-    sheet.isNew = true;
     sheet.memberName = first;
     sheet.city = input.city || sheet.city;
     sheet.state = input.state || sheet.state;
@@ -4636,17 +3671,9 @@ window.LZ_SEED = {
 
     var place = [sheet.city, sheet.state].filter(Boolean).join(", ") || sheet.zip;
 
-    // Re-address the sheet to this member and this place. The opening is
-    // rebuilt from their actual words rather than reused, so a sheet always
-    // opens by talking about the thing they typed.
     sheet.opening = openingFor(first, place, sheet, input);
     sheet.firstCall.why = personalise(sheet.firstCall.why, first, place, base);
-    sheet.firstCall.whatToSay = personalise(
-      sheet.firstCall.whatToSay,
-      first,
-      place,
-      base
-    );
+    sheet.firstCall.whatToSay = personalise(sheet.firstCall.whatToSay, first, place, base);
     for (i = 0; i < sheet.orgs.length; i++) {
       sheet.orgs[i].script = personalise(sheet.orgs[i].script, first, place, base);
     }
@@ -4656,34 +3683,22 @@ window.LZ_SEED = {
     return sheet;
   }
 
-  /**
-   * Write the opening paragraph from what this member actually typed, so the
-   * sheet always begins by talking about their situation and not the seeded
-   * example's.
-   */
+  /** Open with the member's actual words, so the sheet is visibly theirs. */
   function openingFor(first, place, sheet, input) {
     var said = String(input.problem || "").replace(/\s+/g, " ").trim();
     if (said.length > 190) {
       said = said.slice(0, 189).replace(/[\s,.;:]+$/, "") + "…";
     }
-    var topic = (sheet.topic || "").toLowerCase();
     return (
-      "Here is what I found for you, " +
-      first +
-      ". You told me: “" +
-      said +
-      "” So I went looking for help with " +
-      topic +
-      " near " +
-      place +
-      ". Below are " +
-      sheet.orgs.length +
+      "Here is what I found for you, " + first + ". You told me: “" + said +
+      "” So I went looking for help with " + (sheet.topic || "").toLowerCase() +
+      " near " + place + ". Below are " + sheet.orgs.length +
       " places that can help, with the phone numbers and the words to say when " +
       "they pick up. Start with the first one — that is the call that matters most."
     );
   }
 
-  /** Swap the seeded member's name, place and ZIP for this member's. */
+  /** Swap the prepared sheet's member name and place for this member's. */
   function personalise(text, first, place, base) {
     var out = String(text || "");
     if (base.memberName) out = out.split(base.memberName).join(first);
@@ -4714,165 +3729,21 @@ window.LZ_SEED = {
     return !!(s && s.called && s.called.indexOf(orgId) !== -1);
   }
 
-  function deleteSheet(id) {
-    state.sheets = state.sheets.filter(function (s) {
-      return s.id !== id;
-    });
-    state.tracker = state.tracker.filter(function (r) {
-      return r.sheetId !== id;
-    });
-    save();
-  }
-
-  /* --- tracker ---------------------------------------------------------- */
-
-  function inTracker(orgName) {
-    for (var i = 0; i < state.tracker.length; i++) {
-      if (state.tracker[i].org === orgName) return true;
-    }
-    return false;
-  }
-
-  /** Add one organisation from a call sheet onto the applications tracker. */
-  function addToTracker(sheet, org) {
-    if (inTracker(org.name)) return null;
-    var row = {
-      id: uid("tr"),
-      org: org.name,
-      sheet: sheet.title,
-      sheetId: sheet.id,
-      orgId: org.id,
-      phone: org.phone || "",
-      email: org.email || "",
-      address: org.address || "",
-      url: org.url || "",
-      script: org.script || "",
-      status: "not-started",
-      done: [],
-      note: "",
-      followUp: "",
-      addedAt: new Date().toISOString(),
-    };
-    state.tracker.unshift(row);
-    save();
-    return row;
-  }
-
-  /** Add every organisation on a sheet that isn't already tracked. */
-  function addSheetToTracker(sheet) {
-    var added = 0;
-    for (var i = 0; i < sheet.orgs.length; i++) {
-      if (addToTracker(sheet, sheet.orgs[i])) added++;
-    }
-    return added;
-  }
-
-  function getTrackerRow(id) {
-    for (var i = 0; i < state.tracker.length; i++) {
-      if (state.tracker[i].id === id) return state.tracker[i];
-    }
-    return null;
-  }
-
-  function setStatus(rowId, status) {
-    var r = getTrackerRow(rowId);
-    if (!r) return;
-    r.status = status;
-    save();
-  }
-
-  function toggleStep(rowId, stepKey) {
-    var r = getTrackerRow(rowId);
-    if (!r) return false;
-    if (!r.done) r.done = [];
-    var at = r.done.indexOf(stepKey);
-    if (at === -1) r.done.push(stepKey);
-    else r.done.splice(at, 1);
-    save();
-    return r.done.indexOf(stepKey) !== -1;
-  }
-
-  function setNote(rowId, note) {
-    var r = getTrackerRow(rowId);
-    if (!r) return;
-    r.note = note;
-    save();
-  }
-
-  function setFollowUp(rowId, date) {
-    var r = getTrackerRow(rowId);
-    if (!r) return;
-    r.followUp = date;
-    save();
-  }
-
-  function removeTrackerRow(id) {
-    state.tracker = state.tracker.filter(function (r) {
-      return r.id !== id;
-    });
-    save();
-  }
-
-  function isOverdue(row) {
-    if (!row.followUp) return false;
-    if (row.status === "got-help" || row.status === "said-no") return false;
-    return row.followUp < todayISO();
-  }
-
-  /* --- counts for the nav badges ---------------------------------------- */
+  /* ---------------------------------------------------- badge counts */
 
   function counts() {
-    var unanswered = 0;
-    var i;
-    for (i = 0; i < state.questions.length; i++) {
-      if (state.questions[i].status === "answered") {
-        // A thread counts as "new for me" only until it has been opened.
-        if (state.questions[i].unread) unanswered++;
-      }
-    }
-    var overdue = 0;
-    for (i = 0; i < state.tracker.length; i++) {
-      if (isOverdue(state.tracker[i])) overdue++;
-    }
-    var openApps = 0;
-    for (i = 0; i < state.tracker.length; i++) {
-      if (
-        state.tracker[i].status !== "got-help" &&
-        state.tracker[i].status !== "said-no"
-      )
-        openApps++;
+    var unread = 0;
+    for (var i = 0; i < state.questions.length; i++) {
+      if (state.questions[i].unread) unread++;
     }
     return {
       questions: state.questions.length,
-      newAnswers: unanswered,
+      unread: unread,
       sheets: state.sheets.length,
-      tracker: state.tracker.length,
-      overdue: overdue,
-      openApps: openApps,
-      gotHelp: state.tracker.filter(function (r) {
-        return r.status === "got-help";
-      }).length,
     };
   }
 
-  /** The "we have your question" note is shown once, then retired. */
-  function clearNew(threadId) {
-    var t = getQuestion(threadId);
-    if (t && t.isNew) {
-      t.isNew = false;
-      save();
-    }
-  }
-
-  function markRead(threadId) {
-    var t = getQuestion(threadId);
-    if (t && t.unread) {
-      t.unread = false;
-      save();
-    }
-  }
-
-  /* --- lifecycle -------------------------------------------------------- */
+  /* -------------------------------------------------------- lifecycle */
 
   function reset() {
     try {
@@ -4889,7 +3760,7 @@ window.LZ_SEED = {
     return state;
   }
 
-  /* --- export ----------------------------------------------------------- */
+  /* ----------------------------------------------------------- export */
 
   global.LZ = global.LZ || {};
   global.LZ.store = {
@@ -4906,7 +3777,6 @@ window.LZ_SEED = {
       return state.member;
     },
     ago: ago,
-    todayISO: todayISO,
     uid: uid,
     shorten: shorten,
 
@@ -4919,48 +3789,31 @@ window.LZ_SEED = {
 
     getSheet: getSheet,
     buildSheet: buildSheet,
-    deleteSheet: deleteSheet,
     toggleCalled: toggleCalled,
     isCalled: isCalled,
-
-    addToTracker: addToTracker,
-    addSheetToTracker: addSheetToTracker,
-    inTracker: inTracker,
-    getTrackerRow: getTrackerRow,
-    setStatus: setStatus,
-    toggleStep: toggleStep,
-    setNote: setNote,
-    setFollowUp: setFollowUp,
-    removeTrackerRow: removeTrackerRow,
-    isOverdue: isOverdue,
 
     counts: counts,
   };
 })(window);
 
 </script>
-    <script>
-/* ==========================================================================
+<script>
+/* ==================================================================
    views.js — every screen in My Lesko Zone, rendered to HTML strings.
 
-   Views are pure: they take state and return markup. All interaction is wired
-   up by app.js through delegated `data-act` attributes, so nothing here has to
-   know about the router.
-   ========================================================================== */
+   Four small faces behind the tab row — Ask, My questions, Call
+   sheet, My call sheets — plus the two detail views (a question
+   thread, a finished call sheet) and the "building your sheet"
+   moment. Views are pure: state in, markup out. app.js wires all
+   interaction through data-act attributes.
+   ================================================================== */
 
 (function (global) {
   "use strict";
 
   var store = global.LZ.store;
 
-  /** Transient UI state owned by app.js — which row is mid-edit. */
-  function editState() {
-    return (global.LZ.ui && global.LZ.ui.editing) || {};
-  }
-
-  /* ======================================================================
-     Small helpers
-     ====================================================================== */
+  /* ---------------------------------------------------------- helpers */
 
   function esc(s) {
     return String(s === null || s === undefined ? "" : s)
@@ -4971,19 +3824,16 @@ window.LZ_SEED = {
       .replace(/'/g, "&#39;");
   }
 
-  /** Escape, then turn bare URLs and phone numbers into real links. */
+  /** Escape, then make bare URLs and phone numbers tappable. */
   function rich(s) {
     var out = esc(s);
     out = out.replace(/(https?:\/\/[^\s<)"']+)/g, function (m) {
       var href = m.replace(/[.,;:)]+$/, "");
       var tail = m.slice(href.length);
       return (
-        '<a href="' +
-        href +
-        '" target="_blank" rel="noopener">' +
+        '<a href="' + href + '" target="_blank" rel="noopener">' +
         href.replace(/^https?:\/\//, "") +
-        "</a>" +
-        tail
+        "</a>" + tail
       );
     });
     out = out.replace(
@@ -4995,12 +3845,14 @@ window.LZ_SEED = {
     return out;
   }
 
+  function tel(phone) {
+    return String(phone || "").replace(/[^\d+]/g, "");
+  }
+
   /**
-   * A "phone" is not always a number. Where a small local office publishes no
-   * direct line, the research says so in words ("no single statewide line —
-   * pick the office for your county at ..."). Split the dialable part from the
-   * guidance so the big green button always holds a real number, and the
-   * guidance is shown as guidance.
+   * A "phone" is not always a number. Where an office publishes no direct
+   * line, the research says so in words. Split the dialable part from the
+   * guidance so the green pill always holds a real number.
    */
   function phoneParts(raw) {
     var s = String(raw || "").trim();
@@ -5019,7 +3871,6 @@ window.LZ_SEED = {
     note = note.replace(/^[\s,.;:()-]+/, "").replace(/[\s,.;:]+$/, "").trim();
     note = note.replace(/^(?:or|and|is)\s+/i, "");
 
-    // Pulling the number out can leave an unmatched bracket behind.
     var opens = (note.match(/\(/g) || []).length;
     var closes = (note.match(/\)/g) || []).length;
     if (closes > opens) note = note.replace(/\)/g, "");
@@ -5033,26 +3884,21 @@ window.LZ_SEED = {
     return { number: num, note: note };
   }
 
-  /**
-   * Some "addresses" are really routing notes ("no office visit needed —
-   * counselors work by phone"). Only put an envelope beside a real one.
-   */
-  function looksPostal(text) {
-    var t = String(text || "");
-    return (
-      /\b\d{5}(-\d{4})?\b/.test(t) ||
-      /\b(suite|ste\.?|ave|avenue|blvd|boulevard|street|road|drive|floor|p\.?o\.? box)\b/i.test(t)
-    );
-  }
-
-  function tel(phone) {
-    return String(phone || "").replace(/[^\d+]/g, "");
-  }
-
-  function initials(name) {
-    var parts = String(name || "?").trim().split(/\s+/);
-    if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  function phonePill(phone, small) {
+    var parts = phoneParts(phone);
+    var out = "";
+    if (parts.number) {
+      out +=
+        '<a class="phone-pill' + (small ? " sm" : "") + '" href="tel:' +
+        esc(tel(parts.number)) +
+        '"><span aria-hidden="true">&#9742;</span>' +
+        '<span><span class="sr-only">Call </span>' +
+        esc(parts.number) + "</span></a>";
+    }
+    if (parts.note) {
+      out += '<span class="phone-note">' + rich(parts.note) + "</span>";
+    }
+    return out;
   }
 
   function fmtDate(iso) {
@@ -5066,8 +3912,8 @@ window.LZ_SEED = {
     });
   }
 
-  /** Content sometimes arrives with its own "1. " prefix; the numbered tag
-      already supplies the number, so drop it. */
+  /** Content sometimes arrives with its own "1. " prefix; the numbered
+      circle already supplies the number, so drop it. */
   function unnumber(text) {
     return String(text || "").replace(/^\s*(?:step\s*)?\d+[.):]\s*/i, "");
   }
@@ -5077,1307 +3923,481 @@ window.LZ_SEED = {
     return (l && l[key]) || fallback;
   }
 
-  function suitsBar() {
-    return (
-      '<p class="suits" aria-hidden="true"><i class="s">&#9824;</i>' +
-      '<i class="h">&#9829;</i><i class="d">&#9830;</i><i class="c">&#9827;</i></p>'
-    );
-  }
-
-  function stripe() {
-    return (
-      '<div class="stripe" aria-hidden="true"><span></span><span></span>' +
-      "<span></span><span></span></div>"
-    );
-  }
-
-  function watermark() {
-    return '<div class="watermark" aria-hidden="true">?</div>';
-  }
-
-  function callout(kind, title, body) {
-    if (!body) return "";
-    return (
-      '<div class="callout ' +
-      kind +
-      '">' +
-      (title ? '<p class="callout-t">' + esc(title) + "</p>" : "") +
-      "<p>" +
-      rich(body) +
-      "</p></div>"
-    );
-  }
-
-  function pageHead(kicker, title, lede) {
-    return (
-      '<header class="page-head">' +
-      watermark() +
-      (kicker ? '<p class="kicker">' + esc(kicker) + "</p>" : "") +
-      '<h2 class="display">' +
-      title +
-      "</h2>" +
-      (lede ? '<p class="lede">' + esc(lede) + "</p>" : "") +
-      stripe() +
-      "</header>"
-    );
-  }
-
-  function emptyState(copy, act) {
-    return (
-      '<div class="empty">' +
-      watermark() +
-      '<div class="q" aria-hidden="true">?</div>' +
-      "<h2>" +
-      esc(copy.title) +
-      "</h2><p>" +
-      esc(copy.body) +
-      "</p>" +
-      '<button class="btn primary" data-act="' +
-      act +
-      '">' +
-      esc(copy.cta) +
-      "</button></div>"
-    );
-  }
-
-  function demoNote(text) {
-    return (
-      '<p class="demo-note"><b>Demo</b><span>' + esc(text) + "</span></p>"
-    );
-  }
-
-  function statusMeta(key) {
-    var list = (store.copy && store.copy.statuses) || [];
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].key === key) return list[i];
-    }
-    return { key: key, label: key, line: "" };
-  }
-
   function topicLabel(key) {
     var list = (store.copy && store.copy.topics) || [];
     for (var i = 0; i < list.length; i++) {
       if (list[i].key === key) return list[i].label;
     }
     if (!key) return "";
-    // Unknown key: show it as words rather than as a slug.
     var words = String(key).replace(/[-_]+/g, " ").trim();
     return words.charAt(0).toUpperCase() + words.slice(1);
   }
 
-  /* ======================================================================
-     HOME
-     ====================================================================== */
+  function statusBadge(q) {
+    if (q.unread) return '<span class="badge hot">New answer</span>';
+    if (q.status === "answered")
+      return '<span class="badge good">' + esc(label("answered", "Answered")) + "</span>";
+    return '<span class="badge wait">' + esc(label("waiting", "Waiting for an answer")) + "</span>";
+  }
 
-  function home() {
-    var c = store.copy;
-    var n = store.counts();
-    var first = store.member.name.split(" ")[0];
-    var i;
-
-    var cards = "";
-    for (i = 0; i < c.home.cards.length; i++) {
-      var card = c.home.cards[i];
-      cards +=
-        '<button class="action-card" data-act="go" data-to="' +
-        esc(card.key) +
-        '">' +
-        '<span class="ico" aria-hidden="true">' +
-        esc(card.icon || "?") +
-        "</span>" +
-        '<span class="t">' +
-        esc(card.title) +
-        '</span><span class="d">' +
-        esc(card.desc) +
-        "</span>" +
-        '<span class="go">' +
-        esc(card.cta) +
-        " &rarr;</span></button>";
-    }
-
-    var stats =
-      '<div class="stats">' +
-      stat(n.questions, n.questions === 1 ? "question asked" : "questions asked") +
-      stat(n.sheets, n.sheets === 1 ? "call sheet" : "call sheets") +
-      stat(n.openApps, "still working on") +
-      stat(n.gotHelp, "got help") +
-      "</div>";
-
-    var nudge = "";
-    if (n.overdue > 0) {
-      nudge = callout(
-        "red",
-        n.overdue === 1
-          ? "1 follow-up is waiting for you"
-          : n.overdue + " follow-ups are waiting for you",
-        (store.state.trackerMeta.nudges && store.state.trackerMeta.nudges[0]) ||
-          "You said you would call back. Today is a good day to do it."
-      );
-    }
-
+  function mini(kind, suit, title, body) {
+    if (!body) return "";
     return (
-      '<section class="hero">' +
-      watermark() +
-      suitsBar() +
-      '<h2 class="display">' +
-      greeting(c.home.greeting, first) +
-      "</h2>" +
-      '<p class="lede">' +
-      esc(c.home.reassure) +
-      "</p>" +
-      stripe() +
-      "</section>" +
-      nudge +
-      '<div class="action-cards">' +
-      cards +
-      "</div>" +
-      stats +
-      recentStrip() +
-      '<p class="demo-note" style="margin-top:22px"><b>Demo</b><span>' +
-      "This is a mock-up. Nothing is sent anywhere — everything you do is kept " +
-      "in this browser only. " +
-      '<button class="linkbtn" data-act="reset">Start the demo over</button>' +
-      "</span></p>"
+      '<div class="mini ' + kind + '" data-suit="' + suit + '">' +
+      '<span class="mono-label">' + esc(title) + "</span>" +
+      "<p>" + rich(body) + "</p></div>"
     );
   }
 
-  /**
-   * The member's name is set in red italic — the Lesko display accent. The
-   * copy may carry a {name} slot or simply trail off, so handle both.
-   */
-  function greeting(text, first) {
-    var t = String(text || "Good to see you,");
-    var em = '<em>' + esc(first) + ".</em>";
-    if (t.indexOf("{name}") !== -1) {
-      return esc(t).replace("{name}", em);
-    }
-    return esc(t.replace(/[,.\s]+$/, "")) + ", " + em;
-  }
-
-  function stat(n, l) {
+  function sectionHead(title, copy) {
     return (
-      '<div class="stat"><div class="n">' +
-      n +
-      '</div><div class="l">' +
-      esc(l) +
-      "</div></div>"
-    );
-  }
-
-  /** A short "pick up where you left off" strip on Home. */
-  function recentStrip() {
-    var s = store.state;
-    var out = "";
-    var q = s.questions[0];
-    var sheet = s.sheets[0];
-
-    if (!q && !sheet) return "";
-
-    out += '<h3 style="margin-bottom:12px">Pick up where you left off</h3>';
-    out += '<div class="list">';
-    if (q) {
-      out +=
-        '<button class="row" data-act="thread" data-id="' +
-        esc(q.id) +
-        '">' +
-        '<span class="row-top"><span class="chip ' +
-        (q.status === "answered" ? "green" : "blue") +
-        '">' +
-        (q.status === "answered"
-          ? label("answered", "Answered")
-          : label("waiting", "Waiting for an answer")) +
-        '</span><span class="tiny muted">' +
-        esc(store.ago(q.createdAt) || q.ago) +
-        "</span></span>" +
-        '<span class="row-title">' +
-        esc(q.subject) +
-        "</span>" +
-        '<span class="row-sub">' +
-        esc(store.shorten(lastMessage(q).body, 130)) +
-        "</span></button>";
-    }
-    if (sheet) {
-      out +=
-        '<button class="row" data-act="sheet" data-id="' +
-        esc(sheet.id) +
-        '">' +
-        '<span class="row-top"><span class="chip gold">' +
-        esc(sheet.topic) +
-        '</span><span class="tiny muted">' +
-        esc(store.ago(sheet.createdAt) || sheet.ago) +
-        "</span></span>" +
-        '<span class="row-title">' +
-        esc(sheet.title) +
-        "</span>" +
-        '<span class="row-sub">' +
-        esc(sheet.orgs.length) +
-        " places to call &middot; " +
-        esc([sheet.city, sheet.state].filter(Boolean).join(", ")) +
-        "</span></button>";
-    }
-    out += "</div>";
-    return out;
-  }
-
-  function lastMessage(thread) {
-    return thread.messages[thread.messages.length - 1] || { body: "" };
-  }
-
-  /* ======================================================================
-     ASK A QUESTION
-     ====================================================================== */
-
-  function ask() {
-    var c = store.copy.ask;
-    var fields = fieldsByKey(c.fields);
-    var topics = store.copy.topics;
-    var i;
-
-    var opts = '<option value="">Choose one — or leave this blank</option>';
-    for (i = 0; i < topics.length; i++) {
-      opts +=
-        '<option value="' +
-        esc(topics[i].key) +
-        '">' +
-        esc(topics[i].label) +
-        "</option>";
-    }
-
-    return (
-      pageHead("Ask a question", esc(c.heading), "") +
-      '<div class="card">' +
-      callout("blue", "", c.intro) +
-      '<form id="ask-form" novalidate>' +
-      '<div class="field">' +
-      '<label for="ask-body">' +
-      esc(fields.question ? fields.question.label : "What do you need help with?") +
-      "</label>" +
-      helpP(fields.question) +
-      '<textarea class="textarea" id="ask-body" name="body" required placeholder="' +
-      esc(fields.question ? fields.question.placeholder : "") +
-      '"></textarea>' +
-      "</div>" +
-      '<div class="grid-2">' +
-      '<div class="field">' +
-      '<label for="ask-topic">' +
-      esc(fields.topic ? fields.topic.label : "What is this about?") +
-      "</label>" +
-      helpP(fields.topic) +
-      '<select class="select" id="ask-topic" name="topic">' +
-      opts +
-      "</select></div>" +
-      '<div class="field">' +
-      '<label for="ask-location">' +
-      esc(askLoc(fields).label || "Where do you live?") +
-      "</label>" +
-      helpP(askLoc(fields)) +
-      '<input class="input" id="ask-location" name="location" type="text" placeholder="' +
-      esc(askLoc(fields).placeholder || "City, State or ZIP") +
-      '" value="' +
-      esc(prefillLocation(askLoc(fields))) +
-      '" /></div>' +
-      "</div>" +
-      '<p class="tiny muted" id="ask-error" role="alert" style="color:var(--heart);display:none">' +
-      "Please type your question first — even a few words is enough.</p>" +
-      '<div class="btn-row" style="margin-top:6px">' +
-      '<button class="btn primary" type="submit">' +
-      esc(c.button) +
-      "</button>" +
-      '<span class="tiny muted">Only you and the Lesko Help team can see this.</span>' +
-      "</div></form></div>" +
-      demoNote(
-        "This is a mock-up. Your question is saved in this browser only, and a sample answer arrives a few seconds later so you can see how the conversation works."
-      )
-    );
-  }
-
-  /** The location question, whichever key the copy filed it under. */
-  function askLoc(fields) {
-    return fields.location || fields.zip || fields.city || {};
-  }
-
-  /**
-   * Prefill the member's location, matched to what the field actually asks
-   * for — a bare ZIP if the copy asks for five numbers, otherwise the lot.
-   */
-  function prefillLocation(field) {
-    var loc = store.member.location || "";
-    if (field.key === "zip") {
-      var zip = loc.match(/\b\d{5}\b/);
-      return zip ? zip[0] : loc;
-    }
-    return loc;
-  }
-
-  function helpP(field) {
-    if (!field || !field.help) return "";
-    return '<p class="help">' + esc(field.help) + "</p>";
-  }
-
-  function fieldsByKey(list) {
-    var out = {};
-    for (var i = 0; i < (list || []).length; i++) out[list[i].key] = list[i];
-    return out;
-  }
-
-  /* ======================================================================
-     MY QUESTIONS — the private inbox
-     ====================================================================== */
-
-  function questions(filter) {
-    var s = store.state;
-    var c = store.copy;
-    var i;
-
-    if (!s.questions.length) {
-      return (
-        pageHead("My questions", "Your questions and answers", "") +
-        emptyState(c.empty.questions, "go-ask")
-      );
-    }
-
-    var shown = s.questions.filter(function (q) {
-      if (filter === "answered") return q.status === "answered";
-      if (filter === "waiting") return q.status === "waiting";
-      return true;
-    });
-
-    var rows = "";
-    for (i = 0; i < shown.length; i++) {
-      rows += questionRow(shown[i]);
-    }
-    if (!shown.length) {
-      rows =
-        '<div class="empty"><p style="margin-bottom:0">Nothing here right now. ' +
-        "Try the <b>All</b> filter above.</p></div>";
-    }
-
-    return (
-      pageHead(
-        "My questions",
-        "Every question you asked, <em>and every answer.</em>",
-        "One question, one conversation. The team's answers stay right underneath the question you asked."
-      ) +
-      '<div class="btn-row" style="margin-bottom:18px">' +
-      '<button class="btn primary" data-act="go" data-to="ask">Ask a new question</button>' +
-      "</div>" +
-      '<div class="filters" role="group" aria-label="Filter questions">' +
-      filterBtn("all", "All", filter) +
-      filterBtn("answered", label("answered", "Answered"), filter) +
-      filterBtn("waiting", label("waiting", "Waiting"), filter) +
-      "</div>" +
-      '<div class="list">' +
-      rows +
+      '<div class="section-head"><h2>' + title + "</h2>" +
+      (copy ? '<p class="section-copy">' + esc(copy) + "</p>" : "") +
       "</div>"
     );
   }
 
-  function filterBtn(key, text, active) {
+  function emptyNote(copy, act, cta) {
     return (
-      '<button data-act="filter-q" data-filter="' +
-      key +
-      '" aria-pressed="' +
-      (active === key ? "true" : "false") +
-      '">' +
-      esc(text) +
-      "</button>"
+      '<div class="card empty-note">' +
+      '<div class="q" aria-hidden="true">?</div>' +
+      "<h3>" + esc(copy.title) + "</h3>" +
+      "<p>" + esc(copy.body) + "</p>" +
+      '<button class="btn" data-act="go" data-to="' + act + '">' +
+      esc(cta || copy.cta) + "</button></div>"
     );
-  }
-
-  function questionRow(q) {
-    var answers = q.messages.filter(function (m) {
-      return m.role === "team";
-    }).length;
-
-    return (
-      '<button class="row" data-act="thread" data-id="' +
-      esc(q.id) +
-      '">' +
-      '<span class="row-top">' +
-      '<span class="chip ' +
-      (q.status === "answered" ? "green" : "blue") +
-      '">' +
-      (q.status === "answered"
-        ? label("answered", "Answered")
-        : label("waiting", "Waiting for an answer")) +
-      "</span>" +
-      (q.topic
-        ? '<span class="chip">' + esc(topicLabel(q.topic) || q.topic) + "</span>"
-        : "") +
-      (q.unread ? '<span class="chip red">New answer</span>' : "") +
-      "</span>" +
-      '<span class="row-title">' +
-      esc(q.subject) +
-      "</span>" +
-      '<span class="row-sub">' +
-      esc(store.shorten(lastMessage(q).body, 150)) +
-      "</span>" +
-      '<span class="row-foot">' +
-      "<span>" +
-      esc(store.ago(q.createdAt) || q.ago) +
-      "</span>" +
-      "<span>" +
-      answers +
-      (answers === 1 ? " reply" : " replies") +
-      "</span>" +
-      (q.location ? "<span>" + esc(q.location) + "</span>" : "") +
-      "</span></button>"
-    );
-  }
-
-  /* ======================================================================
-     ONE QUESTION THREAD
-     ====================================================================== */
-
-  function thread(id) {
-    var q = store.getQuestion(id);
-    if (!q) return notFound("question");
-    var i;
-
-    var justSent = q.isNew
-      ? callout("green", "", store.copy.ask.confirm)
-      : "";
-
-    var msgs = "";
-    for (i = 0; i < q.messages.length; i++) {
-      msgs += message(q.messages[i]);
-    }
-
-    var tail;
-    if (q.status === "waiting") {
-      tail =
-        '<div class="waiting-note"><span aria-hidden="true">&#9829;</span>' +
-        "<span>The Lesko Help team has your question. Answers usually come back " +
-        "within a day or two — we will keep it right here.</span></div>";
-    } else {
-      tail = "";
-    }
-
-    return (
-      '<button class="back" data-act="go" data-to="questions">' +
-      '<span aria-hidden="true">&larr;</span> Back to my questions</button>' +
-      '<header class="page-head">' +
-      watermark() +
-      '<div class="chips" style="margin-bottom:12px">' +
-      '<span class="chip ' +
-      (q.status === "answered" ? "green" : "blue") +
-      '">' +
-      (q.status === "answered"
-        ? label("answered", "Answered")
-        : label("waiting", "Waiting for an answer")) +
-      "</span>" +
-      (q.topic
-        ? '<span class="chip">' + esc(topicLabel(q.topic) || q.topic) + "</span>"
-        : "") +
-      (q.location ? '<span class="chip">' + esc(q.location) + "</span>" : "") +
-      "</div>" +
-      '<h2 class="display" style="font-size:clamp(24px,3.4vw,31px)">' +
-      esc(q.subject) +
-      "</h2>" +
-      '<p class="tiny muted" style="margin:8px 0 0">Asked ' +
-      esc(fmtDate(q.createdAt)) +
-      " &middot; " +
-      esc(store.ago(q.createdAt) || q.ago) +
-      "</p>" +
-      stripe() +
-      "</header>" +
-      justSent +
-      '<div class="thread">' +
-      msgs +
-      "</div>" +
-      tail +
-      '<div class="card reply-box" style="margin-top:18px">' +
-      '<form id="reply-form">' +
-      '<div class="field" style="margin-bottom:12px">' +
-      '<label for="reply-body">' +
-      esc(label("askFollowUp", "Ask a follow-up question")) +
-      "</label>" +
-      '<p class="help">Not sure about something in the answer? Just ask here. ' +
-      "It stays in this same conversation.</p>" +
-      '<textarea class="textarea" id="reply-body" style="min-height:110px" ' +
-      'placeholder="Type your follow-up question…"></textarea></div>' +
-      '<button class="btn primary" type="submit" data-id="' +
-      esc(q.id) +
-      '">' +
-      esc(label("reply", "Send my reply")) +
-      "</button></form></div>"
-    );
-  }
-
-  function message(m) {
-    var isTeam = m.role === "team";
-    return (
-      '<article class="msg ' +
-      (isTeam ? "team" : "member") +
-      '">' +
-      '<div class="avatar lg ' +
-      (isTeam ? "team" : "") +
-      '" aria-hidden="true">' +
-      esc(initials(m.name)) +
-      "</div>" +
-      '<div class="msg-body"><div class="msg-head">' +
-      '<span class="msg-name">' +
-      esc(m.name) +
-      "</span>" +
-      (isTeam && m.roleLabel
-        ? '<span class="msg-role">' + esc(m.roleLabel) + "</span>"
-        : "") +
-      '<span class="msg-time">' +
-      esc(store.ago(m.createdAt) || m.ago) +
-      "</span></div>" +
-      '<p class="msg-text">' +
-      rich(m.body) +
-      "</p></div></article>"
-    );
-  }
-
-  /* ======================================================================
-     BUILD A CALL SHEET
-     ====================================================================== */
-
-  function build() {
-    var c = store.copy.callsheet;
-    var f = fieldsByKey(c.fields);
-    var topics = store.copy.topics;
-    var i;
-
-    var grid = "";
-    for (i = 0; i < topics.length; i++) {
-      grid +=
-        '<button type="button" class="topic" data-act="pick-topic" data-key="' +
-        esc(topics[i].key) +
-        '" aria-pressed="false">' +
-        '<span class="t">' +
-        esc(topics[i].label) +
-        "</span>" +
-        '<span class="d">' +
-        esc(topics[i].desc) +
-        "</span></button>";
-    }
-
-    return (
-      pageHead("Build a call sheet", esc(c.heading), c.intro) +
-      '<form id="build-form" novalidate>' +
-      '<div class="card">' +
-      '<div class="field" style="margin-bottom:10px">' +
-      '<span class="label" id="topic-label">' +
-      esc(f.topic ? f.topic.label : "What kind of help do you need?") +
-      "</span>" +
-      helpP(f.topic) +
-      '<div class="topic-grid" role="group" aria-labelledby="topic-label">' +
-      grid +
-      "</div>" +
-      '<input type="hidden" id="topic-key" value="" /></div></div>' +
-      '<div class="card">' +
-      '<div class="field" style="margin-bottom:14px">' +
-      '<span class="label">Where are you?</span>' +
-      '<p class="help">We use this to find help near you. A ZIP code on its own is fine.</p>' +
-      '<div class="segmented" role="group" aria-label="How do you want to give your location?">' +
-      '<button type="button" data-act="loc-mode" data-mode="zip" aria-pressed="true">ZIP code</button>' +
-      '<button type="button" data-act="loc-mode" data-mode="city" aria-pressed="false">City &amp; state</button>' +
-      "</div></div>" +
-      '<div id="loc-zip">' +
-      '<div class="field"><label for="f-zip">' +
-      esc(f.zip ? f.zip.label : "Your ZIP code") +
-      "</label>" +
-      helpP(f.zip) +
-      '<input class="input" id="f-zip" inputmode="numeric" autocomplete="postal-code" ' +
-      'placeholder="' +
-      esc(f.zip ? f.zip.placeholder : "for example 14604") +
-      '" /></div></div>' +
-      '<div id="loc-city" hidden><div class="grid-2">' +
-      '<div class="field"><label for="f-city">' +
-      esc(f.city ? f.city.label : "Your city or town") +
-      "</label>" +
-      '<input class="input" id="f-city" autocomplete="address-level2" placeholder="' +
-      esc(f.city ? f.city.placeholder : "for example Rochester") +
-      '" /></div>' +
-      '<div class="field"><label for="f-state">' +
-      esc(f.state ? f.state.label : "Your state") +
-      "</label>" +
-      '<input class="input" id="f-state" autocomplete="address-level1" placeholder="' +
-      esc(f.state ? f.state.placeholder : "for example New York") +
-      '" /></div></div></div>' +
-      "</div>" +
-      '<div class="card">' +
-      '<div class="field" style="margin-bottom:8px">' +
-      '<label for="f-problem">' +
-      esc(f.problem ? f.problem.label : "Tell us what is going on") +
-      "</label>" +
-      helpP(f.problem) +
-      '<textarea class="textarea" id="f-problem" placeholder="' +
-      esc(f.problem ? f.problem.placeholder : "") +
-      '"></textarea></div>' +
-      callout(
-        "gold",
-        "",
-        "Spelling and grammar do not matter one bit. Say it the way you would say it to a friend."
-      ) +
-      "</div>" +
-      '<p class="tiny" id="build-error" role="alert" style="color:var(--heart);display:none;margin-bottom:10px"></p>' +
-      '<div class="btn-row"><button class="btn primary" type="submit">' +
-      esc(c.button) +
-      "</button>" +
-      '<button class="btn ghost" type="button" data-act="go" data-to="sheets">See my old call sheets</button>' +
-      "</div></form>" +
-      demoNote(
-        "This is a mock-up. The research is simulated from a small set of prepared examples, so pick any topic to see how a finished call sheet reads."
-      )
-    );
-  }
-
-  /** The "we are looking this up for you" screen. */
-  function generating() {
-    return (
-      '<div class="generating">' +
-      watermark() +
-      '<div class="spinner" aria-hidden="true">' +
-      '<span style="color:var(--spade)">&#9824;</span>' +
-      '<span style="color:var(--heart)">&#9829;</span>' +
-      '<span style="color:var(--diamond)">&#9830;</span>' +
-      '<span style="color:var(--club)">&#9827;</span></div>' +
-      '<p class="progress-msg" id="progress-msg" role="status" aria-live="polite"></p>' +
-      '<div class="bar"><i id="progress-bar"></i></div>' +
-      '<p class="tiny muted" style="margin-top:18px">This usually takes less than a minute.</p>' +
-      "</div>"
-    );
-  }
-
-  /* ======================================================================
-     MY CALL SHEETS — the archive
-     ====================================================================== */
-
-  function sheets() {
-    var s = store.state;
-    var c = store.copy;
-    var i;
-
-    if (!s.sheets.length) {
-      return (
-        pageHead("My call sheets", "Your call sheets", "") +
-        emptyState(c.empty.callsheets, "go-build")
-      );
-    }
-
-    var rows = "";
-    for (i = 0; i < s.sheets.length; i++) {
-      var sh = s.sheets[i];
-      var called = (sh.called || []).length;
-      rows +=
-        '<button class="row" data-act="sheet" data-id="' +
-        esc(sh.id) +
-        '">' +
-        '<span class="row-top">' +
-        '<span class="chip gold">' +
-        esc(sh.topic) +
-        "</span>" +
-        '<span class="chip">' +
-        esc([sh.city, sh.state].filter(Boolean).join(", ") || sh.zip) +
-        "</span>" +
-        (called
-          ? '<span class="chip green">' +
-            called +
-            " of " +
-            sh.orgs.length +
-            " called</span>"
-          : "") +
-        "</span>" +
-        '<span class="row-title">' +
-        esc(sh.title) +
-        "</span>" +
-        '<span class="row-sub">' +
-        esc(store.shorten(sh.problem, 150)) +
-        "</span>" +
-        '<span class="row-foot"><span>' +
-        esc(fmtDate(sh.createdAt)) +
-        "</span><span>" +
-        sh.orgs.length +
-        " places to call</span></span></button>";
-    }
-
-    return (
-      pageHead(
-        "My call sheets",
-        "Every call sheet you made, <em>kept for good.</em>",
-        "Open any one of them again — the phone numbers, the scripts and your ticks are all still here."
-      ) +
-      '<div class="btn-row" style="margin-bottom:18px">' +
-      '<button class="btn primary" data-act="go" data-to="build">Build a new call sheet</button>' +
-      "</div>" +
-      '<div class="list">' +
-      rows +
-      "</div>"
-    );
-  }
-
-  /* ======================================================================
-     ONE CALL SHEET — the showpiece
-     ====================================================================== */
-
-  function sheet(id) {
-    var sh = store.getSheet(id);
-    if (!sh) return notFound("call sheet");
-    var i;
-
-    var firstOrg = null;
-    for (i = 0; i < sh.orgs.length; i++) {
-      if (sh.orgs[i].id === sh.firstCall.orgId) firstOrg = sh.orgs[i];
-    }
-    if (!firstOrg) firstOrg = sh.orgs[0];
-
-    var rest = sh.orgs.filter(function (o) {
-      return o.id !== firstOrg.id;
-    });
-
-    /* --- plan steps --- */
-    var steps = "";
-    for (i = 0; i < sh.plan.length; i++) {
-      steps +=
-        '<li><span class="numtag n' +
-        ((i % 4) + 1) +
-        '" aria-hidden="true">' +
-        (i + 1) +
-        "</span><div><h4>" +
-        esc(unnumber(sh.plan[i].title)) +
-        "</h4><p>" +
-        rich(sh.plan[i].body) +
-        "</p></div></li>";
-    }
-
-    /* --- the rest of the organisations --- */
-    var orgCards = "";
-    for (i = 0; i < rest.length; i++) {
-      orgCards += orgCard(sh, rest[i], i);
-    }
-
-    var place = [sh.city, sh.state].filter(Boolean).join(", ");
-    var calledCount = (sh.called || []).length;
-
-    return (
-      '<button class="back" data-act="go" data-to="sheets">' +
-      '<span aria-hidden="true">&larr;</span> Back to my call sheets</button>' +
-
-      /* ---- header ---- */
-      '<header class="sheet-head">' +
-      watermark() +
-      suitsBar() +
-      '<div class="chips" style="margin:12px 0 14px">' +
-      '<span class="chip gold">' +
-      esc(sh.topic) +
-      "</span>" +
-      '<span class="chip">' +
-      esc(place + (sh.zip ? " " + sh.zip : "")) +
-      "</span>" +
-      '<span class="chip">' +
-      esc(fmtDate(sh.createdAt)) +
-      "</span>" +
-      (calledCount
-        ? '<span class="chip green">' +
-          calledCount +
-          " of " +
-          sh.orgs.length +
-          " called</span>"
-        : "") +
-      "</div>" +
-      '<h2 class="display">' +
-      esc(sh.title) +
-      "</h2>" +
-      '<div class="quote"><p class="who">What you told us</p><p>' +
-      esc(sh.problem) +
-      "</p></div>" +
-      '<p class="lede" style="margin:18px 0 0">' +
-      rich(sh.opening) +
-      "</p>" +
-      stripe() +
-      "</header>" +
-
-      /* ---- before you start / watch out ---- */
-      callout("gold", "Before you start", sh.beforeYouStart) +
-      (sh.watchOut ? callout("red", "Watch out for this", sh.watchOut) : "") +
-
-      /* ---- the one first call ---- */
-      '<section class="first-call">' +
-      '<div class="first-call-bar">' +
-      '<span class="suits"><i class="d">&#9830;</i></span>' +
-      "<span>" +
-      esc(label("firstCall", "Start with this one call")) +
-      "</span></div>" +
-      '<div class="first-call-body">' +
-      watermark() +
-      "<h3>" +
-      esc(firstOrg.name) +
-      "</h3>" +
-      '<p style="font-size:17px;margin:0 0 14px">' +
-      rich(sh.firstCall.why) +
-      "</p>" +
-      '<div class="contact-row">' +
-      phoneLink(firstOrg.phone) +
-      (firstOrg.url
-        ? '<a class="btn ghost sm" href="' +
-          esc(firstOrg.url) +
-          '" target="_blank" rel="noopener">Open their website</a>'
-        : "") +
-      "</div>" +
-      scriptBox(sh.firstCall.whatToSay) +
-      '<div class="btn-row" style="margin-top:16px">' +
-      '<button class="btn ghost sm" data-act="track-one" data-sheet="' +
-      esc(sh.id) +
-      '" data-org="' +
-      esc(firstOrg.id) +
-      '">' +
-      esc(label("addToTracker", "Add to my applications")) +
-      "</button></div>" +
-      "</div></section>" +
-
-      /* ---- the plan ---- */
-      '<section class="card">' +
-      '<p class="kicker">Your plan</p>' +
-      "<h3>What to do, in order</h3>" +
-      '<ol class="steps">' +
-      steps +
-      "</ol></section>" +
-
-      /* ---- everyone else ---- */
-      '<section style="margin-top:26px">' +
-      '<p class="kicker red">' +
-      esc(label("thenCall", "Then make these calls")) +
-      "</p>" +
-      '<h3 style="margin-bottom:6px">' +
-      rest.length +
-      " more places that can help</h3>" +
-      '<p class="muted small" style="margin:0 0 16px">Tick each one off as you call it. ' +
-      "Your ticks are saved.</p>" +
-      '<div class="orgs">' +
-      orgCards +
-      "</div></section>" +
-
-      /* ---- actions ---- */
-      '<div class="sheet-actions">' +
-      '<button class="btn primary" data-act="track-all" data-sheet="' +
-      esc(sh.id) +
-      '">Add all of these to my applications</button>' +
-      '<button class="btn ghost" data-act="print">' +
-      esc(label("printSave", "Print or save as PDF")) +
-      "</button>" +
-      '<button class="btn ghost" data-act="export-csv" data-sheet="' +
-      esc(sh.id) +
-      '">Download as a spreadsheet</button>' +
-      "</div>"
-    );
-  }
-
-  function phoneLink(phone, small) {
-    var parts = phoneParts(phone);
-    var out = "";
-    if (parts.number) {
-      out +=
-        '<a class="phone' +
-        (small ? " sm" : "") +
-        '" href="tel:' +
-        esc(tel(parts.number)) +
-        '"><span aria-hidden="true">&#9742;</span>' +
-        '<span><span class="sr-only">Call </span>' +
-        esc(parts.number) +
-        "</span></a>";
-    }
-    if (parts.note) {
-      out += '<span class="phone-note">' + rich(parts.note) + "</span>";
-    }
-    return out;
   }
 
   function scriptBox(text) {
     if (!text) return "";
     return (
       '<div class="script">' +
-      '<p class="script-t">' +
+      '<span class="mono-label">' +
       esc(label("whatToSay", "What to say when they answer")) +
-      "</p>" +
-      '<p class="script-text">' +
-      esc(text) +
-      "</p>" +
-      '<button class="btn ghost sm copy" data-act="copy" data-text="' +
-      esc(text) +
-      '">Copy these words</button></div>'
+      "</span>" +
+      '<p class="words">' + esc(text) + "</p>" +
+      '<button class="btn ghost" data-act="copy" data-text="' + esc(text) + '">' +
+      "Copy these words</button></div>"
     );
   }
 
-  function orgCard(sh, org, i) {
+  /* ========================================================== ASK face */
+
+  function ask() {
+    var c = store.copy.ask;
+    var f = {};
+    (c.fields || []).forEach(function (x) {
+      f[x.key] = x;
+    });
+    var q = f.question || {};
+    var topics = store.copy.topics || [];
+
+    var opts = '<option value="">Not sure? Leave this alone.</option>';
+    topics.forEach(function (t) {
+      opts += '<option value="' + esc(t.key) + '">' + esc(t.label) + "</option>";
+    });
+
+    return (
+      '<section class="panel">' +
+      sectionHead(
+        "There is no <em>wrong question.</em>",
+        "Say it the way you would say it out loud — spelling doesn't matter one bit. Someone on the Lesko Help team reads every question and answers you right here."
+      ) +
+      '<form class="form-card" id="ask-form" novalidate>' +
+      '<div class="field">' +
+      '<label class="mono-label" for="ask-body">What do you need help with?</label>' +
+      '<textarea id="ask-body" required placeholder="' +
+      esc(q.placeholder || "Example: I'm behind on my electric bill and I don't know who to call.") +
+      '"></textarea></div>' +
+      '<div class="field-row">' +
+      '<div class="field"><label class="mono-label" for="ask-topic">What is this about? <span style="text-transform:none;letter-spacing:0">(optional)</span></label>' +
+      '<select id="ask-topic">' + opts + "</select></div>" +
+      '<div class="field"><label class="mono-label" for="ask-location">Where do you live? <span style="text-transform:none;letter-spacing:0">(optional)</span></label>' +
+      '<input id="ask-location" type="text" placeholder="ZIP code, or city and state" value="' +
+      esc(store.member.location || "") + '"></div>' +
+      "</div>" +
+      '<p class="form-error" id="ask-error">Please type your question first — even a few words is enough.</p>' +
+      '<div class="form-actions">' +
+      '<button class="btn big" type="submit">' + esc(c.button || "Send my question") + "</button>" +
+      '<p class="fine">A real person answers, usually within a day or two.</p>' +
+      "</div></form>" +
+      '<p class="fine">Demo: your question is saved in this browser only, and a sample answer arrives a few seconds later so you can see how it works.</p>' +
+      "</section>"
+    );
+  }
+
+  /* ================================================= MY QUESTIONS face */
+
+  function questions() {
+    var qs = store.state.questions;
+    if (!qs.length) {
+      return (
+        '<section class="panel">' +
+        sectionHead("Every question, <em>every answer.</em>", "") +
+        emptyNote(store.copy.empty.questions, "ask") +
+        "</section>"
+      );
+    }
+
+    var rows = qs
+      .map(function (q) {
+        var last = q.messages[q.messages.length - 1] || { body: "" };
+        var replies = q.messages.filter(function (m) {
+          return m.role === "team";
+        }).length;
+        return (
+          '<button class="rowbtn" data-act="thread" data-id="' + esc(q.id) + '">' +
+          '<span class="r-top">' + statusBadge(q) +
+          (q.topic ? '<span class="badge">' + esc(topicLabel(q.topic)) + "</span>" : "") +
+          "</span>" +
+          '<span class="r-title">' + esc(q.subject) + "</span>" +
+          '<span class="r-sub">' + esc(store.shorten(last.body, 110)) + "</span>" +
+          '<span class="r-meta">' +
+          esc(store.ago(q.createdAt) || q.ago) + " &middot; " +
+          replies + (replies === 1 ? " reply" : " replies") +
+          "</span></button>"
+        );
+      })
+      .join("");
+
+    return (
+      '<section class="panel">' +
+      sectionHead(
+        "Every question, <em>every answer.</em>",
+        "The team's answer lands right under your question — nothing to bookmark, nothing to go hunting for."
+      ) +
+      '<div class="rows">' + rows + "</div>" +
+      "</section>"
+    );
+  }
+
+  /* ---------------------------------------------------- one thread */
+
+  function thread(id) {
+    var q = store.getQuestion(id);
+    if (!q) return notFound("question", "questions");
+
+    var msgs = q.messages
+      .map(function (m) {
+        var isTeam = m.role === "team";
+        return (
+          '<article class="msg' + (isTeam ? " team" : "") + '">' +
+          '<div class="msg-head"><b>' + esc(m.name) + "</b>" +
+          (isTeam ? '<span class="badge hot">Lesko Help team</span>' : "") +
+          '<span class="when">' + esc(store.ago(m.createdAt) || m.ago) + "</span></div>" +
+          '<p class="msg-body">' + rich(m.body) + "</p></article>"
+        );
+      })
+      .join("");
+
+    var waitingNote =
+      q.status === "waiting"
+        ? '<div class="mini t-blue" data-suit="♠"><span class="mono-label">With the team</span>' +
+          "<p>Your question is in. Answers usually come back within a day or two — they will appear right here.</p></div>"
+        : "";
+
+    var justSent = q.isNew
+      ? mini("t-green", "♣", "Sent", store.copy.ask.confirm)
+      : "";
+
+    return (
+      '<section class="panel">' +
+      '<button class="backlink" data-act="go" data-to="questions">&larr; All my questions</button>' +
+      '<h2 class="thread-title">' + esc(q.subject) + "</h2>" +
+      '<div class="thread-meta badges">' + statusBadge(q) +
+      (q.topic ? '<span class="badge">' + esc(topicLabel(q.topic)) + "</span>" : "") +
+      (q.location ? '<span class="badge">' + esc(q.location) + "</span>" : "") +
+      '<span class="badge">Asked ' + esc(fmtDate(q.createdAt)) + "</span>" +
+      "</div>" +
+      justSent +
+      msgs +
+      waitingNote +
+      '<form class="form-card" id="reply-form" style="margin-top:14px">' +
+      '<div class="field"><label class="mono-label" for="reply-body">' +
+      esc(label("askFollowUp", "Ask a follow-up question")) + "</label>" +
+      '<textarea id="reply-body" style="min-height:74px" placeholder="Not sure about something in the answer? Just ask — it stays in this same conversation."></textarea></div>' +
+      '<button class="btn" type="submit" data-id="' + esc(q.id) + '">' +
+      esc(label("reply", "Send my reply")) + "</button></form>" +
+      "</section>"
+    );
+  }
+
+  /* =================================================== CALL SHEET face */
+
+  function build() {
+    var c = store.copy.callsheet;
+    var f = {};
+    (c.fields || []).forEach(function (x) {
+      f[x.key] = x;
+    });
+    var topics = store.copy.topics || [];
+
+    var opts = '<option value="">Choose the one that fits best&hellip;</option>';
+    topics.forEach(function (t) {
+      opts +=
+        '<option value="' + esc(t.key) + '" data-desc="' + esc(t.desc || "") + '">' +
+        esc(t.label) + "</option>";
+    });
+
+    return (
+      '<section class="panel">' +
+      sectionHead(
+        "Tell us what&rsquo;s going on. <em>We find who to call.</em>",
+        "You get back a list of real places near you — who to call first, what they can do for you, and the exact words to say on the phone."
+      ) +
+      '<form class="form-card" id="build-form" novalidate>' +
+      '<div class="field">' +
+      '<label class="mono-label" for="b-topic">What kind of help do you need?</label>' +
+      '<select id="b-topic">' + opts + "</select>" +
+      '<p class="hint" id="topic-desc"></p></div>' +
+      '<div class="field-row">' +
+      '<div class="field"><label class="mono-label" for="b-zip">Your ZIP code</label>' +
+      '<input id="b-zip" inputmode="numeric" autocomplete="postal-code" placeholder="' +
+      esc((f.zip && f.zip.placeholder) || "Example: 14604") + '">' +
+      "</div>" +
+      '<div class="field"><label class="mono-label" for="b-city">Or your city &amp; state</label>' +
+      '<input id="b-city" autocomplete="address-level2" placeholder="Example: Rochester, New York">' +
+      "</div></div>" +
+      '<p class="hint" style="margin:-6px 0 12px">Either one is fine.</p>' +
+      '<div class="field">' +
+      '<label class="mono-label" for="b-problem">Tell us in your own words</label>' +
+      '<textarea id="b-problem" placeholder="' +
+      esc((f.problem && f.problem.placeholder) || "Example: I lost my job in March and I'm three months behind on rent.") +
+      '"></textarea>' +
+      '<p class="hint">Spelling and grammar do not matter one bit. The more you tell us, the more this list feels made for you.</p>' +
+      "</div>" +
+      '<p class="form-error" id="build-error"></p>' +
+      '<div class="form-actions">' +
+      '<button class="btn big" type="submit">' + esc(c.button || "Find my help") + "</button>" +
+      '<p class="fine">Takes about half a minute.</p>' +
+      "</div></form>" +
+      '<p class="fine">Demo: the research is simulated from a small set of prepared examples — pick any topic to see how a finished sheet reads.</p>' +
+      "</section>"
+    );
+  }
+
+  function generating() {
+    return (
+      '<section class="panel"><div class="card generating">' +
+      '<div class="suits" aria-hidden="true"><span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span></div>' +
+      '<p class="progress-msg" id="progress-msg" role="status" aria-live="polite"></p>' +
+      '<div class="bar"><i id="progress-bar"></i></div>' +
+      '<p class="fine">This usually takes less than a minute.</p>' +
+      "</div></section>"
+    );
+  }
+
+  /* ================================================ MY CALL SHEETS face */
+
+  function sheets() {
+    var list = store.state.sheets;
+    if (!list.length) {
+      return (
+        '<section class="panel">' +
+        sectionHead("Every call sheet, <em>kept for good.</em>", "") +
+        emptyNote(store.copy.empty.callsheets, "build") +
+        "</section>"
+      );
+    }
+
+    var rows = list
+      .map(function (sh) {
+        var called = (sh.called || []).length;
+        var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+        return (
+          '<button class="rowbtn" data-act="sheet" data-id="' + esc(sh.id) + '">' +
+          '<span class="r-top"><span class="badge warm">' + esc(sh.topic) + "</span>" +
+          (called
+            ? '<span class="badge good">' + called + " of " + sh.orgs.length + " called</span>"
+            : "") +
+          "</span>" +
+          '<span class="r-title">' + esc(sh.title) + "</span>" +
+          '<span class="r-sub">' + esc(store.shorten(sh.problem, 110)) + "</span>" +
+          '<span class="r-meta">' + esc(place) + " &middot; " +
+          esc(fmtDate(sh.createdAt)) + " &middot; " + sh.orgs.length +
+          " places to call</span></button>"
+        );
+      })
+      .join("");
+
+    return (
+      '<section class="panel">' +
+      sectionHead(
+        "Every call sheet, <em>kept for good.</em>",
+        "Open any of them again — the phone numbers, the scripts and your tick-marks are all still here."
+      ) +
+      '<div class="rows">' + rows + "</div>" +
+      "</section>"
+    );
+  }
+
+  /* ------------------------------------------------- one call sheet */
+
+  function sheet(id) {
+    var sh = store.getSheet(id);
+    if (!sh) return notFound("call sheet", "sheets");
+
+    var firstOrg = null;
+    sh.orgs.forEach(function (o) {
+      if (o.id === sh.firstCall.orgId) firstOrg = o;
+    });
+    if (!firstOrg) firstOrg = sh.orgs[0];
+
+    var rest = sh.orgs.filter(function (o) {
+      return o.id !== firstOrg.id;
+    });
+
+    var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+    var calledCount = (sh.called || []).length;
+
+    var steps = sh.plan
+      .map(function (p, i) {
+        return (
+          '<li><span class="n" aria-hidden="true">' + (i + 1) + "</span>" +
+          "<div><b>" + esc(unnumber(p.title)) + "</b><p>" + rich(p.body) + "</p></div></li>"
+        );
+      })
+      .join("");
+
+    var orgCards = rest.map(function (o) {
+      return orgCard(sh, o);
+    }).join("");
+
+    return (
+      '<section class="panel">' +
+      '<button class="backlink" data-act="go" data-to="sheets">&larr; All my call sheets</button>' +
+
+      '<div class="badges">' +
+      '<span class="badge warm">' + esc(sh.topic) + "</span>" +
+      '<span class="badge">' + esc(place + (sh.zip && place !== sh.zip ? " " + sh.zip : "")) + "</span>" +
+      '<span class="badge">' + esc(fmtDate(sh.createdAt)) + "</span>" +
+      (calledCount
+        ? '<span class="badge good">' + calledCount + " of " + sh.orgs.length + " called</span>"
+        : "") +
+      "</div>" +
+      '<h2 class="sheet-title">' + esc(sh.title) + "</h2>" +
+
+      '<div class="note"><span class="mono-label">What you told us</span>' +
+      '<p class="said">&ldquo;' + esc(sh.problem) + "&rdquo;</p></div>" +
+
+      '<p class="opening">' + rich(sh.opening) + "</p>" +
+
+      mini("t-yellow", "♦", "Before you start", sh.beforeYouStart) +
+      (sh.watchOut ? mini("t-red", "♥", "Watch out for this", sh.watchOut) : "") +
+
+      /* ---- the one first call ---- */
+      '<div class="first-call">' +
+      '<span class="mono-label"><i>&diams;</i> ' +
+      esc(label("firstCall", "Start with this one call")) + "</span>" +
+      "<h3>" + esc(firstOrg.name) + "</h3>" +
+      '<p class="why">' + rich(sh.firstCall.why) + "</p>" +
+      '<div class="contact-row">' +
+      phonePill(firstOrg.phone) +
+      (firstOrg.url
+        ? '<a class="btn ghost" href="' + esc(firstOrg.url) + '" target="_blank" rel="noopener">Their website</a>'
+        : "") +
+      "</div>" +
+      scriptBox(sh.firstCall.whatToSay) +
+      "</div>" +
+
+      /* ---- the plan ---- */
+      '<div class="card">' +
+      '<span class="mono-label">Your plan &mdash; what to do, in order</span>' +
+      '<ol class="steps" style="margin-top:8px">' + steps + "</ol></div>" +
+
+      /* ---- the rest ---- */
+      '<div style="margin:18px 0 10px">' +
+      '<span class="mono-label" style="color:var(--red)">' +
+      esc(label("thenCall", "Then make these calls")) + "</span>" +
+      '<p class="section-copy" style="margin:4px 0 0">' + rest.length +
+      " more places that can help. Tick each one off as you call it &mdash; your ticks are saved.</p></div>" +
+      '<div class="orgs">' + orgCards + "</div>" +
+
+      '<div class="sheet-actions">' +
+      '<button class="btn ghost" data-act="print">' +
+      esc(label("printSave", "Print or save as PDF")) + "</button>" +
+      '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) + '">Download spreadsheet</button>' +
+      "</div>" +
+      "</section>"
+    );
+  }
+
+  function orgCard(sh, org) {
     var done = store.isCalled(sh.id, org.id);
     var cid = "org-" + sh.id + "-" + org.id;
 
     return (
-      '<article class="org' +
-      (done ? " done" : "") +
-      '" id="' +
-      esc(cid) +
-      '">' +
+      '<article class="org' + (done ? " done" : "") + '" id="' + esc(cid) + '">' +
       '<div class="org-head">' +
-      '<label class="check org-check">' +
-      '<input type="checkbox" data-act="called" data-sheet="' +
-      esc(sh.id) +
-      '" data-org="' +
-      esc(org.id) +
-      '"' +
-      (done ? " checked" : "") +
-      ' aria-label="' +
-      esc(label("markCalled", "Mark as called") + ": " + org.name) +
-      '" /><span class="cl" aria-hidden="true">Called</span></label>' +
+      '<label class="called-box">' +
+      '<input type="checkbox" data-act="called" data-sheet="' + esc(sh.id) +
+      '" data-org="' + esc(org.id) + '"' + (done ? " checked" : "") +
+      ' aria-label="' + esc(label("markCalled", "Mark as called") + ": " + org.name) + '">' +
+      '<span class="cl" aria-hidden="true">Called</span></label>' +
       "<div>" +
-      '<p class="org-name">' +
-      esc(org.name) +
-      "</p>" +
-      '<p class="org-what">' +
-      rich(org.plainWhat) +
-      "</p>" +
-      '<div class="contact-row">' +
-      phoneLink(org.phone, true) +
-      '<span class="chip ' +
-      (org.moneyType && /free/i.test(org.moneyType) ? "blue" : "gold") +
-      '">' +
-      esc(org.maxAmount || org.moneyType || "") +
-      "</span>" +
+      '<p class="org-name">' + esc(org.name) + "</p>" +
+      '<p class="org-what">' + rich(org.plainWhat) + "</p>" +
+      '<div class="org-row">' +
+      phonePill(org.phone, true) +
+      '<span class="badge' + (org.moneyType && /free/i.test(org.moneyType) ? "" : " warm") + '">' +
+      esc(org.maxAmount || org.moneyType || "") + "</span>" +
       "</div></div>" +
-      '<button class="org-toggle" data-act="toggle-org" data-target="' +
-      esc(cid) +
-      '" aria-expanded="false" aria-controls="' +
-      esc(cid) +
-      '-d">' +
+      '<button class="org-toggle" data-act="toggle-org" data-target="' + esc(cid) +
+      '" aria-expanded="false" aria-controls="' + esc(cid) + '-d">' +
       '<span aria-hidden="true">&#9662;</span>' +
-      '<span class="sr-only">Show the details for ' +
-      esc(org.name) +
-      "</span></button>" +
+      '<span class="sr-only">Show the details for ' + esc(org.name) + "</span></button>" +
       "</div>" +
 
-      '<div class="org-detail" id="' +
-      esc(cid) +
-      '-d" hidden>' +
+      '<div class="org-detail" id="' + esc(cid) + '-d" hidden>' +
       '<dl class="facts">' +
       fact(label("whoFor", "Who this is for"), org.whoQualifies) +
-      fact(label("whereTheyHelp", "Where they help"), org.area) +
-      fact(label("datesMatter", "When to apply"), org.whenToApply) +
+      fact("Where they help", org.area) +
+      fact("When to apply", org.whenToApply) +
       fact(label("freeStuff", "What you get free"), org.freeServices) +
-      fact(label("moneyAvailable", "Kind of help"), org.moneyType) +
+      fact("Kind of help", org.moneyType) +
       fact(label("howMuch", "How much"), org.maxAmount) +
       "</dl>" +
-      callout("blue", label("beforeCall", "Before you call"), org.beforeYouCall) +
+      (org.beforeYouCall
+        ? '<div class="note"><span class="mono-label">' +
+          esc(label("beforeCall", "Before you call")) + "</span><p>" +
+          rich(org.beforeYouCall) + "</p></div>"
+        : "") +
       scriptBox(org.script) +
-      '<div class="contact-row" style="margin-top:14px">' +
+      '<div class="org-links">' +
       (org.url
-        ? '<a class="btn ghost sm" href="' +
-          esc(org.url) +
-          '" target="_blank" rel="noopener">Their website</a>'
+        ? '<a class="btn ghost" href="' + esc(org.url) + '" target="_blank" rel="noopener">Their website</a>'
         : "") +
       (org.email
-        ? '<a class="btn ghost sm" href="mailto:' +
-          esc(org.email) +
-          '">Email them</a>'
+        ? '<a class="btn ghost" href="mailto:' + esc(org.email) + '">Email them</a>'
         : "") +
-      '<button class="btn ghost sm" data-act="track-one" data-sheet="' +
-      esc(sh.id) +
-      '" data-org="' +
-      esc(org.id) +
-      '">' +
-      esc(label("addToTracker", "Add to my applications")) +
-      "</button></div>" +
-      (org.address
-        ? '<p class="tiny muted" style="margin:12px 0 0">' +
-          esc(org.address) +
-          "</p>"
-        : "") +
+      "</div>" +
+      (org.address ? '<p class="org-address">' + esc(org.address) + "</p>" : "") +
       "</div></article>"
     );
   }
 
   function fact(term, value) {
     if (!value) return "";
-    return (
-      '<div class="fact"><dt>' +
-      esc(term) +
-      "</dt><dd>" +
-      esc(value) +
-      "</dd></div>"
-    );
+    return '<div class="fact"><dt>' + esc(term) + "</dt><dd>" + esc(value) + "</dd></div>";
   }
 
-  /* ======================================================================
-     MY APPLICATIONS — the tracker
-     ====================================================================== */
+  /* --------------------------------------------------------- fallback */
 
-  function tracker(filter) {
-    var s = store.state;
-    var meta = s.trackerMeta;
-    var c = store.copy;
-    var i;
-
-    if (!s.tracker.length) {
-      return (
-        pageHead("My applications", "Who you are following up with", "") +
-        emptyState(c.empty.applications, "go-sheets")
-      );
-    }
-
-    var rows = s.tracker.filter(function (r) {
-      if (filter === "open")
-        return r.status !== "got-help" && r.status !== "said-no";
-      if (filter === "overdue") return store.isOverdue(r);
-      if (filter === "won") return r.status === "got-help";
-      return true;
-    });
-
-    var overdue = s.tracker.filter(store.isOverdue).length;
-
-    var html = "";
-    for (i = 0; i < rows.length; i++) html += trackRow(rows[i], meta);
-    if (!rows.length) {
-      html =
-        '<div class="empty"><p style="margin-bottom:0">Nothing in this list right now.</p></div>';
-    }
-
+  function notFound(what, backTo) {
     return (
-      pageHead(
-        "My applications",
-        "Who you called, <em>and what happened next.</em>",
-        meta.intro
-      ) +
-      (overdue
-        ? callout(
-            "red",
-            overdue === 1
-              ? "1 follow-up is past its date"
-              : overdue + " follow-ups are past their date",
-            meta.nudges[0]
-          )
-        : "") +
-      '<div class="filters" role="group" aria-label="Filter applications">' +
-      tFilter("all", "All", filter) +
-      tFilter("open", "Still working on", filter) +
-      tFilter("overdue", "Needs a follow-up", filter) +
-      tFilter("won", "Got help", filter) +
-      "</div>" +
-      html
-    );
-  }
-
-  function tFilter(key, text, active) {
-    return (
-      '<button data-act="filter-t" data-filter="' +
-      key +
-      '" aria-pressed="' +
-      (active === key ? "true" : "false") +
-      '">' +
-      esc(text) +
-      "</button>"
-    );
-  }
-
-  function trackRow(r, meta) {
-    var i;
-    var sm = statusMeta(r.status);
-    var overdue = store.isOverdue(r);
-    var editing = editState();
-
-    var opts = "";
-    var statuses = store.copy.statuses;
-    for (i = 0; i < statuses.length; i++) {
-      opts +=
-        '<option value="' +
-        esc(statuses[i].key) +
-        '"' +
-        (statuses[i].key === r.status ? " selected" : "") +
-        ">" +
-        esc(statuses[i].label) +
-        "</option>";
-    }
-
-    var checks = "";
-    var doneCount = 0;
-    for (i = 0; i < meta.checklist.length; i++) {
-      var step = meta.checklist[i];
-      var isDone = (r.done || []).indexOf(step.key) !== -1;
-      if (isDone) doneCount++;
-      checks +=
-        '<label class="check"><input type="checkbox" data-act="step" data-row="' +
-        esc(r.id) +
-        '" data-step="' +
-        esc(step.key) +
-        '"' +
-        (isDone ? " checked" : "") +
-        ' /><span>' +
-        esc(step.label) +
-        "</span></label>";
-    }
-    var pct = Math.round((doneCount / meta.checklist.length) * 100);
-
-    var nudge = "";
-    for (i = 0; i < meta.nextActions.length; i++) {
-      if (meta.nextActions[i].status === r.status) {
-        nudge = meta.nextActions[i].nudge;
-        break;
-      }
-    }
-    if (!nudge) nudge = sm.line;
-
-    return (
-      '<article class="track' +
-      (overdue ? " overdue" : "") +
-      '">' +
-      '<div class="track-head"><div>' +
-      '<p class="track-name">' +
-      esc(r.org) +
-      "</p>" +
-      '<p class="track-src">From: ' +
-      esc(r.sheet) +
-      "</p></div>" +
-      '<div><label class="sr-only" for="st-' +
-      esc(r.id) +
-      '">Where you are up to with ' +
-      esc(r.org) +
-      "</label>" +
-      '<select class="select status-select status-' +
-      esc(r.status) +
-      '" id="st-' +
-      esc(r.id) +
-      '" data-act="status" data-row="' +
-      esc(r.id) +
-      '">' +
-      opts +
-      "</select></div></div>" +
-
-      '<div class="contact-row" style="margin-top:12px">' +
-      phoneLink(r.phone, true) +
-      (r.email
-        ? '<a class="btn ghost sm" href="mailto:' +
-          esc(r.email) +
-          '">Write to them</a>'
-        : "") +
-      (r.url
-        ? '<a class="btn ghost sm" href="' +
-          esc(r.url) +
-          '" target="_blank" rel="noopener">Their website</a>'
-        : "") +
-      (editing.row === r.id && editing.field === "date"
-        ? '<span class="inline-edit"><label class="sr-only" for="fu-' +
-          esc(r.id) +
-          '">Follow up with ' +
-          esc(r.org) +
-          ' on this date</label><input class="input" type="date" id="fu-' +
-          esc(r.id) +
-          '" value="' +
-          esc(r.followUp || store.todayISO()) +
-          '" />' +
-          '<button class="btn primary sm" data-act="save-date" data-row="' +
-          esc(r.id) +
-          '">Save the date</button>' +
-          '<button class="linkbtn" data-act="cancel-edit">Cancel</button></span>'
-        : (r.followUp
-            ? '<span class="chip ' +
-              (overdue ? "red" : "") +
-              '">Follow up: ' +
-              esc(fmtDate(r.followUp)) +
-              "</span>"
-            : "") +
-          '<button class="linkbtn" data-act="edit-date" data-row="' +
-          esc(r.id) +
-          '">' +
-          (r.followUp ? "Change the date" : "Set a follow-up date") +
-          "</button>") +
-      "</div>" +
-      (r.address
-        ? '<p class="track-address">' +
-          (looksPostal(r.address) ? '<span aria-hidden="true">&#9993;</span> ' : "") +
-          rich(r.address) +
-          "</p>"
-        : "") +
-
-      (nudge
-        ? '<p class="track-nudge' +
-          (overdue ? " warn" : "") +
-          '"><span aria-hidden="true">&#9830;</span><span>' +
-          esc(nudge) +
-          "</span></p>"
-        : "") +
-
-      (editing.row === r.id && editing.field === "note"
-        ? '<div class="inline-edit block"><label class="sr-only" for="nt-' +
-          esc(r.id) +
-          '">Your note about ' +
-          esc(r.org) +
-          '</label><textarea class="textarea" id="nt-' +
-          esc(r.id) +
-          '" placeholder="Who you spoke to, what they asked for, anything you want to remember.">' +
-          esc(r.note || "") +
-          "</textarea>" +
-          '<span class="btn-row"><button class="btn primary sm" data-act="save-note" data-row="' +
-          esc(r.id) +
-          '">Save my note</button>' +
-          '<button class="linkbtn" data-act="cancel-edit">Cancel</button></span></div>'
-        : r.note
-        ? '<p class="track-note">' + esc(r.note) + "</p>"
-        : "") +
-
-      '<div class="track-checks">' +
-      checks +
-      '<div class="progress-mini"><div class="track-bar"><i style="width:' +
-      pct +
-      '%"></i></div><span>' +
-      doneCount +
-      " of " +
-      meta.checklist.length +
-      " done</span></div></div>" +
-
-      '<div class="btn-row" style="margin-top:12px">' +
-      (r.script
-        ? '<button class="btn ghost sm" data-act="copy" data-text="' +
-          esc(r.script) +
-          '">Copy what to say</button>'
-        : "") +
-      '<button class="linkbtn" data-act="edit-note" data-row="' +
-      esc(r.id) +
-      '">' +
-      (r.note ? "Change my note" : "Add a note") +
-      "</button>" +
-      (editing.row === r.id && editing.field === "remove"
-        ? ""
-        : '<button class="linkbtn" data-act="edit-remove" data-row="' +
-          esc(r.id) +
-          '" style="color:var(--ink-soft)">Remove</button>') +
-      "</div>" +
-      (editing.row === r.id && editing.field === "remove"
-        ? '<div class="confirm-row"><span>Take <b>' +
-          esc(r.org) +
-          "</b> off this list? Your call sheet keeps it.</span>" +
-          '<span class="btn-row"><button class="btn sm" data-act="confirm-remove" data-row="' +
-          esc(r.id) +
-          '">Yes, remove it</button>' +
-          '<button class="btn ghost sm" data-act="cancel-edit">Keep it</button></span></div>'
-        : "") +
-      "</article>"
-    );
-  }
-
-  /* ======================================================================
-     Fallback
-     ====================================================================== */
-
-  function notFound(what) {
-    return (
-      '<div class="empty"><div class="q" aria-hidden="true">?</div>' +
-      "<h2>We could not find that " +
-      esc(what) +
-      "</h2>" +
+      '<section class="panel"><div class="card empty-note">' +
+      '<div class="q" aria-hidden="true">?</div>' +
+      "<h3>We could not find that " + esc(what) + "</h3>" +
       "<p>It may have been removed. Everything else is still here.</p>" +
-      '<button class="btn primary" data-act="go" data-to="home">Go back to the start</button></div>'
+      '<button class="btn" data-act="go" data-to="' + esc(backTo) + '">Go back</button>' +
+      "</div></section>"
     );
   }
 
-  /* ======================================================================
-     Export
-     ====================================================================== */
+  /* ----------------------------------------------------------- export */
 
   global.LZ = global.LZ || {};
   global.LZ.views = {
-    home: home,
     ask: ask,
     questions: questions,
     thread: thread,
@@ -6385,176 +4405,94 @@ window.LZ_SEED = {
     generating: generating,
     sheets: sheets,
     sheet: sheet,
-    tracker: tracker,
     esc: esc,
-    initials: initials,
-    fmtDate: fmtDate,
   };
 })(window);
 
 </script>
-    <script>
-/* ==========================================================================
-   app.js — routing, navigation and every interaction in My Lesko Zone.
+<script>
+/* ==================================================================
+   app.js — tabs, routing and every interaction in My Lesko Zone.
 
-   Hash routing is used deliberately: the mock-up has to work when the file is
-   opened straight from disk and when it is dropped into an iframe inside a
-   Mighty Networks space.
-   ========================================================================== */
+   Hash routing on purpose: the widget has to work opened straight
+   from disk and inside a Mighty Networks iframe, and a member can be
+   deep-linked back to one question or one call sheet.
+   ================================================================== */
 
 (function (global) {
   "use strict";
 
   var store = global.LZ.store;
   var views = global.LZ.views;
-  var esc = views.esc;
 
-  var main = document.getElementById("main");
+  var face = document.getElementById("face");
   var toastEl = document.getElementById("toast");
 
-  /* The five member-facing places, plus home. Keys are canonical and are what
-     the seed's microcopy is normalised to. */
-  var NAV = ["home", "ask", "build", "questions", "sheets", "tracker"];
+  /* The four faces behind the tab row. */
+  var TABS = [
+    { key: "ask", label: "Ask" },
+    { key: "questions", label: "My questions" },
+    { key: "build", label: "Call sheet" },
+    { key: "sheets", label: "My sheets" },
+  ];
 
-  /* Views that appear in the mobile tab bar (home lives in the top bar). */
-  var TABS = ["ask", "build", "questions", "sheets", "tracker"];
-
-  var ui = { qFilter: "all", tFilter: "all", editing: {} };
-  global.LZ.ui = ui;
   var toastTimer = null;
   var pendingAnswer = null;
-  var firstRender = true;
+  var resetTimer = null;
 
-  /* ======================================================================
-     Chrome — sidebar, tab bar, member chip
-     ====================================================================== */
+  /* ------------------------------------------------------------- tabs */
 
-  function navMeta(key) {
-    var list = store.copy.nav;
-    for (var i = 0; i < list.length; i++) {
-      if (list[i].key === key) return list[i];
-    }
-    return { key: key, label: key, desc: "", icon: "?" };
+  function renderTabs(active) {
+    var n = store.counts();
+    var html = TABS.map(function (t, i) {
+      var bub = "";
+      if (t.key === "questions") {
+        bub = n.unread
+          ? '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>'
+          : n.questions
+          ? '<span class="bub quiet">' + n.questions + "</span>"
+          : "";
+      }
+      if (t.key === "sheets" && n.sheets) {
+        bub = '<span class="bub quiet">' + n.sheets + "</span>";
+      }
+      return (
+        '<button class="tab' + (active === t.key ? " active" : "") +
+        '" role="tab" aria-selected="' + (active === t.key ? "true" : "false") +
+        '" data-act="go" data-to="' + t.key + '">' +
+        "0" + (i + 1) + " &middot; " + t.label + bub + "</button>"
+      );
+    }).join("");
+    document.getElementById("tabbar").innerHTML = html;
   }
 
-  function badgeFor(key, counts) {
-    if (key === "questions" && counts.newAnswers > 0) return counts.newAnswers;
-    if (key === "tracker" && counts.overdue > 0) return counts.overdue;
-    return 0;
-  }
-
-  function renderChrome(active) {
-    var counts = store.counts();
-    var i, key, meta, badge;
-
-    /* --- sidebar --- */
-    var side = "";
-    for (i = 0; i < NAV.length; i++) {
-      key = NAV[i];
-      meta = navMeta(key);
-      badge = badgeFor(key, counts);
-      side +=
-        '<button class="nav-item" data-act="go" data-to="' +
-        key +
-        '"' +
-        (active === key ? ' aria-current="page"' : "") +
-        ">" +
-        '<span class="nav-ico" aria-hidden="true">' +
-        esc(meta.icon || "?") +
-        "</span><span>" +
-        '<span class="nav-label">' +
-        esc(meta.label) +
-        (badge
-          ? '<span class="nav-count">' +
-            badge +
-            '<span class="sr-only"> new</span></span>'
-          : "") +
-        "</span>" +
-        '<span class="nav-desc">' +
-        esc(meta.desc) +
-        "</span></span></button>";
-    }
-    document.getElementById("side-nav").innerHTML = side;
-
-    /* --- mobile tab bar --- */
-    var tabs = "";
-    for (i = 0; i < TABS.length; i++) {
-      key = TABS[i];
-      meta = navMeta(key);
-      badge = badgeFor(key, counts);
-      tabs +=
-        '<button class="tab" data-act="go" data-to="' +
-        key +
-        '"' +
-        (active === key ? ' aria-current="page"' : "") +
-        ">" +
-        '<span class="ti" aria-hidden="true">' +
-        esc(meta.icon || "?") +
-        "</span>" +
-        '<span class="tl">' +
-        esc(meta.short || meta.label) +
-        "</span>" +
-        (badge
-          ? '<span class="tab-count">' +
-            badge +
-            '<span class="sr-only"> new</span></span>'
-          : "") +
-        "</button>";
-    }
-    document.getElementById("tabbar").innerHTML = tabs;
-  }
-
-  function renderStaticChrome() {
-    var c = store.copy;
-    var m = store.member;
-
-    document.getElementById("app-name").textContent = c.app.name;
-    document.getElementById("app-promise").textContent = c.app.promise;
-    document.getElementById("member-name").textContent = m.name;
-    document.getElementById("member-meta").textContent = m.location;
-    document.getElementById("member-avatar").textContent = views.initials(m.name);
-    document.getElementById("member-avatar-m").textContent = views.initials(m.name);
-    document.getElementById("foot-signoff").textContent = c.footer.signoff;
-    document.getElementById("foot-line").textContent = c.footer.line;
-    document.title = c.app.name;
-
-    /* A real, obvious Home button on small screens — this audience needs the
-       way back to be spelled out, not implied by a logo. */
-    var bar = document.querySelector(".topbar");
-    if (bar && !bar.querySelector("[data-act='go']")) {
-      var b = document.createElement("button");
-      b.className = "btn ghost sm";
-      b.setAttribute("data-act", "go");
-      b.setAttribute("data-to", "home");
-      b.textContent = "Home";
-      bar.insertBefore(b, bar.lastElementChild);
-    }
-  }
-
-  /* ======================================================================
-     Router
-     ====================================================================== */
+  /* ----------------------------------------------------------- router */
 
   function parseHash() {
     var h = (global.location.hash || "").replace(/^#\/?/, "");
     var parts = h.split("/").filter(Boolean);
-    return { name: parts[0] || "home", id: parts[1] || null };
+    return { name: parts[0] || "ask", id: parts[1] || null };
   }
 
   function go(to, id) {
     global.location.hash = "/" + to + (id ? "/" + id : "");
   }
 
+  function activeTabFor(name) {
+    if (name === "thread") return "questions";
+    if (name === "sheet") return "sheets";
+    return name;
+  }
+
+  var firstRender = true;
+
   function route() {
     var r = parseHash();
     var html;
 
     switch (r.name) {
-      case "ask":
-        html = views.ask();
-        break;
       case "questions":
-        html = views.questions(ui.qFilter);
+        html = views.questions();
         break;
       case "thread":
         store.markRead(r.id);
@@ -6569,66 +4507,46 @@ window.LZ_SEED = {
       case "sheet":
         html = views.sheet(r.id);
         break;
-      case "tracker":
-        html = views.tracker(ui.tFilter);
-        break;
       default:
-        r.name = "home";
-        html = views.home();
+        r.name = "ask";
+        html = views.ask();
     }
 
-    main.innerHTML = html;
-    renderChrome(activeNavFor(r.name));
-    global.scrollTo(0, 0);
+    face.innerHTML = html;
+    renderTabs(activeTabFor(r.name));
 
-    /* Move focus into the new screen so screen readers and keyboards land in
-       the content that just changed — but not on the very first paint, where
-       stealing focus would drop the visitor into the middle of the page. */
-    if (firstRender) firstRender = false;
-    else main.focus({ preventScroll: true });
+    if (firstRender) {
+      firstRender = false;
+    } else {
+      global.scrollTo(0, 0);
+    }
 
-    afterRender(r);
-  }
-
-  /** Which nav item lights up for a given view. */
-  function activeNavFor(name) {
-    if (name === "thread") return "questions";
-    if (name === "sheet") return "sheets";
-    return name;
-  }
-
-  function afterRender(r) {
-    if (r.name === "build") wireBuildForm();
     if (r.name === "ask") wireAskForm();
+    if (r.name === "build") wireBuildForm();
     if (r.name === "thread") {
       wireReplyForm();
-      // Shown on the first view of a brand new question, then retired.
       store.clearNew(r.id);
     }
   }
 
-  /* ======================================================================
-     Toast
-     ====================================================================== */
+  /* ------------------------------------------------------------ toast */
 
-  /** Toasts are one line; longer confirmations are shown in the page. */
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.hidden = false;
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.hidden = true;
+    }, 3400);
+  }
+
+  /** Toasts are one line; longer confirmations live in the page. */
   function firstSentence(text) {
     var m = String(text || "").match(/^[^.!?]*[.!?]/);
     return m ? m[0].trim() : String(text || "").slice(0, 70);
   }
 
-  function toast(msg) {
-    toastEl.textContent = msg;
-    toastEl.classList.add("show");
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toastEl.classList.remove("show");
-    }, 3600);
-  }
-
-  /* ======================================================================
-     Ask a question
-     ====================================================================== */
+  /* --------------------------------------------------- ask a question */
 
   function wireAskForm() {
     var form = document.getElementById("ask-form");
@@ -6638,11 +4556,11 @@ window.LZ_SEED = {
       var body = document.getElementById("ask-body").value.trim();
       var err = document.getElementById("ask-error");
       if (!body) {
-        err.style.display = "block";
+        err.classList.add("show");
         document.getElementById("ask-body").focus();
         return;
       }
-      err.style.display = "none";
+      err.classList.remove("show");
 
       var thread = store.addQuestion({
         body: body,
@@ -6657,17 +4575,16 @@ window.LZ_SEED = {
       if (pendingAnswer) clearTimeout(pendingAnswer);
       pendingAnswer = setTimeout(function () {
         store.simulateAnswer(thread.id);
-        thread.unread = true;
-        store.save();
         var here = parseHash();
         if (here.name === "thread" && here.id === thread.id) {
           store.markRead(thread.id);
           route();
-          toast("The Lesko Help team replied to your question.");
         } else {
-          renderChrome(activeNavFor(here.name));
-          toast("The Lesko Help team replied to your question.");
+          thread.unread = true;
+          store.save();
+          renderTabs(activeTabFor(here.name));
         }
+        toast("The Lesko Help team replied to your question.");
       }, 6000);
     });
   }
@@ -6683,59 +4600,15 @@ window.LZ_SEED = {
         box.focus();
         return;
       }
-      var id = form.querySelector("button[data-id]").getAttribute("data-id");
-      store.addReply(id, body);
+      store.addReply(form.querySelector("button[data-id]").getAttribute("data-id"), body);
       route();
       toast("Sent. The team will reply right here.");
     });
   }
 
-  /* ======================================================================
-     Build a call sheet
-     ====================================================================== */
+  /* ------------------------------------------------ build a call sheet */
 
-  function wireBuildForm() {
-    var form = document.getElementById("build-form");
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      var topicKey = document.getElementById("topic-key").value;
-      var zipVisible = !document.getElementById("loc-zip").hidden;
-      var zip = document.getElementById("f-zip").value.trim();
-      var city = document.getElementById("f-city").value.trim();
-      var st = document.getElementById("f-state").value.trim();
-      var problem = document.getElementById("f-problem").value.trim();
-      var err = document.getElementById("build-error");
-
-      var missing = [];
-      if (!topicKey) missing.push("pick what kind of help you need");
-      if (zipVisible ? !zip : !(city && st))
-        missing.push(zipVisible ? "add your ZIP code" : "add your city and state");
-      if (!problem) missing.push("tell us what is going on in your own words");
-
-      if (missing.length) {
-        err.textContent =
-          "Almost there — please " + missing.join(", and ") + ".";
-        err.style.display = "block";
-        err.scrollIntoView({ block: "center", behavior: "smooth" });
-        return;
-      }
-      err.style.display = "none";
-
-      runGeneration({
-        topicKey: topicKey,
-        zip: zip,
-        city: city || cityFromZip(zip),
-        state: st || stateFromZip(zip),
-        problem: problem,
-      });
-    });
-  }
-
-  /* A tiny ZIP lookup so the demo can show a real place name. Mock-up only —
-     the real product resolves this properly. */
+  /* A tiny ZIP lookup so the demo can show a real place name. */
   var ZIPS = {
     "14604": ["Rochester", "New York"],
     "91302": ["Calabasas", "California"],
@@ -6744,16 +4617,62 @@ window.LZ_SEED = {
     "83702": ["Boise", "Idaho"],
   };
 
-  function cityFromZip(z) {
-    return ZIPS[z] ? ZIPS[z][0] : "";
-  }
+  function wireBuildForm() {
+    var form = document.getElementById("build-form");
+    if (!form) return;
 
-  function stateFromZip(z) {
-    return ZIPS[z] ? ZIPS[z][1] : "";
+    /* Show what the chosen topic covers, in one small line. */
+    var select = document.getElementById("b-topic");
+    var desc = document.getElementById("topic-desc");
+    select.addEventListener("change", function () {
+      var opt = select.options[select.selectedIndex];
+      desc.textContent = (opt && opt.getAttribute("data-desc")) || "";
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      var topicKey = select.value;
+      var zip = document.getElementById("b-zip").value.trim();
+      var cityRaw = document.getElementById("b-city").value.trim();
+      var problem = document.getElementById("b-problem").value.trim();
+      var err = document.getElementById("build-error");
+
+      var missing = [];
+      if (!topicKey) missing.push("pick what kind of help you need");
+      if (!zip && !cityRaw) missing.push("add your ZIP code or your city");
+      if (!problem) missing.push("tell us what is going on in your own words");
+
+      if (missing.length) {
+        err.textContent = "Almost there — please " + missing.join(", and ") + ".";
+        err.classList.add("show");
+        return;
+      }
+      err.classList.remove("show");
+
+      var city = "";
+      var state = "";
+      if (cityRaw) {
+        var parts = cityRaw.split(",");
+        city = parts[0].trim();
+        state = (parts[1] || "").trim();
+      } else if (ZIPS[zip]) {
+        city = ZIPS[zip][0];
+        state = ZIPS[zip][1];
+      }
+
+      runGeneration({
+        topicKey: topicKey,
+        zip: zip,
+        city: city,
+        state: state,
+        problem: problem,
+      });
+    });
   }
 
   function runGeneration(input) {
-    main.innerHTML = views.generating();
+    face.innerHTML = views.generating();
     global.scrollTo(0, 0);
 
     var msgs = store.copy.callsheet.progress;
@@ -6766,40 +4685,30 @@ window.LZ_SEED = {
         msgEl.textContent = msgs[i];
         barEl.style.width = Math.round(((i + 1) / msgs.length) * 100) + "%";
         i++;
-        setTimeout(tick, 1150);
+        setTimeout(tick, 1050);
       } else {
         var sheet = store.buildSheet(input);
         go("sheet", sheet.id);
-        toast("Your call sheet is ready. It is saved in My call sheets.");
+        toast("Your call sheet is ready — it is saved under My call sheets.");
       }
     }
-    setTimeout(tick, 260);
+    setTimeout(tick, 250);
   }
 
-  /* ======================================================================
-     Spreadsheet export — keeps the habit members already have
-     ====================================================================== */
+  /* ------------------------------------------- spreadsheet export
+     Keeps the original 14 research columns, plus Called. */
 
   function exportCsv(sheetId) {
     var sh = store.getSheet(sheetId);
     if (!sh) return;
 
     var cols = [
-      "Called",
-      "Name of Organization",
-      "Website",
-      "Contact Email Address",
-      "Contact Phone Number",
-      "Contact Information",
-      "Eligibility Requirements",
-      "Area Requirements",
-      "Dates of Eligibility",
-      "Description of Services Available",
-      "Dollar Value of Free Services",
-      "Grants or Loans Available",
-      "Max Amount of Grants or Loans",
-      "Important Things to Consider Before Applying",
-      "30 Second Call Script",
+      "Called", "Name of Organization", "Website", "Contact Email Address",
+      "Contact Phone Number", "Contact Information", "Eligibility Requirements",
+      "Area Requirements", "Dates of Eligibility",
+      "Description of Services Available", "Dollar Value of Free Services",
+      "Grants or Loans Available", "Max Amount of Grants or Loans",
+      "Important Things to Consider Before Applying", "30 Second Call Script",
     ];
 
     function q(v) {
@@ -6807,37 +4716,21 @@ window.LZ_SEED = {
     }
 
     var lines = [cols.map(q).join(",")];
-    for (var i = 0; i < sh.orgs.length; i++) {
-      var o = sh.orgs[i];
+    sh.orgs.forEach(function (o) {
       lines.push(
         [
           store.isCalled(sh.id, o.id) ? "Yes" : "No",
-          o.name,
-          o.url,
-          o.email || "",
-          o.phone,
-          o.address || "",
-          o.whoQualifies,
-          o.area,
-          o.whenToApply,
-          o.plainWhat,
-          o.freeServices,
-          o.moneyType,
-          o.maxAmount,
-          o.beforeYouCall,
-          o.script,
-        ]
-          .map(q)
-          .join(",")
+          o.name, o.url, o.email || "", o.phone, o.address || "",
+          o.whoQualifies, o.area, o.whenToApply, o.plainWhat,
+          o.freeServices, o.moneyType, o.maxAmount, o.beforeYouCall, o.script,
+        ].map(q).join(",")
       );
-    }
+    });
 
     var name =
       "Lesko-Call-Sheet-" +
-      sh.topic.replace(/[^a-z0-9]+/gi, "-") +
-      "-" +
-      (sh.zip || sh.city || "").replace(/[^a-z0-9]+/gi, "-") +
-      ".csv";
+      sh.topic.replace(/[^a-z0-9]+/gi, "-") + "-" +
+      (sh.zip || sh.city || "").replace(/[^a-z0-9]+/gi, "-") + ".csv";
 
     var blob = new Blob(["﻿" + lines.join("\r\n")], {
       type: "text/csv;charset=utf-8;",
@@ -6855,18 +4748,11 @@ window.LZ_SEED = {
     toast("Downloading your call sheet as a spreadsheet.");
   }
 
-  /* ======================================================================
-     Copy to clipboard, with a fallback for older browsers
-     ====================================================================== */
+  /* ------------------------------------------------ copy to clipboard */
 
   function copyText(text) {
     function done() {
-      toast("Copied. You can paste it anywhere.");
-    }
-    if (global.navigator.clipboard && global.navigator.clipboard.writeText) {
-      global.navigator.clipboard.writeText(text).then(done, fallback);
-    } else {
-      fallback();
+      toast("Copied. Paste it anywhere.");
     }
     function fallback() {
       var ta = document.createElement("textarea");
@@ -6884,31 +4770,16 @@ window.LZ_SEED = {
       }
       document.body.removeChild(ta);
     }
-  }
-
-  /** Put the cursor straight into whatever just opened for editing. */
-  function focusEdit() {
-    var el = document.querySelector(".inline-edit .input, .inline-edit .textarea");
-    if (el) {
-      el.focus();
-      if (el.setSelectionRange && el.value) {
-        try {
-          el.setSelectionRange(el.value.length, el.value.length);
-        } catch (e) {
-          /* date inputs do not support selection */
-        }
-      }
+    if (global.navigator.clipboard && global.navigator.clipboard.writeText) {
+      global.navigator.clipboard.writeText(text).then(done, fallback);
+    } else {
+      fallback();
     }
   }
 
-  /** Two-tap confirmation for the one destructive control. */
-  var resetTimer = null;
+  /* --------------------------------- two-tap reset (no browser dialogs) */
+
   function armReset(btn) {
-    var all = document.querySelectorAll("[data-act='reset']");
-    for (var i = 0; i < all.length; i++) {
-      all[i].removeAttribute("data-armed");
-      if (all[i].dataset.label) all[i].textContent = all[i].dataset.label;
-    }
     btn.dataset.label = btn.dataset.label || btn.textContent.trim();
     btn.setAttribute("data-armed", "yes");
     btn.textContent = "Tap again to start over";
@@ -6919,9 +4790,7 @@ window.LZ_SEED = {
     }, 5000);
   }
 
-  /* ======================================================================
-     Delegated interaction
-     ====================================================================== */
+  /* ------------------------------------------- delegated interaction */
 
   document.addEventListener("click", function (e) {
     if (!e.target || !e.target.closest) return;
@@ -6934,18 +4803,6 @@ window.LZ_SEED = {
         go(t.getAttribute("data-to"));
         break;
 
-      case "go-ask":
-        go("ask");
-        break;
-
-      case "go-build":
-        go("build");
-        break;
-
-      case "go-sheets":
-        go("sheets");
-        break;
-
       case "thread":
         go("thread", t.getAttribute("data-id"));
         break;
@@ -6954,48 +4811,12 @@ window.LZ_SEED = {
         go("sheet", t.getAttribute("data-id"));
         break;
 
-      case "filter-q":
-        ui.qFilter = t.getAttribute("data-filter");
-        route();
-        break;
-
-      case "filter-t":
-        ui.tFilter = t.getAttribute("data-filter");
-        route();
-        break;
-
-      case "pick-topic": {
-        var all = document.querySelectorAll("[data-act='pick-topic']");
-        for (var i = 0; i < all.length; i++)
-          all[i].setAttribute("aria-pressed", "false");
-        t.setAttribute("aria-pressed", "true");
-        document.getElementById("topic-key").value = t.getAttribute("data-key");
-        break;
-      }
-
-      case "loc-mode": {
-        var mode = t.getAttribute("data-mode");
-        var btns = document.querySelectorAll("[data-act='loc-mode']");
-        for (var j = 0; j < btns.length; j++)
-          btns[j].setAttribute(
-            "aria-pressed",
-            btns[j].getAttribute("data-mode") === mode ? "true" : "false"
-          );
-        document.getElementById("loc-zip").hidden = mode !== "zip";
-        document.getElementById("loc-city").hidden = mode !== "city";
-        break;
-      }
-
       case "toggle-org": {
-        var detail = document.getElementById(
-          t.getAttribute("data-target") + "-d"
-        );
+        var detail = document.getElementById(t.getAttribute("data-target") + "-d");
         var open = detail.hidden;
         detail.hidden = !open;
         t.setAttribute("aria-expanded", open ? "true" : "false");
-        t.querySelector("span[aria-hidden]").innerHTML = open
-          ? "&#9652;"
-          : "&#9662;";
+        t.querySelector("span[aria-hidden]").innerHTML = open ? "&#9652;" : "&#9662;";
         break;
       }
 
@@ -7011,95 +4832,14 @@ window.LZ_SEED = {
         exportCsv(t.getAttribute("data-sheet"));
         break;
 
-      case "track-one": {
-        var sh = store.getSheet(t.getAttribute("data-sheet"));
-        if (!sh) break;
-        var orgId = t.getAttribute("data-org");
-        var org = null;
-        for (var k = 0; k < sh.orgs.length; k++)
-          if (sh.orgs[k].id === orgId) org = sh.orgs[k];
-        if (!org) break;
-        if (store.addToTracker(sh, org)) {
-          toast(org.name + " is now on your applications list.");
-        } else {
-          toast(org.name + " is already on your applications list.");
-        }
-        renderChrome(activeNavFor(parseHash().name));
-        break;
-      }
-
-      case "track-all": {
-        var s2 = store.getSheet(t.getAttribute("data-sheet"));
-        if (!s2) break;
-        var n = store.addSheetToTracker(s2);
-        toast(
-          n === 0
-            ? "They are all on your applications list already."
-            : n === 1
-            ? "1 place added to your applications list."
-            : n + " places added to your applications list."
-        );
-        renderChrome(activeNavFor(parseHash().name));
-        break;
-      }
-
-      /* --- inline editing, no browser dialogs -------------------------- */
-
-      case "edit-note":
-      case "edit-date":
-      case "edit-remove":
-        ui.editing = {
-          row: t.getAttribute("data-row"),
-          field: act.replace("edit-", ""),
-        };
-        route();
-        focusEdit();
-        break;
-
-      case "cancel-edit":
-        ui.editing = {};
-        route();
-        break;
-
-      case "save-note": {
-        var noteRow = t.getAttribute("data-row");
-        var box = document.getElementById("nt-" + noteRow);
-        store.setNote(noteRow, box ? box.value.trim() : "");
-        ui.editing = {};
-        route();
-        toast("Note saved.");
-        break;
-      }
-
-      case "save-date": {
-        var dateRow = t.getAttribute("data-row");
-        var field = document.getElementById("fu-" + dateRow);
-        store.setFollowUp(dateRow, field ? field.value : "");
-        ui.editing = {};
-        route();
-        toast("We will remind you on that day.");
-        break;
-      }
-
-      case "confirm-remove": {
-        var gone = store.getTrackerRow(t.getAttribute("data-row"));
-        var goneName = gone ? gone.org : "That one";
-        store.removeTrackerRow(t.getAttribute("data-row"));
-        ui.editing = {};
-        route();
-        toast(goneName + " is off your applications list.");
-        break;
-      }
-
-      /* Reset asks for a second tap rather than a browser dialog, which the
-         embedded viewers block. */
       case "reset": {
         if (t.getAttribute("data-armed") === "yes") {
           store.reset();
-          ui.editing = {};
-          go("home");
+          go("ask");
           route();
           toast("The demo is back to how it started.");
+          t.removeAttribute("data-armed");
+          t.textContent = t.dataset.label;
           break;
         }
         armReset(t);
@@ -7108,15 +4848,12 @@ window.LZ_SEED = {
     }
   });
 
-  /* --- checkboxes and selects (change, not click) --- */
-
   document.addEventListener("change", function (e) {
     if (!e.target || !e.target.closest) return;
     var t = e.target.closest("[data-act]");
     if (!t) return;
-    var act = t.getAttribute("data-act");
 
-    if (act === "called") {
+    if (t.getAttribute("data-act") === "called") {
       var on = store.toggleCalled(
         t.getAttribute("data-sheet"),
         t.getAttribute("data-org")
@@ -7125,27 +4862,18 @@ window.LZ_SEED = {
       if (card) card.classList.toggle("done", on);
       if (on) toast("Ticked off. Well done — that is the hard part.");
     }
-
-    if (act === "status") {
-      store.setStatus(t.getAttribute("data-row"), t.value);
-      route();
-    }
-
-    if (act === "step") {
-      store.toggleStep(t.getAttribute("data-row"), t.getAttribute("data-step"));
-      route();
-    }
   });
 
-  /* ======================================================================
-     Start
-     ====================================================================== */
+  /* ------------------------------------------------------------ start */
 
   global.addEventListener("hashchange", route);
 
   store.init();
-  renderStaticChrome();
-  if (!global.location.hash) global.location.hash = "/home";
+  var footLine = document.getElementById("foot-line");
+  if (store.copy.footer && store.copy.footer.signoff) {
+    footLine.textContent = "Lesko Help · " + store.copy.footer.signoff.toLowerCase();
+  }
+  if (!global.location.hash) global.location.hash = "/ask";
   route();
 
   /* A quiet way to reset the demo before showing it to someone. */
@@ -7156,5 +4884,5 @@ window.LZ_SEED = {
 })(window);
 
 </script>
-  </body>
+</body>
 </html>

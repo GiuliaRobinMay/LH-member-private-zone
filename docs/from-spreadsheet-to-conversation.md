@@ -57,7 +57,7 @@ anyone who already works from the spreadsheet loses nothing.
   once. A hero "start with this one call" asks them to do one thing.
 - **The script has to be readable out loud.** It is set larger than body text, in quotation marks,
   with a copy button — because members read it while the phone is ringing.
-- **Progress is visible.** Tick boxes are already how Lesko print guides work. Here they persist, and
-  they roll up into the applications tracker.
+- **Progress is visible.** Tick boxes are already how Lesko print guides work. Here they persist
+  between visits.
 - **Plain words.** "Non-dilutive capital" became "money you don't pay back". The research is the same;
   the reading level is not.

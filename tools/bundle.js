@@ -29,7 +29,7 @@ const read = (p) => fs.readFileSync(path.join(ROOT, p), "utf8");
 let html = read("index.html");
 
 html = html.replace(
-  '<link rel="stylesheet" href="assets/css/app.css" />',
+  '<link rel="stylesheet" href="assets/css/app.css">',
   "<style>\n" + read("assets/css/app.css") + "\n</style>"
 );
 
