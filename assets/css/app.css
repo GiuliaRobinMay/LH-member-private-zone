@@ -1802,6 +1802,45 @@ h3 {
   color: var(--ink);
 }
 
+/* Editing happens in the page, not in a browser dialog: dialogs are blocked in
+   embedded viewers, and they are a poor experience on a phone besides. */
+.inline-edit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.inline-edit .input {
+  width: auto;
+  min-width: 190px;
+  flex: 0 1 auto;
+}
+
+.inline-edit.block {
+  display: block;
+  margin-top: 12px;
+}
+
+.inline-edit.block .textarea {
+  min-height: 96px;
+  margin-bottom: 10px;
+}
+
+.confirm-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  background: var(--tint-red);
+  border: 1px solid #f3bfc4;
+  font-size: 15.5px;
+}
+
 /* The postal address, for the members who write letters. */
 .track-address {
   margin: 10px 0 0;

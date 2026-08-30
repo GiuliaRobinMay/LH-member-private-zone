@@ -11,6 +11,11 @@
 
   var store = global.LZ.store;
 
+  /** Transient UI state owned by app.js — which row is mid-edit. */
+  function editState() {
+    return (global.LZ.ui && global.LZ.ui.editing) || {};
+  }
+
   /* ======================================================================
      Small helpers
      ====================================================================== */
@@ -1228,6 +1233,7 @@
     var i;
     var sm = statusMeta(r.status);
     var overdue = store.isOverdue(r);
+    var editing = editState();
 
     var opts = "";
     var statuses = store.copy.statuses;
@@ -1298,13 +1304,6 @@
 
       '<div class="contact-row" style="margin-top:12px">' +
       phoneLink(r.phone, true) +
-      (r.followUp
-        ? '<span class="chip ' +
-          (overdue ? "red" : "") +
-          '">Follow up: ' +
-          esc(fmtDate(r.followUp)) +
-          "</span>"
-        : "") +
       (r.email
         ? '<a class="btn ghost sm" href="mailto:' +
           esc(r.email) +
@@ -1315,11 +1314,32 @@
           esc(r.url) +
           '" target="_blank" rel="noopener">Their website</a>'
         : "") +
-      '<button class="linkbtn" data-act="set-followup" data-row="' +
-      esc(r.id) +
-      '">' +
-      (r.followUp ? "Change the date" : "Set a follow-up date") +
-      "</button>" +
+      (editing.row === r.id && editing.field === "date"
+        ? '<span class="inline-edit"><label class="sr-only" for="fu-' +
+          esc(r.id) +
+          '">Follow up with ' +
+          esc(r.org) +
+          ' on this date</label><input class="input" type="date" id="fu-' +
+          esc(r.id) +
+          '" value="' +
+          esc(r.followUp || store.todayISO()) +
+          '" />' +
+          '<button class="btn primary sm" data-act="save-date" data-row="' +
+          esc(r.id) +
+          '">Save the date</button>' +
+          '<button class="linkbtn" data-act="cancel-edit">Cancel</button></span>'
+        : (r.followUp
+            ? '<span class="chip ' +
+              (overdue ? "red" : "") +
+              '">Follow up: ' +
+              esc(fmtDate(r.followUp)) +
+              "</span>"
+            : "") +
+          '<button class="linkbtn" data-act="edit-date" data-row="' +
+          esc(r.id) +
+          '">' +
+          (r.followUp ? "Change the date" : "Set a follow-up date") +
+          "</button>") +
       "</div>" +
       (r.address
         ? '<p class="track-address">' +
@@ -1336,7 +1356,23 @@
           "</span></p>"
         : "") +
 
-      (r.note ? '<p class="track-note">' + esc(r.note) + "</p>" : "") +
+      (editing.row === r.id && editing.field === "note"
+        ? '<div class="inline-edit block"><label class="sr-only" for="nt-' +
+          esc(r.id) +
+          '">Your note about ' +
+          esc(r.org) +
+          '</label><textarea class="textarea" id="nt-' +
+          esc(r.id) +
+          '" placeholder="Who you spoke to, what they asked for, anything you want to remember.">' +
+          esc(r.note || "") +
+          "</textarea>" +
+          '<span class="btn-row"><button class="btn primary sm" data-act="save-note" data-row="' +
+          esc(r.id) +
+          '">Save my note</button>' +
+          '<button class="linkbtn" data-act="cancel-edit">Cancel</button></span></div>'
+        : r.note
+        ? '<p class="track-note">' + esc(r.note) + "</p>"
+        : "") +
 
       '<div class="track-checks">' +
       checks +
@@ -1354,15 +1390,27 @@
           esc(r.script) +
           '">Copy what to say</button>'
         : "") +
-      '<button class="linkbtn" data-act="note" data-row="' +
+      '<button class="linkbtn" data-act="edit-note" data-row="' +
       esc(r.id) +
       '">' +
       (r.note ? "Change my note" : "Add a note") +
       "</button>" +
-      '<button class="linkbtn" data-act="untrack" data-row="' +
-      esc(r.id) +
-      '" style="color:var(--ink-soft)">Remove</button>' +
-      "</div></article>"
+      (editing.row === r.id && editing.field === "remove"
+        ? ""
+        : '<button class="linkbtn" data-act="edit-remove" data-row="' +
+          esc(r.id) +
+          '" style="color:var(--ink-soft)">Remove</button>') +
+      "</div>" +
+      (editing.row === r.id && editing.field === "remove"
+        ? '<div class="confirm-row"><span>Take <b>' +
+          esc(r.org) +
+          "</b> off this list? Your call sheet keeps it.</span>" +
+          '<span class="btn-row"><button class="btn sm" data-act="confirm-remove" data-row="' +
+          esc(r.id) +
+          '">Yes, remove it</button>' +
+          '<button class="btn ghost sm" data-act="cancel-edit">Keep it</button></span></div>'
+        : "") +
+      "</article>"
     );
   }
 

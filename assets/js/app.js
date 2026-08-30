@@ -23,7 +23,8 @@
   /* Views that appear in the mobile tab bar (home lives in the top bar). */
   var TABS = ["ask", "build", "questions", "sheets", "tracker"];
 
-  var ui = { qFilter: "all", tFilter: "all" };
+  var ui = { qFilter: "all", tFilter: "all", editing: {} };
+  global.LZ.ui = ui;
   var toastTimer = null;
   var pendingAnswer = null;
   var firstRender = true;
@@ -119,7 +120,7 @@
     document.getElementById("member-avatar-m").textContent = views.initials(m.name);
     document.getElementById("foot-signoff").textContent = c.footer.signoff;
     document.getElementById("foot-line").textContent = c.footer.line;
-    document.title = c.app.name + " — Lesko Help";
+    document.title = c.app.name;
 
     /* A real, obvious Home button on small screens — this audience needs the
        way back to be spelled out, not implied by a logo. */
@@ -489,6 +490,39 @@
     }
   }
 
+  /** Put the cursor straight into whatever just opened for editing. */
+  function focusEdit() {
+    var el = document.querySelector(".inline-edit .input, .inline-edit .textarea");
+    if (el) {
+      el.focus();
+      if (el.setSelectionRange && el.value) {
+        try {
+          el.setSelectionRange(el.value.length, el.value.length);
+        } catch (e) {
+          /* date inputs do not support selection */
+        }
+      }
+    }
+  }
+
+  /** Two-tap confirmation for the one destructive control. */
+  var resetTimer = null;
+  function armReset(btn) {
+    var all = document.querySelectorAll("[data-act='reset']");
+    for (var i = 0; i < all.length; i++) {
+      all[i].removeAttribute("data-armed");
+      if (all[i].dataset.label) all[i].textContent = all[i].dataset.label;
+    }
+    btn.dataset.label = btn.dataset.label || btn.textContent.trim();
+    btn.setAttribute("data-armed", "yes");
+    btn.textContent = "Tap again to start over";
+    if (resetTimer) clearTimeout(resetTimer);
+    resetTimer = setTimeout(function () {
+      btn.removeAttribute("data-armed");
+      btn.textContent = btn.dataset.label;
+    }, 5000);
+  }
+
   /* ======================================================================
      Delegated interaction
      ====================================================================== */
@@ -613,68 +647,68 @@
         break;
       }
 
-      case "note": {
-        var rowId = t.getAttribute("data-row");
-        var row = store.getTrackerRow(rowId);
-        var note = global.prompt(
-          "Write a note for " + row.org + " — anything you want to remember.",
-          row.note || ""
-        );
-        if (note !== null) {
-          store.setNote(rowId, note.trim());
-          route();
-        }
+      /* --- inline editing, no browser dialogs -------------------------- */
+
+      case "edit-note":
+      case "edit-date":
+      case "edit-remove":
+        ui.editing = {
+          row: t.getAttribute("data-row"),
+          field: act.replace("edit-", ""),
+        };
+        route();
+        focusEdit();
+        break;
+
+      case "cancel-edit":
+        ui.editing = {};
+        route();
+        break;
+
+      case "save-note": {
+        var noteRow = t.getAttribute("data-row");
+        var box = document.getElementById("nt-" + noteRow);
+        store.setNote(noteRow, box ? box.value.trim() : "");
+        ui.editing = {};
+        route();
+        toast("Note saved.");
         break;
       }
 
-      case "set-followup": {
-        var rid = t.getAttribute("data-row");
-        var r2 = store.getTrackerRow(rid);
-        var d = global.prompt(
-          "When should you follow up with " +
-            r2.org +
-            "?\n\nUse the form YEAR-MONTH-DAY, for example 2026-09-15.",
-          r2.followUp || store.todayISO()
-        );
-        if (d !== null) {
-          var v = d.trim();
-          if (v && !/^\d{4}-\d{2}-\d{2}$/.test(v)) {
-            toast("Please write the date as YEAR-MONTH-DAY, like 2026-09-15.");
-            break;
-          }
-          store.setFollowUp(rid, v);
-          route();
-        }
+      case "save-date": {
+        var dateRow = t.getAttribute("data-row");
+        var field = document.getElementById("fu-" + dateRow);
+        store.setFollowUp(dateRow, field ? field.value : "");
+        ui.editing = {};
+        route();
+        toast("We will remind you on that day.");
         break;
       }
 
-      case "untrack": {
-        var uid2 = t.getAttribute("data-row");
-        var u = store.getTrackerRow(uid2);
-        if (
-          global.confirm(
-            "Take " + u.org + " off your applications list?\n\nYour call sheet keeps it."
-          )
-        ) {
-          store.removeTrackerRow(uid2);
-          route();
-          toast("Removed from your applications list.");
-        }
+      case "confirm-remove": {
+        var gone = store.getTrackerRow(t.getAttribute("data-row"));
+        var goneName = gone ? gone.org : "That one";
+        store.removeTrackerRow(t.getAttribute("data-row"));
+        ui.editing = {};
+        route();
+        toast(goneName + " is off your applications list.");
         break;
       }
 
-      case "reset":
-        if (
-          global.confirm(
-            "Start the demo over?\n\nThis puts everything back the way it was and clears anything you added."
-          )
-        ) {
+      /* Reset asks for a second tap rather than a browser dialog, which the
+         embedded viewers block. */
+      case "reset": {
+        if (t.getAttribute("data-armed") === "yes") {
           store.reset();
+          ui.editing = {};
           go("home");
           route();
-          toast("The demo has been reset.");
+          toast("The demo is back to how it started.");
+          break;
         }
+        armReset(t);
         break;
+      }
     }
   });
 

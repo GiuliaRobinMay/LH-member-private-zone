@@ -128,6 +128,11 @@ sequence and the Pro funnel page.
 keyboard-operable, and a print stylesheet that expands every collapsed card so a printed sheet is
 complete.
 
+Notes, follow-up dates and deletions are edited **in the page** rather than through
+`prompt()`/`confirm()` dialogs — those are awkward on a phone, invisible to some assistive
+technology, and blocked outright inside embedded viewers. Removing something asks first, in words,
+and says what will happen to it.
+
 ---
 
 ## Files
