@@ -1,9 +1,9 @@
 /* ==================================================================
-   app.js — tabs, routing and every interaction in My Lesko Zone.
+   app.js — two tabs, a chat, a call sheet builder.
 
-   Hash routing on purpose: the widget has to work opened straight
-   from disk and inside a Mighty Networks iframe, and a member can be
-   deep-linked back to one question or one call sheet.
+   Hash routing on purpose: the widget works opened straight from
+   disk and inside a Mighty Networks iframe, and a member can be
+   deep-linked back to one conversation or one call sheet.
    ================================================================== */
 
 (function (global) {
@@ -15,42 +15,25 @@
   var face = document.getElementById("face");
   var toastEl = document.getElementById("toast");
 
-  /* The four faces behind the tab row. */
-  var TABS = [
-    { key: "ask", label: "Ask" },
-    { key: "questions", label: "My questions" },
-    { key: "build", label: "Call sheet" },
-    { key: "sheets", label: "My sheets" },
-  ];
-
   var toastTimer = null;
   var pendingAnswer = null;
+  var typingTimer = null;
   var resetTimer = null;
 
   /* ------------------------------------------------------------- tabs */
 
   function renderTabs(active) {
     var n = store.counts();
-    var html = TABS.map(function (t, i) {
-      var bub = "";
-      if (t.key === "questions") {
-        bub = n.unread
-          ? '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>'
-          : n.questions
-          ? '<span class="bub quiet">' + n.questions + "</span>"
-          : "";
-      }
-      if (t.key === "sheets" && n.sheets) {
-        bub = '<span class="bub quiet">' + n.sheets + "</span>";
-      }
-      return (
-        '<button class="tab' + (active === t.key ? " active" : "") +
-        '" role="tab" aria-selected="' + (active === t.key ? "true" : "false") +
-        '" data-act="go" data-to="' + t.key + '">' +
-        "0" + (i + 1) + " &middot; " + t.label + bub + "</button>"
-      );
-    }).join("");
-    document.getElementById("tabbar").innerHTML = html;
+    var qBub = n.unread
+      ? '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>'
+      : "";
+    document.getElementById("tabbar").innerHTML =
+      '<button class="tab' + (active === "q" ? " active" : "") +
+      '" role="tab" aria-selected="' + (active === "q") +
+      '" data-act="go" data-to="q">&#128172; Questions' + qBub + "</button>" +
+      '<button class="tab' + (active === "build" ? " active" : "") +
+      '" role="tab" aria-selected="' + (active === "build") +
+      '" data-act="go" data-to="build">&#128203; Call sheets</button>';
   }
 
   /* ----------------------------------------------------------- router */
@@ -58,7 +41,7 @@
   function parseHash() {
     var h = (global.location.hash || "").replace(/^#\/?/, "");
     var parts = h.split("/").filter(Boolean);
-    return { name: parts[0] || "ask", id: parts[1] || null };
+    return { name: parts[0] || "q", id: parts[1] || null };
   }
 
   function go(to, id) {
@@ -66,9 +49,7 @@
   }
 
   function activeTabFor(name) {
-    if (name === "thread") return "questions";
-    if (name === "sheet") return "sheets";
-    return name;
+    return name === "thread" || name === "q" ? "q" : "build";
   }
 
   var firstRender = true;
@@ -78,9 +59,6 @@
     var html;
 
     switch (r.name) {
-      case "questions":
-        html = views.questions();
-        break;
       case "thread":
         store.markRead(r.id);
         html = views.thread(r.id);
@@ -88,32 +66,26 @@
       case "build":
         html = views.build();
         break;
-      case "sheets":
-        html = views.sheets();
-        break;
       case "sheet":
         html = views.sheet(r.id);
         break;
       default:
-        r.name = "ask";
-        html = views.ask();
+        r.name = "q";
+        html = views.chat();
     }
 
     face.innerHTML = html;
     renderTabs(activeTabFor(r.name));
 
-    if (firstRender) {
-      firstRender = false;
-    } else {
-      global.scrollTo(0, 0);
-    }
+    if (firstRender) firstRender = false;
+    else global.scrollTo(0, 0);
 
-    if (r.name === "ask") wireAskForm();
-    if (r.name === "build") wireBuildForm();
+    if (r.name === "q") wireCompose("new-q", "q-input", onNewQuestion);
     if (r.name === "thread") {
-      wireReplyForm();
+      wireCompose("reply-form", "reply-input", onReply);
       store.clearNew(r.id);
     }
+    if (r.name === "build") wireBuildForm();
   }
 
   /* ------------------------------------------------------------ toast */
@@ -124,78 +96,85 @@
     if (toastTimer) clearTimeout(toastTimer);
     toastTimer = setTimeout(function () {
       toastEl.hidden = true;
-    }, 3400);
+    }, 3200);
   }
 
-  /** Toasts are one line; longer confirmations live in the page. */
-  function firstSentence(text) {
-    var m = String(text || "").match(/^[^.!?]*[.!?]/);
-    return m ? m[0].trim() : String(text || "").slice(0, 70);
-  }
+  /* ------------------------------------------------------------- chat */
 
-  /* --------------------------------------------------- ask a question */
-
-  function wireAskForm() {
-    var form = document.getElementById("ask-form");
+  /** Compose bars submit on the button and on Enter (Shift+Enter = newline). */
+  function wireCompose(formId, inputId, onSend) {
+    var form = document.getElementById(formId);
     if (!form) return;
+    var input = document.getElementById(inputId);
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    /* grow with the text, like every chat input */
+    input.addEventListener("input", function () {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 140) + "px";
+    });
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
-      var body = document.getElementById("ask-body").value.trim();
-      var err = document.getElementById("ask-error");
+      var body = input.value.trim();
       if (!body) {
-        err.classList.add("show");
-        document.getElementById("ask-body").focus();
+        input.focus();
         return;
       }
-      err.classList.remove("show");
+      onSend(body, form);
+    });
+  }
 
-      var thread = store.addQuestion({
-        body: body,
-        topic: document.getElementById("ask-topic").value,
-        location: document.getElementById("ask-location").value.trim(),
-      });
+  function onNewQuestion(body) {
+    var thread = store.addQuestion({ body: body, topic: "", location: "" });
+    go("thread", thread.id);
+    scheduleTeamReply(thread);
+  }
 
-      toast(firstSentence(store.copy.ask.confirm));
-      go("thread", thread.id);
+  function onReply(body, form) {
+    var id = form.querySelector("button[data-id]").getAttribute("data-id");
+    store.addReply(id, body);
+    route();
+  }
 
-      /* Simulate the team picking the question up from their dashboard. */
-      if (pendingAnswer) clearTimeout(pendingAnswer);
-      pendingAnswer = setTimeout(function () {
-        store.simulateAnswer(thread.id);
-        var here = parseHash();
-        if (here.name === "thread" && here.id === thread.id) {
-          store.markRead(thread.id);
-          route();
-        } else {
-          thread.unread = true;
-          store.save();
-          renderTabs(activeTabFor(here.name));
-        }
+  /** Typing dots after a moment, then the team's answer — like a real chat. */
+  function scheduleTeamReply(thread) {
+    if (pendingAnswer) clearTimeout(pendingAnswer);
+    if (typingTimer) clearTimeout(typingTimer);
+
+    typingTimer = setTimeout(function () {
+      var slot = document.getElementById("typing-slot");
+      var here = parseHash();
+      if (slot && here.name === "thread" && here.id === thread.id) {
+        slot.innerHTML = views.typingBubble();
+        slot.scrollIntoView({ block: "end", behavior: "smooth" });
+      }
+    }, 1400);
+
+    pendingAnswer = setTimeout(function () {
+      store.simulateAnswer(thread.id);
+      var here = parseHash();
+      if (here.name === "thread" && here.id === thread.id) {
+        store.markRead(thread.id);
+        route();
+      } else {
+        thread.unread = true;
+        store.save();
+        renderTabs(activeTabFor(here.name));
         toast("The Lesko Help team replied to your question.");
-      }, 6000);
-    });
-  }
-
-  function wireReplyForm() {
-    var form = document.getElementById("reply-form");
-    if (!form) return;
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var box = document.getElementById("reply-body");
-      var body = box.value.trim();
-      if (!body) {
-        box.focus();
-        return;
       }
-      store.addReply(form.querySelector("button[data-id]").getAttribute("data-id"), body);
-      route();
-      toast("Sent. The team will reply right here.");
-    });
+    }, 5200);
   }
 
   /* ------------------------------------------------ build a call sheet */
 
-  /* A tiny ZIP lookup so the demo can show a real place name. */
+  /* A tiny ZIP lookup so the demo shows a real place name. */
   var ZIPS = {
     "14604": ["Rochester", "New York"],
     "91302": ["Calabasas", "California"],
@@ -208,27 +187,18 @@
     var form = document.getElementById("build-form");
     if (!form) return;
 
-    /* Show what the chosen topic covers, in one small line. */
-    var select = document.getElementById("b-topic");
-    var desc = document.getElementById("topic-desc");
-    select.addEventListener("change", function () {
-      var opt = select.options[select.selectedIndex];
-      desc.textContent = (opt && opt.getAttribute("data-desc")) || "";
-    });
-
     form.addEventListener("submit", function (e) {
       e.preventDefault();
 
-      var topicKey = select.value;
-      var zip = document.getElementById("b-zip").value.trim();
-      var cityRaw = document.getElementById("b-city").value.trim();
+      var topicKey = document.getElementById("b-topic").value;
+      var where = document.getElementById("b-where").value.trim();
       var problem = document.getElementById("b-problem").value.trim();
       var err = document.getElementById("build-error");
 
       var missing = [];
-      if (!topicKey) missing.push("pick what kind of help you need");
-      if (!zip && !cityRaw) missing.push("add your ZIP code or your city");
-      if (!problem) missing.push("tell us what is going on in your own words");
+      if (!topicKey) missing.push("pick what you need help with");
+      if (!where) missing.push("say where you are");
+      if (!problem) missing.push("tell us what is going on");
 
       if (missing.length) {
         err.textContent = "Almost there — please " + missing.join(", and ") + ".";
@@ -237,15 +207,23 @@
       }
       err.classList.remove("show");
 
+      /* One location box: a 5-digit ZIP, or "City, State", or just a city. */
+      var zip = "";
       var city = "";
       var state = "";
-      if (cityRaw) {
-        var parts = cityRaw.split(",");
+      var zipMatch = where.match(/\b\d{5}\b/);
+      if (zipMatch) {
+        zip = zipMatch[0];
+        if (ZIPS[zip]) {
+          city = ZIPS[zip][0];
+          state = ZIPS[zip][1];
+        }
+        var remainder = where.replace(zip, "").replace(/[,\s]+/g, " ").trim();
+        if (remainder && !city) city = remainder;
+      } else {
+        var parts = where.split(",");
         city = parts[0].trim();
         state = (parts[1] || "").trim();
-      } else if (ZIPS[zip]) {
-        city = ZIPS[zip][0];
-        state = ZIPS[zip][1];
       }
 
       runGeneration({
@@ -272,11 +250,11 @@
         msgEl.textContent = msgs[i];
         barEl.style.width = Math.round(((i + 1) / msgs.length) * 100) + "%";
         i++;
-        setTimeout(tick, 1050);
+        setTimeout(tick, 1000);
       } else {
         var sheet = store.buildSheet(input);
         go("sheet", sheet.id);
-        toast("Your call sheet is ready — it is saved under My call sheets.");
+        toast("Saved under Call sheets — it is yours for good.");
       }
     }
     setTimeout(tick, 250);
@@ -422,7 +400,7 @@
       case "reset": {
         if (t.getAttribute("data-armed") === "yes") {
           store.reset();
-          go("ask");
+          go("q");
           route();
           toast("The demo is back to how it started.");
           t.removeAttribute("data-armed");
@@ -456,11 +434,7 @@
   global.addEventListener("hashchange", route);
 
   store.init();
-  var footLine = document.getElementById("foot-line");
-  if (store.copy.footer && store.copy.footer.signoff) {
-    footLine.textContent = "Lesko Help · " + store.copy.footer.signoff.toLowerCase();
-  }
-  if (!global.location.hash) global.location.hash = "/ask";
+  if (!global.location.hash) global.location.hash = "/q";
   route();
 
   /* A quiet way to reset the demo before showing it to someone. */

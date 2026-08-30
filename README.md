@@ -10,15 +10,13 @@ Answer Vault) — same cream paper, navy ink, red italics, card suits, hairline 
 
 ## What it is
 
-One narrow rectangle — `min(720px, 94vw)` — made to sit inside a Mighty Networks space without
-competing with it. Four small mono pill tabs at the top:
+One narrow rectangle — `min(640px, 94vw)` — made to sit inside a Mighty Networks space without
+competing with it. Two tabs, everything visible, almost no copy:
 
 | Tab | What it does |
 |---|---|
-| **01 · Ask** | Type a question in your own words. Private — a team member answers, and the answer lands in the same thread. |
-| **02 · My questions** | Every question ever asked, each one a single conversation. Unread answers show as a red count on the tab. |
-| **03 · Call sheet** | Topic + ZIP (or city) + the problem in the member's own words → a conversational call sheet. |
-| **04 · My sheets** | The archive. Every sheet kept, re-openable, tick-marks intact, printable, exportable. |
+| **💬 Questions** | A chat. Compose bar at the top, conversations below. Type, send, and the team's answer arrives as a bubble in the same conversation — with a typing indicator, like every messaging app. Unread answers show as a red count on the tab. |
+| **📋 Call sheets** | Three fields (what, where, your own words) and one button — with the archive of every sheet right underneath. A sheet opens as a document: who to call first, the script to read aloud, tick boxes. |
 
 That's the whole surface. No sidebar, no home page, no app-in-an-app.
 
