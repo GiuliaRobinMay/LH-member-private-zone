@@ -113,46 +113,10 @@
     );
   }
 
-  /* ============================================== ASK A QUESTION (form) */
+  /* ==================================== CHAT WITH A TEAM MEMBER (chat) */
 
-  function ask() {
-    return (
-      '<section class="panel">' +
-      '<form class="form-card" id="ask-form" novalidate>' +
-      '<div class="field">' +
-      '<label for="ask-body">What do you need help with?</label>' +
-      '<textarea id="ask-body" rows="5" placeholder="Tell us in your own words. For example: I’m behind on my electric bill and I don’t know who to call. Spelling doesn’t matter."></textarea>' +
-      "</div>" +
-      '<div class="field-row">' +
-      '<div class="field"><label for="ask-zip">Your ZIP code</label>' +
-      '<input id="ask-zip" inputmode="numeric" autocomplete="postal-code" placeholder="Example: 14604"></div>' +
-      '<div class="field"><label for="ask-state">Your state</label>' +
-      '<input id="ask-state" autocomplete="address-level1" placeholder="Example: New York"></div>' +
-      "</div>" +
-      '<p class="form-error" id="ask-error">Please type your question first — even a few words is enough.</p>' +
-      '<div class="form-actions">' +
-      '<button class="btn red big" type="submit">Send my question</button>' +
-      "</div></form>" +
-      privateLine() +
-      "</section>"
-    );
-  }
-
-  /* ============================================== MY QUESTIONS (list) */
-
-  function questions() {
-    var qs = store.state.questions;
-    if (!qs.length) {
-      return (
-        '<section class="panel"><div class="card empty-note">' +
-        '<div class="q" aria-hidden="true">?</div>' +
-        "<h3>No questions yet</h3>" +
-        '<button class="btn red" data-act="go" data-to="ask">Ask your first question</button>' +
-        "</div></section>"
-      );
-    }
-
-    var rows = qs
+  function questionRows() {
+    return store.state.questions
       .map(function (q) {
         var dot = q.unread ? "new" : q.status === "answered" ? "" : "waiting";
         var st = q.unread
@@ -172,10 +136,43 @@
         );
       })
       .join("");
+  }
+
+  function ask() {
+    return (
+      '<section class="panel">' +
+      '<form class="compose" id="new-q">' +
+      '<label class="sr-only" for="q-input">Type your question</label>' +
+      '<textarea id="q-input" rows="1" placeholder="Type your question here&hellip; say it in your own words."></textarea>' +
+      '<button class="send" type="submit" aria-label="Send my question">&#8593;</button>' +
+      "</form>" +
+      '<div class="chat-loc">' +
+      '<input id="ask-zip" inputmode="numeric" autocomplete="postal-code" placeholder="Your ZIP code" aria-label="Your ZIP code">' +
+      '<input id="ask-state" autocomplete="address-level1" placeholder="Your state" aria-label="Your state">' +
+      "</div>" +
+      privateLine() +
+      '<div class="convos">' + questionRows() + "</div>" +
+      "</section>"
+    );
+  }
+
+  /* ============================================== MY QUESTIONS (list) */
+
+  function questions() {
+    var qs = store.state.questions;
+    if (!qs.length) {
+      return (
+        '<section class="panel"><div class="card empty-note">' +
+        '<div class="q" aria-hidden="true">?</div>' +
+        "<h3>No questions yet</h3>" +
+        '<button class="btn red" data-act="go" data-to="ask">Ask your first question</button>' +
+        "</div></section>"
+      );
+    }
 
     return (
       '<section class="panel">' +
-      '<div class="convos">' + rows + "</div>" +
+      '<div class="convos">' + questionRows() + "</div>" +
       privateLine() +
       "</section>"
     );

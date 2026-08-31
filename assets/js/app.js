@@ -101,7 +101,7 @@
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
 
-    if (r.name === "ask") wireAskForm();
+    if (r.name === "ask") wireCompose("new-q", "q-input", onNewQuestion);
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
       var fb = document.getElementById("fb-form");
@@ -161,30 +161,16 @@
     });
   }
 
-  function wireAskForm() {
-    var form = document.getElementById("ask-form");
-    if (!form) return;
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var body = document.getElementById("ask-body").value.trim();
-      var err = document.getElementById("ask-error");
-      if (!body) {
-        err.classList.add("show");
-        document.getElementById("ask-body").focus();
-        return;
-      }
-      err.classList.remove("show");
-
-      var zip = document.getElementById("ask-zip").value.trim();
-      var st = document.getElementById("ask-state").value.trim();
-      var thread = store.addQuestion({
-        body: body,
-        topic: "",
-        location: [zip, st].filter(Boolean).join(", "),
-      });
-      go("thread", thread.id);
-      scheduleTeamReply(thread);
+  function onNewQuestion(body) {
+    var zip = (document.getElementById("ask-zip") || { value: "" }).value.trim();
+    var st = (document.getElementById("ask-state") || { value: "" }).value.trim();
+    var thread = store.addQuestion({
+      body: body,
+      topic: "",
+      location: [zip, st].filter(Boolean).join(", "),
     });
+    go("thread", thread.id);
+    scheduleTeamReply(thread);
   }
 
   function onReply(body, form) {

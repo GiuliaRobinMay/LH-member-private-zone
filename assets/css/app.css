@@ -826,9 +826,9 @@ select {
   width: 46px;
   height: 46px;
   border-radius: 50%;
-  border: 1px solid var(--ink);
-  background: var(--yellow);
-  color: var(--ink);
+  border: 1px solid var(--red);
+  background: var(--red);
+  color: #fff;
   font-size: 19px;
   line-height: 1;
   cursor: pointer;
@@ -844,6 +844,34 @@ select {
 
 .send:active {
   transform: translateY(1px);
+}
+
+/* the small where-are-you row under the chat compose */
+
+.chat-loc {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.chat-loc input {
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 13px;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.chat-loc input:focus {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 1px;
+}
+
+.chat-loc input::placeholder {
+  color: var(--ink-faint);
 }
 
 /* conversation list */
