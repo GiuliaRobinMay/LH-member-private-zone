@@ -284,16 +284,50 @@
     return out.replace(/\s{2,}/g, " ").trim();
   }
 
-  /** Tick / untick "I called them" on a call sheet row. */
+  /** Tick / untick "called" on a call sheet row, remembering the day. */
   function toggleCalled(sheetId, orgId) {
     var s = getSheet(sheetId);
     if (!s) return false;
     if (!s.called) s.called = [];
+    if (!s.calledAt) s.calledAt = {};
     var at = s.called.indexOf(orgId);
-    if (at === -1) s.called.push(orgId);
-    else s.called.splice(at, 1);
+    if (at === -1) {
+      s.called.push(orgId);
+      s.calledAt[orgId] = new Date().toISOString();
+    } else {
+      s.called.splice(at, 1);
+      delete s.calledAt[orgId];
+    }
     save();
     return s.called.indexOf(orgId) !== -1;
+  }
+
+  function calledOn(sheetId, orgId) {
+    var s = getSheet(sheetId);
+    return (s && s.calledAt && s.calledAt[orgId]) || "";
+  }
+
+  /** A private note on one row of a call sheet. */
+  function setOrgNote(sheetId, orgId, text) {
+    var s = getSheet(sheetId);
+    if (!s) return;
+    if (!s.notes) s.notes = {};
+    if (text) s.notes[orgId] = text;
+    else delete s.notes[orgId];
+    save();
+  }
+
+  function orgNote(sheetId, orgId) {
+    var s = getSheet(sheetId);
+    return (s && s.notes && s.notes[orgId]) || "";
+  }
+
+  /** "Was this helpful?" on an answer. */
+  function setFeedback(threadId, val, note) {
+    var t = getQuestion(threadId);
+    if (!t) return;
+    t.feedback = { val: val, note: note || "" };
+    save();
   }
 
   function isCalled(sheetId, orgId) {
@@ -363,6 +397,10 @@
     buildSheet: buildSheet,
     toggleCalled: toggleCalled,
     isCalled: isCalled,
+    calledOn: calledOn,
+    setOrgNote: setOrgNote,
+    orgNote: orgNote,
+    setFeedback: setFeedback,
 
     counts: counts,
   };

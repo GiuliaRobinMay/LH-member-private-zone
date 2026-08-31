@@ -16,30 +16,41 @@
   var toastEl = document.getElementById("toast");
 
   var toastTimer = null;
+  global.LZ.ui = { explain: null };
   var pendingAnswer = null;
   var typingTimer = null;
   var resetTimer = null;
 
   /* ------------------------------------------------------------- tabs */
 
+  /* Two split tabs. The main part opens the form; the small ☰ opens
+     that side's list, so the archive is always one tap away. */
   var TABS = [
-    { key: "ask", label: "Ask a question" },
-    { key: "questions", label: "My questions" },
-    { key: "build", label: "Create a call sheet" },
-    { key: "sheets", label: "My call sheets" },
+    { key: "ask", list: "questions", label: "Ask a question", listLabel: "My questions" },
+    { key: "build", list: "sheets", label: "Create my call sheet", listLabel: "My call sheets" },
   ];
 
-  function renderTabs(active) {
+  function renderTabs(activeName) {
     var n = store.counts();
     document.getElementById("tabbar").innerHTML = TABS.map(function (t) {
+      var section =
+        activeName === t.key ||
+        activeName === t.list ||
+        (t.list === "questions" && activeName === "thread") ||
+        (t.list === "sheets" && activeName === "sheet");
+      var onList = section && activeName !== t.key;
       var bub = "";
-      if (t.key === "questions" && n.unread) {
+      if (t.list === "questions" && n.unread) {
         bub = '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>';
       }
       return (
-        '<button class="tab' + (active === t.key ? " active" : "") +
-        '" role="tab" aria-selected="' + (active === t.key) +
-        '" data-act="go" data-to="' + t.key + '">' + t.label + bub + "</button>"
+        '<div class="tabsplit' + (section ? " active" : "") + '">' +
+        '<button class="tab-main" data-act="go" data-to="' + t.key + '">' +
+        t.label + "</button>" +
+        '<button class="tab-list' + (onList ? " on" : "") +
+        '" data-act="go" data-to="' + t.list + '" aria-label="' + t.listLabel + '">' +
+        "&#9776;" + bub + "</button>" +
+        "</div>"
       );
     }).join("");
   }
@@ -54,12 +65,6 @@
 
   function go(to, id) {
     global.location.hash = "/" + to + (id ? "/" + id : "");
-  }
-
-  function activeTabFor(name) {
-    if (name === "thread") return "questions";
-    if (name === "sheet") return "sheets";
-    return name;
   }
 
   var firstRender = true;
@@ -91,7 +96,7 @@
     }
 
     face.innerHTML = html;
-    renderTabs(activeTabFor(r.name));
+    renderTabs(r.name);
 
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
@@ -99,6 +104,15 @@
     if (r.name === "ask") wireAskForm();
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
+      var fb = document.getElementById("fb-form");
+      if (fb) {
+        wireCompose("fb-form", "fb-note", function (text) {
+          store.setFeedback(r.id, "no", text);
+          global.LZ.ui.explain = null;
+          route();
+          toast("Thank you — the team will take another look.");
+        });
+      }
       store.clearNew(r.id);
     }
     if (r.name === "build") wireBuildForm();
@@ -202,7 +216,7 @@
       } else {
         thread.unread = true;
         store.save();
-        renderTabs(activeTabFor(here.name));
+        renderTabs(here.name);
         toast("The Lesko Help team replied to your question.");
       }
     }, 5200);
@@ -227,13 +241,15 @@
       e.preventDefault();
 
       var topicKey = document.getElementById("b-topic").value;
-      var where = document.getElementById("b-where").value.trim();
+      var zip = document.getElementById("b-zip").value.trim();
+      var city = document.getElementById("b-city").value.trim();
+      var state = document.getElementById("b-state").value.trim();
       var problem = document.getElementById("b-problem").value.trim();
       var err = document.getElementById("build-error");
 
       var missing = [];
       if (!topicKey) missing.push("pick what you need help with");
-      if (!where) missing.push("say where you are");
+      if (!zip && !city) missing.push("add your ZIP code or your city");
       if (!problem) missing.push("tell us what is going on");
 
       if (missing.length) {
@@ -243,23 +259,9 @@
       }
       err.classList.remove("show");
 
-      /* One location box: a 5-digit ZIP, or "City, State", or just a city. */
-      var zip = "";
-      var city = "";
-      var state = "";
-      var zipMatch = where.match(/\b\d{5}\b/);
-      if (zipMatch) {
-        zip = zipMatch[0];
-        if (ZIPS[zip]) {
-          city = ZIPS[zip][0];
-          state = ZIPS[zip][1];
-        }
-        var remainder = where.replace(zip, "").replace(/[,\s]+/g, " ").trim();
-        if (remainder && !city) city = remainder;
-      } else {
-        var parts = where.split(",");
-        city = parts[0].trim();
-        state = (parts[1] || "").trim();
+      if (zip && !city && ZIPS[zip]) {
+        city = ZIPS[zip][0];
+        state = state || ZIPS[zip][1];
       }
 
       runGeneration({
@@ -378,6 +380,50 @@
     }
   }
 
+  /* ------------------------------------------ per-row notes on a sheet */
+
+  function openNoteEditor(btn) {
+    var sheetId = btn.getAttribute("data-sheet");
+    var orgId = btn.getAttribute("data-org");
+    var row = document.getElementById("wrow-" + sheetId + "-" + orgId);
+    if (!row) return;
+    var slot = row.querySelector('[data-slot="note"]');
+    var current = store.orgNote(sheetId, orgId);
+
+    slot.innerHTML =
+      '<div class="w-note-edit">' +
+      '<label class="sr-only" for="ne-input">Your note</label>' +
+      '<input id="ne-input" type="text" value="' + views.esc(current) +
+      '" placeholder="Who you spoke to, what they said…">' +
+      '<button type="button" class="btn red" id="ne-save">Save</button>' +
+      "</div>";
+    btn.hidden = true;
+
+    var input = slot.querySelector("#ne-input");
+    var saveBtn = slot.querySelector("#ne-save");
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+
+    function saveNote() {
+      var text = input.value.trim();
+      store.setOrgNote(sheetId, orgId, text);
+      slot.innerHTML = text
+        ? '<p class="w-note-text">&#128221; ' + views.esc(text) + "</p>"
+        : "";
+      btn.hidden = false;
+      btn.textContent = text ? "Edit note" : "+ Note";
+      if (text) toast("Note saved.");
+    }
+
+    saveBtn.addEventListener("click", saveNote);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        saveNote();
+      }
+    });
+  }
+
   /* --------------------------------- two-tap reset (no browser dialogs) */
 
   function armReset(btn) {
@@ -437,6 +483,24 @@
         toast("Demo — in the real zone this opens " + (t.getAttribute("data-name") || "the file") + ".");
         break;
 
+      case "fb-yes":
+        store.setFeedback(t.getAttribute("data-id"), "yes", "");
+        route();
+        toast("Thank you — good to know it helped.");
+        break;
+
+      case "fb-no":
+        global.LZ.ui.explain = t.getAttribute("data-id");
+        route();
+        var fbBox = document.getElementById("fb-note");
+        if (fbBox) fbBox.focus();
+        break;
+
+      case "org-note": {
+        openNoteEditor(t);
+        break;
+      }
+
       case "reset": {
         if (t.getAttribute("data-armed") === "yes") {
           store.reset();
@@ -459,12 +523,19 @@
     if (!t) return;
 
     if (t.getAttribute("data-act") === "called") {
-      var on = store.toggleCalled(
-        t.getAttribute("data-sheet"),
-        t.getAttribute("data-org")
-      );
-      var card = t.closest(".org");
-      if (card) card.classList.toggle("done", on);
+      var sheetId = t.getAttribute("data-sheet");
+      var orgId = t.getAttribute("data-org");
+      var on = store.toggleCalled(sheetId, orgId);
+      var row = t.closest(".wrow") || t.closest(".org");
+      if (row) {
+        row.classList.toggle("done", on);
+        var slot = row.querySelector('[data-slot="called"]');
+        if (slot) {
+          slot.innerHTML = on
+            ? "&#10003; Called " + views.esc(views.niceDate(store.calledOn(sheetId, orgId)))
+            : "";
+        }
+      }
       if (on) toast("Ticked off. Well done — that is the hard part.");
     }
   });

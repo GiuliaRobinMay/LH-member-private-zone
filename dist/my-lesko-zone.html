@@ -208,57 +208,85 @@ h3 em {
   font-style: italic;
 }
 
-/* ------------------------------------------------------------ two tabs */
+/* ---------------------------------------------------- two split tabs
+   The main part opens the form; the small ☰ opens that side's list. */
 
 .tabbar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--hairline);
-  border-radius: 22px;
-  background: var(--paper-2);
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
   margin: 10px 0 16px;
 }
 
-.tab {
-  position: relative;
-  font: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
-  padding: 10px 4px;
-  border: 1px solid transparent;
+.tabsplit {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--hairline);
   border-radius: 999px;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.tabsplit.active {
+  background: var(--yellow);
+  border-color: var(--ink);
+}
+
+.tab-main {
+  flex: 1;
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 11px 6px;
+  border: 0;
   background: transparent;
   color: var(--ink-soft);
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.12s ease, color 0.12s ease;
 }
 
-.tab:hover {
-  background: var(--tint-yellow);
-}
-
-.tab.active {
-  background: var(--yellow);
-  border-color: var(--ink);
+.tabsplit.active .tab-main {
   color: var(--ink);
 }
 
-.tab .bub {
-  display: inline-grid;
+.tab-main:hover {
+  background: rgba(22, 34, 63, 0.05);
+}
+
+.tab-list {
+  position: relative;
+  width: 44px;
+  border: 0;
+  border-left: 1px solid rgba(22, 34, 63, 0.18);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.tabsplit.active .tab-list {
+  color: var(--ink);
+}
+
+.tab-list:hover,
+.tab-list.on {
+  background: rgba(22, 34, 63, 0.08);
+}
+
+.tab-list .bub {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
   place-items: center;
-  min-width: 18px;
-  height: 18px;
-  margin-left: 7px;
-  padding: 0 5px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
   border-radius: 999px;
   background: var(--red);
   color: #fff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  vertical-align: 1px;
 }
 
 /* --------------------------------------------------------------- panels */
@@ -454,6 +482,12 @@ h3 em {
   background: var(--paper-2);
 }
 
+.btn.red {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
 /* The two main actions get a bigger, easier target. */
 .btn.big {
   font-size: 12px;
@@ -504,7 +538,9 @@ h3 em {
 .form-card {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  background: var(--tint-yellow);
+  background: var(--paper-2);
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
+    0 14px 30px -20px rgba(22, 34, 63, 0.5);
   padding: 15px 16px 14px;
   margin-bottom: 16px;
 }
@@ -564,9 +600,14 @@ h3 em {
   gap: 12px;
 }
 
+.field-row.three {
+  grid-template-columns: 110px 1fr 1fr;
+}
+
 .form-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 3px;
@@ -1040,6 +1081,38 @@ select {
   text-align: right;
 }
 
+/* was this answer helpful? */
+
+.feedback {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px dashed var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  padding: 11px 15px;
+  margin: 2px 0 14px;
+  font-size: 14px;
+}
+
+.feedback .fb-q {
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.feedback .compose {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
+.feedback.done {
+  border-style: solid;
+  border-color: rgba(46, 158, 91, 0.4);
+  background: var(--tint-green);
+  color: var(--ink-soft);
+}
+
 /* typing indicator */
 
 .typing .bubble {
@@ -1462,6 +1535,116 @@ select {
   margin-top: 18px;
 }
 
+/* --------------------------------------------------- sheet work list */
+
+.w-titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 2px 0 14px;
+}
+
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wrow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--paper-2);
+  padding: 12px 14px;
+}
+
+.wrow.done {
+  background: var(--tint-green);
+  border-color: rgba(46, 158, 91, 0.4);
+}
+
+.wrow.done .org-name {
+  text-decoration: line-through;
+  text-decoration-color: var(--green);
+  color: var(--ink-soft);
+}
+
+.w-contacts {
+  margin: 3px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.w-contacts a {
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.w-contacts a:hover {
+  text-decoration: underline;
+}
+
+.w-contacts .w-tel {
+  color: var(--green);
+}
+
+.w-sep {
+  color: var(--ink-faint);
+  margin: 0 7px;
+}
+
+.w-called {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--green);
+  margin-top: 2px;
+}
+
+.w-called:empty {
+  display: none;
+}
+
+.w-note-text {
+  margin: 5px 0 0;
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.w-note-btn {
+  font-size: 13px;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.w-note-edit {
+  display: flex;
+  gap: 8px;
+  margin-top: 7px;
+}
+
+.w-note-edit input {
+  flex: 1;
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 11px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.w-note-edit input:focus {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 1px;
+}
+
 /* ----------------------------------------------------------- generating */
 
 .generating {
@@ -1587,7 +1770,20 @@ select {
 
 @media (max-width: 560px) {
   .tabbar {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .field-row.three {
+    grid-template-columns: 1fr;
+  }
+
+  .wrow {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .w-note-btn {
+    grid-column: 2;
+    justify-self: start;
   }
 
   .masthead {
@@ -2073,7 +2269,7 @@ window.LZ_SEED = {
       "id": "q-electric-shutoff",
       "subject": "Electric goes off Monday and I can't get the $312 together",
       "topic": "bills-debt",
-      "status": "waiting",
+      "status": "answered",
       "createdAt": "2026-08-30T09:41:00-04:00",
       "ago": "3 hours ago",
       "location": "Rochester, NY 14604",
@@ -2085,8 +2281,24 @@ window.LZ_SEED = {
           "body": "they put a red paper on the door friday. the electric goes off monday if I dont pay 312.00 and I dont have it, my check dont come till the 3rd. I called the company and the young lady said the most she can do is a payment plan but I have to put 150 down today to start it and I dont have that either. is there anybody around here that helps with this. sorry to ask on a sunday I just dont know who else to ask",
           "ago": "3 hours ago",
           "createdAt": "2026-08-30T09:41:00-04:00"
+        },
+        {
+          "role": "team",
+          "name": "Tony Woodworth",
+          "roleLabel": "Question Responder",
+          "body": "Hi Aaron, it's Tony. A red tag on the door is frightening, but Monday is further away than it feels. Do these three things today, in this order.\n\n1. Call the electric company first and say these words: \"I have a shutoff notice and I want a deferred payment agreement.\" In New York they must offer you a payment plan you can afford before they shut you off, and asking for it stops the clock.\n2. Dial 2-1-1 and ask for emergency utility help in Monroe County. They hold the list of who has money this month, including your local Community Action Agency.\n3. Ask the electric company for the HEAP emergency line while you have them. If anyone in the house is over 60, on certain medicines, or uses medical equipment, say so — that adds protections.\n\nI attached the checklist with the numbers. Write back after the first call and tell me what they said — we will take the next step together.\n- Tony",
+          "attachments": [
+            {
+              "name": "Stop_A_Shutoff_Checklist.pdf",
+              "kind": "PDF",
+              "size": "1 page"
+            }
+          ],
+          "ago": "3 hours ago",
+          "createdAt": "2026-08-30T16:10:00Z"
         }
-      ]
+      ],
+      "unread": true
     },
     {
       "id": "q-mother-83-alone",
@@ -2149,7 +2361,7 @@ window.LZ_SEED = {
           "createdAt": "2026-08-26T09:35:00-04:00"
         }
       ],
-      "unread": true
+      "unread": false
     },
     {
       "id": "q-rent-14-day-notice",
@@ -4021,16 +4233,50 @@ window.LZ_SEED = {
     return out.replace(/\s{2,}/g, " ").trim();
   }
 
-  /** Tick / untick "I called them" on a call sheet row. */
+  /** Tick / untick "called" on a call sheet row, remembering the day. */
   function toggleCalled(sheetId, orgId) {
     var s = getSheet(sheetId);
     if (!s) return false;
     if (!s.called) s.called = [];
+    if (!s.calledAt) s.calledAt = {};
     var at = s.called.indexOf(orgId);
-    if (at === -1) s.called.push(orgId);
-    else s.called.splice(at, 1);
+    if (at === -1) {
+      s.called.push(orgId);
+      s.calledAt[orgId] = new Date().toISOString();
+    } else {
+      s.called.splice(at, 1);
+      delete s.calledAt[orgId];
+    }
     save();
     return s.called.indexOf(orgId) !== -1;
+  }
+
+  function calledOn(sheetId, orgId) {
+    var s = getSheet(sheetId);
+    return (s && s.calledAt && s.calledAt[orgId]) || "";
+  }
+
+  /** A private note on one row of a call sheet. */
+  function setOrgNote(sheetId, orgId, text) {
+    var s = getSheet(sheetId);
+    if (!s) return;
+    if (!s.notes) s.notes = {};
+    if (text) s.notes[orgId] = text;
+    else delete s.notes[orgId];
+    save();
+  }
+
+  function orgNote(sheetId, orgId) {
+    var s = getSheet(sheetId);
+    return (s && s.notes && s.notes[orgId]) || "";
+  }
+
+  /** "Was this helpful?" on an answer. */
+  function setFeedback(threadId, val, note) {
+    var t = getQuestion(threadId);
+    if (!t) return;
+    t.feedback = { val: val, note: note || "" };
+    save();
   }
 
   function isCalled(sheetId, orgId) {
@@ -4100,6 +4346,10 @@ window.LZ_SEED = {
     buildSheet: buildSheet,
     toggleCalled: toggleCalled,
     isCalled: isCalled,
+    calledOn: calledOn,
+    setOrgNote: setOrgNote,
+    orgNote: orgNote,
+    setFeedback: setFeedback,
 
     counts: counts,
   };
@@ -4110,10 +4360,10 @@ window.LZ_SEED = {
 /* ==================================================================
    views.js — the screens of My Lesko Zone.
 
-   Two tabs, everything visible, almost no copy:
-     Questions   — a chat. Compose bar, conversation list, bubbles.
-     Call sheets — the short form and the archive on one screen,
-                   plus the finished call sheet document.
+   Two split tabs — Ask a question · Create my call sheet — each with
+   a small ☰ that opens its list. Forms submit with a red button on
+   the right. A call sheet opens straight into the working list:
+   called-tick, phone, email, website, a note, and the date.
    Views are pure: state in, markup out. app.js wires interaction
    through data-act attributes.
    ================================================================== */
@@ -4159,56 +4409,14 @@ window.LZ_SEED = {
     return String(phone || "").replace(/[^\d+]/g, "");
   }
 
-  /**
-   * A "phone" is not always a number — some offices publish a route in
-   * words instead. Split the dialable part from the guidance so the green
-   * pill always holds a real number.
-   */
-  function phoneParts(raw) {
+  /** Pull the dialable number out of a phone field that may be prose. */
+  function phoneNumber(raw) {
     var s = String(raw || "").trim();
-    if (!s) return { number: "", note: "" };
-
-    var num = "";
+    if (!s) return "";
     var shortCode = s.match(/^(2-?1-?1|9-?8-?8)\b/);
-    if (shortCode) {
-      num = shortCode[0];
-    } else {
-      var m = s.match(/(\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
-      if (m) num = m[0].trim();
-    }
-
-    var note = num ? s.replace(num, " ") : s;
-    note = note.replace(/^[\s,.;:()-]+/, "").replace(/[\s,.;:]+$/, "").trim();
-    note = note.replace(/^(?:or|and|is)\s+/i, "");
-
-    var opens = (note.match(/\(/g) || []).length;
-    var closes = (note.match(/\)/g) || []).length;
-    if (closes > opens) note = note.replace(/\)/g, "");
-    if (opens > closes) note = note.replace(/\(/g, "");
-
-    note = note.replace(/^[\s,.;:-]+/, "").trim();
-    note = note.replace(/[\s,]*\b(?:is|are|at|on|to|or|and|call|dial|phone)\s*[.:,]?$/i, "");
-    note = note.replace(/[\s,;:]+$/, "");
-    if (note.length < 8) note = "";
-
-    return { number: num, note: note };
-  }
-
-  function phonePill(phone, small) {
-    var parts = phoneParts(phone);
-    var out = "";
-    if (parts.number) {
-      out +=
-        '<a class="phone-pill' + (small ? " sm" : "") + '" href="tel:' +
-        esc(tel(parts.number)) +
-        '"><span aria-hidden="true">&#9742;</span>' +
-        '<span><span class="sr-only">Call </span>' +
-        esc(parts.number) + "</span></a>";
-    }
-    if (parts.note) {
-      out += '<span class="phone-note">' + rich(parts.note) + "</span>";
-    }
-    return out;
+    if (shortCode) return shortCode[0];
+    var m = s.match(/(\+?1[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/);
+    return m ? m[0].trim() : "";
   }
 
   function fmtDate(iso) {
@@ -4220,22 +4428,6 @@ window.LZ_SEED = {
       month: "short",
       year: "numeric",
     });
-  }
-
-  /** Very short relative time for the chat list: "2d", "3h", "now". */
-  function agoShort(iso) {
-    var then = new Date(iso).getTime();
-    if (isNaN(then)) return "";
-    var mins = Math.round((Date.now() - then) / 60000);
-    if (mins < 2) return "now";
-    if (mins < 60) return mins + "m";
-    var hrs = Math.round(mins / 60);
-    if (hrs < 24) return hrs + "h";
-    var days = Math.round(hrs / 24);
-    if (days < 31) return days + "d";
-    var months = Math.round(days / 30);
-    if (months < 12) return months + "mo";
-    return Math.round(months / 12) + "y";
   }
 
   /** The date a thing happened, the way a person says it. */
@@ -4273,37 +4465,6 @@ window.LZ_SEED = {
     );
   }
 
-  function unnumber(text) {
-    return String(text || "").replace(/^\s*(?:step\s*)?\d+[.):]\s*/i, "");
-  }
-
-  function label(key, fallback) {
-    var l = store.copy && store.copy.labels;
-    return (l && l[key]) || fallback;
-  }
-
-  function mini(kind, suit, title, body) {
-    if (!body) return "";
-    return (
-      '<div class="mini ' + kind + '" data-suit="' + suit + '">' +
-      '<span class="mono-label">' + esc(title) + "</span>" +
-      "<p>" + rich(body) + "</p></div>"
-    );
-  }
-
-  function scriptBox(text) {
-    if (!text) return "";
-    return (
-      '<div class="script">' +
-      '<span class="mono-label">' +
-      esc(label("whatToSay", "What to say when they answer")) +
-      "</span>" +
-      '<p class="words">' + esc(text) + "</p>" +
-      '<button class="btn ghost" data-act="copy" data-text="' + esc(text) + '">' +
-      "Copy these words</button></div>"
-    );
-  }
-
   function privateLine() {
     return (
       '<p class="private-line"><span aria-hidden="true">&#128274;</span>' +
@@ -4319,7 +4480,7 @@ window.LZ_SEED = {
       '<form class="form-card" id="ask-form" novalidate>' +
       '<div class="field">' +
       '<label for="ask-body">What do you need help with?</label>' +
-      '<textarea id="ask-body" rows="5" placeholder="Tell us in your own words. For example: I\u2019m behind on my electric bill and I don\u2019t know who to call. Spelling doesn\u2019t matter."></textarea>' +
+      '<textarea id="ask-body" rows="5" placeholder="Tell us in your own words. For example: I’m behind on my electric bill and I don’t know who to call. Spelling doesn’t matter."></textarea>' +
       "</div>" +
       '<div class="field-row">' +
       '<div class="field"><label for="ask-zip">Your ZIP code</label>' +
@@ -4328,8 +4489,9 @@ window.LZ_SEED = {
       '<input id="ask-state" autocomplete="address-level1" placeholder="Example: New York"></div>' +
       "</div>" +
       '<p class="form-error" id="ask-error">Please type your question first — even a few words is enough.</p>' +
-      '<button class="btn big" type="submit">Send my question</button>' +
-      "</form>" +
+      '<div class="form-actions">' +
+      '<button class="btn red big" type="submit">Send my question</button>' +
+      "</div></form>" +
       privateLine() +
       "</section>"
     );
@@ -4344,7 +4506,7 @@ window.LZ_SEED = {
         '<section class="panel"><div class="card empty-note">' +
         '<div class="q" aria-hidden="true">?</div>' +
         "<h3>No questions yet</h3>" +
-        '<button class="btn" data-act="go" data-to="ask">Ask your first question</button>' +
+        '<button class="btn red" data-act="go" data-to="ask">Ask your first question</button>' +
         "</div></section>"
       );
     }
@@ -4363,10 +4525,9 @@ window.LZ_SEED = {
           '<span class="c-dot ' + dot + '" aria-hidden="true"></span>' +
           "<span>" +
           '<span class="c-subj">' + esc(q.subject) + "</span>" +
-          '<span class="c-meta">Asked ' + esc(niceDate(q.createdAt)) +
-          " &nbsp;&middot;&nbsp; " + st + "</span>" +
+          '<span class="c-meta">' + st + "</span>" +
           "</span>" +
-          '<span class="c-arrow" aria-hidden="true">&rsaquo;</span></button>'
+          '<span class="c-when">' + esc(niceDate(q.createdAt)) + "</span></button>"
         );
       })
       .join("");
@@ -4379,7 +4540,7 @@ window.LZ_SEED = {
     );
   }
 
-  /* ------------------------------------------------------- one thread */
+  /* ---------------------------------------------------- one thread */
 
   function thread(id) {
     var q = store.getQuestion(id);
@@ -4400,16 +4561,22 @@ window.LZ_SEED = {
       })
       .join("");
 
+    var waitingNote =
+      q.status === "waiting"
+        ? '<p class="private-line"><span aria-hidden="true">&#8987;</span>' +
+          "<span>Your question is with the team — answers usually come back within a day or two.</span></p>"
+        : "";
+
     return (
       '<section class="panel">' +
       '<div class="thread-head">' +
       '<button class="backlink" data-act="go" data-to="questions" style="margin:0">&larr; My questions</button>' +
-      (q.status === "waiting"
-        ? '<span class="badge wait">' + esc(label("waiting", "Waiting for an answer")) + "</span>"
-        : "") +
+      '<span class="c-when">' + esc(niceDate(q.createdAt)) + "</span>" +
       "</div>" +
       msgs +
+      feedbackBlock(q) +
       '<div id="typing-slot"></div>' +
+      waitingNote +
       '<form class="compose" id="reply-form" style="margin-top:10px">' +
       '<label class="sr-only" for="reply-input">Write back</label>' +
       '<textarea id="reply-input" rows="1" placeholder="Write back&hellip;"></textarea>' +
@@ -4417,6 +4584,42 @@ window.LZ_SEED = {
       '" aria-label="Send my reply">&#8593;</button>' +
       "</form>" +
       "</section>"
+    );
+  }
+
+  /** "Was this helpful?" under the team's answer. */
+  function feedbackBlock(q) {
+    if (q.status !== "answered") return "";
+
+    if (q.feedback && q.feedback.val) {
+      return (
+        '<div class="feedback done"><span aria-hidden="true">&#10003;</span> ' +
+        "Thank you for your feedback — the team reads every one.</div>"
+      );
+    }
+
+    var explaining = global.LZ.ui && global.LZ.ui.explain === q.id;
+    if (explaining) {
+      return (
+        '<div class="feedback">' +
+        '<span class="fb-q">What was missing? Tell us and the team will try again.</span>' +
+        '<form class="compose" id="fb-form" style="margin:8px 0 0">' +
+        '<label class="sr-only" for="fb-note">What was missing?</label>' +
+        '<textarea id="fb-note" rows="1" placeholder="Tell us in your own words&hellip;"></textarea>' +
+        '<button class="send" type="submit" data-act="fb-send" data-id="' + esc(q.id) +
+        '" aria-label="Send feedback">&#8593;</button>' +
+        "</form></div>"
+      );
+    }
+
+    return (
+      '<div class="feedback">' +
+      '<span class="fb-q">Was this answer helpful?</span>' +
+      '<button class="btn ghost" data-act="fb-yes" data-id="' + esc(q.id) +
+      '">&#128077; Yes</button>' +
+      '<button class="btn ghost" data-act="fb-no" data-id="' + esc(q.id) +
+      '">&#128078; Not yet</button>' +
+      "</div>"
     );
   }
 
@@ -4429,12 +4632,10 @@ window.LZ_SEED = {
     );
   }
 
-  /* ============================================= CALL SHEETS (build tab) */
+  /* ========================================= CREATE MY CALL SHEET (form) */
 
   function build() {
-    var c = store.copy.callsheet;
     var topics = store.copy.topics || [];
-
     var opts = '<option value="">Choose one&hellip;</option>';
     topics.forEach(function (t) {
       opts += '<option value="' + esc(t.key) + '">' + esc(t.label) + "</option>";
@@ -4446,59 +4647,22 @@ window.LZ_SEED = {
       '<div class="field">' +
       '<label for="b-topic">What do you need help with?</label>' +
       '<select id="b-topic">' + opts + "</select></div>" +
-      '<div class="field">' +
-      '<label for="b-where">Where are you?</label>' +
-      '<input id="b-where" placeholder="ZIP code, or city and state"></div>' +
+      '<div class="field-row three">' +
+      '<div class="field"><label for="b-zip">ZIP code</label>' +
+      '<input id="b-zip" inputmode="numeric" autocomplete="postal-code" placeholder="14604"></div>' +
+      '<div class="field"><label for="b-city">City</label>' +
+      '<input id="b-city" autocomplete="address-level2" placeholder="Rochester"></div>' +
+      '<div class="field"><label for="b-state">State</label>' +
+      '<input id="b-state" autocomplete="address-level1" placeholder="New York"></div>' +
+      "</div>" +
       '<div class="field">' +
       '<label for="b-problem">Tell us what&rsquo;s going on</label>' +
       '<textarea id="b-problem" rows="4" placeholder="Your own words are perfect — spelling doesn&rsquo;t matter."></textarea>' +
       "</div>" +
       '<p class="form-error" id="build-error"></p>' +
-      '<button class="btn big" type="submit">' + esc(c.button || "Create my call sheet") + "</button>" +
-      "</form>" +
-      privateLine() +
-      "</section>"
-    );
-  }
-
-  /* ============================================= MY CALL SHEETS (list) */
-
-  function sheets() {
-    var list = store.state.sheets;
-    if (!list.length) {
-      return (
-        '<section class="panel"><div class="card empty-note">' +
-        '<div class="q" aria-hidden="true">?</div>' +
-        "<h3>No call sheets yet</h3>" +
-        '<button class="btn" data-act="go" data-to="build">Create your first call sheet</button>' +
-        "</div></section>"
-      );
-    }
-
-    var rows = list
-      .map(function (sh) {
-        var called = (sh.called || []).length;
-        var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
-        return (
-          '<button class="convo" data-act="sheet" data-id="' + esc(sh.id) + '">' +
-          '<span class="c-dot' + (called ? "" : " waiting") + '" aria-hidden="true"></span>' +
-          "<span>" +
-          '<span class="c-subj">' + esc(sh.title) + "</span>" +
-          '<span class="c-meta">Made ' + esc(niceDate(sh.createdAt)) +
-          " &nbsp;&middot;&nbsp; " + esc(place) +
-          " &nbsp;&middot;&nbsp; " + sh.orgs.length + " places" +
-          (called
-            ? ' &nbsp;&middot;&nbsp; <span class="st-ok">' + called + " called &#10003;</span>"
-            : "") +
-          "</span></span>" +
-          '<span class="c-arrow" aria-hidden="true">&rsaquo;</span></button>'
-        );
-      })
-      .join("");
-
-    return (
-      '<section class="panel">' +
-      '<div class="convos">' + rows + "</div>" +
+      '<div class="form-actions">' +
+      '<button class="btn red big" type="submit">Create my call sheet</button>' +
+      "</div></form>" +
       privateLine() +
       "</section>"
     );
@@ -4514,156 +4678,119 @@ window.LZ_SEED = {
     );
   }
 
-  /* ------------------------------------------------- one call sheet */
+  /* ============================================= MY CALL SHEETS (list) */
+
+  function sheets() {
+    var list = store.state.sheets;
+    if (!list.length) {
+      return (
+        '<section class="panel"><div class="card empty-note">' +
+        '<div class="q" aria-hidden="true">?</div>' +
+        "<h3>No call sheets yet</h3>" +
+        '<button class="btn red" data-act="go" data-to="build">Create your first call sheet</button>' +
+        "</div></section>"
+      );
+    }
+
+    var rows = list
+      .map(function (sh) {
+        var called = (sh.called || []).length;
+        var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+        return (
+          '<button class="convo" data-act="sheet" data-id="' + esc(sh.id) + '">' +
+          '<span class="c-dot' + (called ? "" : " waiting") + '" aria-hidden="true"></span>' +
+          "<span>" +
+          '<span class="c-subj">' + esc(sh.title) + "</span>" +
+          '<span class="c-meta">' + esc(place) + " &nbsp;&middot;&nbsp; " +
+          sh.orgs.length + " places" +
+          (called
+            ? ' &nbsp;&middot;&nbsp; <span class="st-ok">' + called + " called &#10003;</span>"
+            : "") +
+          "</span></span>" +
+          '<span class="c-when">' + esc(niceDate(sh.createdAt)) + "</span></button>"
+        );
+      })
+      .join("");
+
+    return (
+      '<section class="panel">' +
+      '<div class="convos">' + rows + "</div>" +
+      privateLine() +
+      "</section>"
+    );
+  }
+
+  /* ------------------------------------- one call sheet: the work list */
 
   function sheet(id) {
     var sh = store.getSheet(id);
     if (!sh) return notFound("call sheet", "sheets");
 
-    var firstOrg = null;
-    sh.orgs.forEach(function (o) {
-      if (o.id === sh.firstCall.orgId) firstOrg = o;
-    });
-    if (!firstOrg) firstOrg = sh.orgs[0];
-
-    var rest = sh.orgs.filter(function (o) {
-      return o.id !== firstOrg.id;
-    });
-
-    var calledCount = (sh.called || []).length;
-
-    var steps = sh.plan
-      .map(function (p, i) {
-        return (
-          '<li><span class="n" aria-hidden="true">' + (i + 1) + "</span>" +
-          "<div><b>" + esc(unnumber(p.title)) + "</b><p>" + rich(p.body) + "</p></div></li>"
-        );
-      })
-      .join("");
-
-    var orgCards = rest.map(function (o) {
-      return orgCard(sh, o);
+    var rows = sh.orgs.map(function (o) {
+      return workRow(sh, o);
     }).join("");
 
     return (
       '<section class="panel">' +
-      '<button class="backlink" data-act="go" data-to="sheets">&larr; My call sheets</button>' +
-
-      '<div class="badges">' +
-      '<span class="badge warm">' + esc(sh.topic) + "</span>" +
-      '<span class="badge">' + esc(fmtDate(sh.createdAt)) + "</span>" +
-      (calledCount
-        ? '<span class="badge good">' + calledCount + " of " + sh.orgs.length + " called</span>"
-        : "") +
+      '<div class="thread-head">' +
+      '<button class="backlink" data-act="go" data-to="sheets" style="margin:0">&larr; My call sheets</button>' +
+      '<span class="c-when">' + esc(niceDate(sh.createdAt)) + "</span>" +
       "</div>" +
-      '<h2 class="sheet-title">' + esc(sh.title) + "</h2>" +
-
-      '<div class="org-links" style="margin:0 0 16px">' +
+      '<div class="w-titlebar">' +
+      '<h2 class="sheet-title" style="margin:0">' + esc(sh.title) + "</h2>" +
       '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) +
-      '">&#11015; Download for Excel</button>' +
-      '<button class="btn ghost" data-act="print">Print or save as PDF</button>' +
+      '">&#11015; Download</button>' +
       "</div>" +
-
-      '<div class="note"><span class="mono-label">What you told us</span>' +
-      '<p class="said">&ldquo;' + esc(sh.problem) + "&rdquo;</p></div>" +
-
-      '<p class="opening">' + rich(sh.opening) + "</p>" +
-
-      mini("t-yellow", "♦", "Before you start", sh.beforeYouStart) +
-      (sh.watchOut ? mini("t-red", "♥", "Watch out for this", sh.watchOut) : "") +
-
-      '<div class="first-call">' +
-      '<span class="mono-label"><i>&diams;</i> ' +
-      esc(label("firstCall", "Start with this one call")) + "</span>" +
-      "<h3>" + esc(firstOrg.name) + "</h3>" +
-      '<p class="why">' + rich(sh.firstCall.why) + "</p>" +
-      '<div class="contact-row">' +
-      phonePill(firstOrg.phone) +
-      (firstOrg.url
-        ? '<a class="btn ghost" href="' + esc(firstOrg.url) + '" target="_blank" rel="noopener">Their website</a>'
-        : "") +
-      "</div>" +
-      scriptBox(sh.firstCall.whatToSay) +
-      "</div>" +
-
-      '<div class="card">' +
-      '<span class="mono-label">Your plan &mdash; what to do, in order</span>' +
-      '<ol class="steps" style="margin-top:8px">' + steps + "</ol></div>" +
-
-      '<div style="margin:18px 0 10px">' +
-      '<span class="mono-label" style="color:var(--red)">' +
-      esc(label("thenCall", "Then make these calls")) + "</span>" +
-      '<p style="margin:4px 0 0;font-size:14px;color:var(--ink-soft)">' + rest.length +
-      " more places. Tick each one off as you call it.</p></div>" +
-      '<div class="orgs">' + orgCards + "</div>" +
-
-      '<div class="sheet-actions">' +
-      '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) +
-      '">&#11015; Download for Excel</button>' +
-      '<button class="btn ghost" data-act="print">' +
-      esc(label("printSave", "Print or save as PDF")) + "</button>" +
-      "</div>" +
+      '<div class="work">' + rows + "</div>" +
       "</section>"
     );
   }
 
-  function orgCard(sh, org) {
+  function workRow(sh, org) {
     var done = store.isCalled(sh.id, org.id);
-    var cid = "org-" + sh.id + "-" + org.id;
+    var when = store.calledOn(sh.id, org.id);
+    var note = store.orgNote(sh.id, org.id);
+    var num = phoneNumber(org.phone);
+    var rid = "wrow-" + sh.id + "-" + org.id;
+
+    var contacts = [];
+    if (num) {
+      contacts.push(
+        '<a class="w-tel" href="tel:' + esc(tel(num)) + '">&#9742; ' + esc(num) + "</a>"
+      );
+    }
+    if (org.email) {
+      contacts.push('<a href="mailto:' + esc(org.email) + '">&#9993; Email</a>');
+    }
+    if (org.url) {
+      contacts.push(
+        '<a href="' + esc(org.url) + '" target="_blank" rel="noopener">&#127760; Website</a>'
+      );
+    }
 
     return (
-      '<article class="org' + (done ? " done" : "") + '" id="' + esc(cid) + '">' +
-      '<div class="org-head">' +
+      '<div class="wrow' + (done ? " done" : "") + '" id="' + esc(rid) + '">' +
       '<label class="called-box">' +
       '<input type="checkbox" data-act="called" data-sheet="' + esc(sh.id) +
       '" data-org="' + esc(org.id) + '"' + (done ? " checked" : "") +
-      ' aria-label="' + esc(label("markCalled", "Mark as called") + ": " + org.name) + '">' +
+      ' aria-label="Called: ' + esc(org.name) + '">' +
       '<span class="cl" aria-hidden="true">Called</span></label>' +
       "<div>" +
       '<p class="org-name">' + esc(org.name) + "</p>" +
-      '<p class="org-what">' + rich(org.plainWhat) + "</p>" +
-      '<div class="org-row">' +
-      phonePill(org.phone, true) +
-      '<span class="badge' + (org.moneyType && /free/i.test(org.moneyType) ? "" : " warm") + '">' +
-      esc(org.maxAmount || org.moneyType || "") + "</span>" +
-      "</div></div>" +
-      '<button class="org-toggle" data-act="toggle-org" data-target="' + esc(cid) +
-      '" aria-expanded="false" aria-controls="' + esc(cid) + '-d">' +
-      '<span aria-hidden="true">&#9662;</span>' +
-      '<span class="sr-only">Show the details for ' + esc(org.name) + "</span></button>" +
+      '<p class="w-contacts">' + contacts.join('<span class="w-sep">&middot;</span>') + "</p>" +
+      '<span class="w-called" data-slot="called">' +
+      (when ? "&#10003; Called " + esc(niceDate(when)) : "") +
+      "</span>" +
+      '<div class="w-note" data-slot="note">' +
+      (note ? '<p class="w-note-text">&#128221; ' + esc(note) + "</p>" : "") +
       "</div>" +
-
-      '<div class="org-detail" id="' + esc(cid) + '-d" hidden>' +
-      '<dl class="facts">' +
-      fact(label("whoFor", "Who this is for"), org.whoQualifies) +
-      fact("Where they help", org.area) +
-      fact("When to apply", org.whenToApply) +
-      fact(label("freeStuff", "What you get free"), org.freeServices) +
-      fact("Kind of help", org.moneyType) +
-      fact(label("howMuch", "How much"), org.maxAmount) +
-      "</dl>" +
-      (org.beforeYouCall
-        ? '<div class="note"><span class="mono-label">' +
-          esc(label("beforeCall", "Before you call")) + "</span><p>" +
-          rich(org.beforeYouCall) + "</p></div>"
-        : "") +
-      scriptBox(org.script) +
-      '<div class="org-links">' +
-      (org.url
-        ? '<a class="btn ghost" href="' + esc(org.url) + '" target="_blank" rel="noopener">Their website</a>'
-        : "") +
-      (org.email
-        ? '<a class="btn ghost" href="mailto:' + esc(org.email) + '">Email them</a>'
-        : "") +
       "</div>" +
-      (org.address ? '<p class="org-address">' + esc(org.address) + "</p>" : "") +
-      "</div></article>"
+      '<button class="linklike w-note-btn" data-act="org-note" data-sheet="' + esc(sh.id) +
+      '" data-org="' + esc(org.id) + '">' +
+      (note ? "Edit note" : "+ Note") +
+      "</button>" +
+      "</div>"
     );
-  }
-
-  function fact(term, value) {
-    if (!value) return "";
-    return '<div class="fact"><dt>' + esc(term) + "</dt><dd>" + esc(value) + "</dd></div>";
   }
 
   /* --------------------------------------------------------- fallback */
@@ -4673,7 +4800,7 @@ window.LZ_SEED = {
       '<section class="panel"><div class="card empty-note">' +
       '<div class="q" aria-hidden="true">?</div>' +
       "<h3>We could not find that " + esc(what) + "</h3>" +
-      '<button class="btn" data-act="go" data-to="' + esc(backTo) + '">Go back</button>' +
+      '<button class="btn red" data-act="go" data-to="' + esc(backTo) + '">Go back</button>' +
       "</div></section>"
     );
   }
@@ -4690,6 +4817,8 @@ window.LZ_SEED = {
     sheets: sheets,
     generating: generating,
     sheet: sheet,
+    workRow: workRow,
+    niceDate: niceDate,
     esc: esc,
   };
 })(window);
@@ -4714,30 +4843,41 @@ window.LZ_SEED = {
   var toastEl = document.getElementById("toast");
 
   var toastTimer = null;
+  global.LZ.ui = { explain: null };
   var pendingAnswer = null;
   var typingTimer = null;
   var resetTimer = null;
 
   /* ------------------------------------------------------------- tabs */
 
+  /* Two split tabs. The main part opens the form; the small ☰ opens
+     that side's list, so the archive is always one tap away. */
   var TABS = [
-    { key: "ask", label: "Ask a question" },
-    { key: "questions", label: "My questions" },
-    { key: "build", label: "Create a call sheet" },
-    { key: "sheets", label: "My call sheets" },
+    { key: "ask", list: "questions", label: "Ask a question", listLabel: "My questions" },
+    { key: "build", list: "sheets", label: "Create my call sheet", listLabel: "My call sheets" },
   ];
 
-  function renderTabs(active) {
+  function renderTabs(activeName) {
     var n = store.counts();
     document.getElementById("tabbar").innerHTML = TABS.map(function (t) {
+      var section =
+        activeName === t.key ||
+        activeName === t.list ||
+        (t.list === "questions" && activeName === "thread") ||
+        (t.list === "sheets" && activeName === "sheet");
+      var onList = section && activeName !== t.key;
       var bub = "";
-      if (t.key === "questions" && n.unread) {
+      if (t.list === "questions" && n.unread) {
         bub = '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>';
       }
       return (
-        '<button class="tab' + (active === t.key ? " active" : "") +
-        '" role="tab" aria-selected="' + (active === t.key) +
-        '" data-act="go" data-to="' + t.key + '">' + t.label + bub + "</button>"
+        '<div class="tabsplit' + (section ? " active" : "") + '">' +
+        '<button class="tab-main" data-act="go" data-to="' + t.key + '">' +
+        t.label + "</button>" +
+        '<button class="tab-list' + (onList ? " on" : "") +
+        '" data-act="go" data-to="' + t.list + '" aria-label="' + t.listLabel + '">' +
+        "&#9776;" + bub + "</button>" +
+        "</div>"
       );
     }).join("");
   }
@@ -4752,12 +4892,6 @@ window.LZ_SEED = {
 
   function go(to, id) {
     global.location.hash = "/" + to + (id ? "/" + id : "");
-  }
-
-  function activeTabFor(name) {
-    if (name === "thread") return "questions";
-    if (name === "sheet") return "sheets";
-    return name;
   }
 
   var firstRender = true;
@@ -4789,7 +4923,7 @@ window.LZ_SEED = {
     }
 
     face.innerHTML = html;
-    renderTabs(activeTabFor(r.name));
+    renderTabs(r.name);
 
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
@@ -4797,6 +4931,15 @@ window.LZ_SEED = {
     if (r.name === "ask") wireAskForm();
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
+      var fb = document.getElementById("fb-form");
+      if (fb) {
+        wireCompose("fb-form", "fb-note", function (text) {
+          store.setFeedback(r.id, "no", text);
+          global.LZ.ui.explain = null;
+          route();
+          toast("Thank you — the team will take another look.");
+        });
+      }
       store.clearNew(r.id);
     }
     if (r.name === "build") wireBuildForm();
@@ -4900,7 +5043,7 @@ window.LZ_SEED = {
       } else {
         thread.unread = true;
         store.save();
-        renderTabs(activeTabFor(here.name));
+        renderTabs(here.name);
         toast("The Lesko Help team replied to your question.");
       }
     }, 5200);
@@ -4925,13 +5068,15 @@ window.LZ_SEED = {
       e.preventDefault();
 
       var topicKey = document.getElementById("b-topic").value;
-      var where = document.getElementById("b-where").value.trim();
+      var zip = document.getElementById("b-zip").value.trim();
+      var city = document.getElementById("b-city").value.trim();
+      var state = document.getElementById("b-state").value.trim();
       var problem = document.getElementById("b-problem").value.trim();
       var err = document.getElementById("build-error");
 
       var missing = [];
       if (!topicKey) missing.push("pick what you need help with");
-      if (!where) missing.push("say where you are");
+      if (!zip && !city) missing.push("add your ZIP code or your city");
       if (!problem) missing.push("tell us what is going on");
 
       if (missing.length) {
@@ -4941,23 +5086,9 @@ window.LZ_SEED = {
       }
       err.classList.remove("show");
 
-      /* One location box: a 5-digit ZIP, or "City, State", or just a city. */
-      var zip = "";
-      var city = "";
-      var state = "";
-      var zipMatch = where.match(/\b\d{5}\b/);
-      if (zipMatch) {
-        zip = zipMatch[0];
-        if (ZIPS[zip]) {
-          city = ZIPS[zip][0];
-          state = ZIPS[zip][1];
-        }
-        var remainder = where.replace(zip, "").replace(/[,\s]+/g, " ").trim();
-        if (remainder && !city) city = remainder;
-      } else {
-        var parts = where.split(",");
-        city = parts[0].trim();
-        state = (parts[1] || "").trim();
+      if (zip && !city && ZIPS[zip]) {
+        city = ZIPS[zip][0];
+        state = state || ZIPS[zip][1];
       }
 
       runGeneration({
@@ -5076,6 +5207,50 @@ window.LZ_SEED = {
     }
   }
 
+  /* ------------------------------------------ per-row notes on a sheet */
+
+  function openNoteEditor(btn) {
+    var sheetId = btn.getAttribute("data-sheet");
+    var orgId = btn.getAttribute("data-org");
+    var row = document.getElementById("wrow-" + sheetId + "-" + orgId);
+    if (!row) return;
+    var slot = row.querySelector('[data-slot="note"]');
+    var current = store.orgNote(sheetId, orgId);
+
+    slot.innerHTML =
+      '<div class="w-note-edit">' +
+      '<label class="sr-only" for="ne-input">Your note</label>' +
+      '<input id="ne-input" type="text" value="' + views.esc(current) +
+      '" placeholder="Who you spoke to, what they said…">' +
+      '<button type="button" class="btn red" id="ne-save">Save</button>' +
+      "</div>";
+    btn.hidden = true;
+
+    var input = slot.querySelector("#ne-input");
+    var saveBtn = slot.querySelector("#ne-save");
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+
+    function saveNote() {
+      var text = input.value.trim();
+      store.setOrgNote(sheetId, orgId, text);
+      slot.innerHTML = text
+        ? '<p class="w-note-text">&#128221; ' + views.esc(text) + "</p>"
+        : "";
+      btn.hidden = false;
+      btn.textContent = text ? "Edit note" : "+ Note";
+      if (text) toast("Note saved.");
+    }
+
+    saveBtn.addEventListener("click", saveNote);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        saveNote();
+      }
+    });
+  }
+
   /* --------------------------------- two-tap reset (no browser dialogs) */
 
   function armReset(btn) {
@@ -5135,6 +5310,24 @@ window.LZ_SEED = {
         toast("Demo — in the real zone this opens " + (t.getAttribute("data-name") || "the file") + ".");
         break;
 
+      case "fb-yes":
+        store.setFeedback(t.getAttribute("data-id"), "yes", "");
+        route();
+        toast("Thank you — good to know it helped.");
+        break;
+
+      case "fb-no":
+        global.LZ.ui.explain = t.getAttribute("data-id");
+        route();
+        var fbBox = document.getElementById("fb-note");
+        if (fbBox) fbBox.focus();
+        break;
+
+      case "org-note": {
+        openNoteEditor(t);
+        break;
+      }
+
       case "reset": {
         if (t.getAttribute("data-armed") === "yes") {
           store.reset();
@@ -5157,12 +5350,19 @@ window.LZ_SEED = {
     if (!t) return;
 
     if (t.getAttribute("data-act") === "called") {
-      var on = store.toggleCalled(
-        t.getAttribute("data-sheet"),
-        t.getAttribute("data-org")
-      );
-      var card = t.closest(".org");
-      if (card) card.classList.toggle("done", on);
+      var sheetId = t.getAttribute("data-sheet");
+      var orgId = t.getAttribute("data-org");
+      var on = store.toggleCalled(sheetId, orgId);
+      var row = t.closest(".wrow") || t.closest(".org");
+      if (row) {
+        row.classList.toggle("done", on);
+        var slot = row.querySelector('[data-slot="called"]');
+        if (slot) {
+          slot.innerHTML = on
+            ? "&#10003; Called " + views.esc(views.niceDate(store.calledOn(sheetId, orgId)))
+            : "";
+        }
+      }
       if (on) toast("Ticked off. Well done — that is the hard part.");
     }
   });

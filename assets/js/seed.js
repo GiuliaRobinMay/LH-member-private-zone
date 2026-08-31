@@ -351,7 +351,7 @@ window.LZ_SEED = {
       "id": "q-electric-shutoff",
       "subject": "Electric goes off Monday and I can't get the $312 together",
       "topic": "bills-debt",
-      "status": "waiting",
+      "status": "answered",
       "createdAt": "2026-08-30T09:41:00-04:00",
       "ago": "3 hours ago",
       "location": "Rochester, NY 14604",
@@ -363,8 +363,24 @@ window.LZ_SEED = {
           "body": "they put a red paper on the door friday. the electric goes off monday if I dont pay 312.00 and I dont have it, my check dont come till the 3rd. I called the company and the young lady said the most she can do is a payment plan but I have to put 150 down today to start it and I dont have that either. is there anybody around here that helps with this. sorry to ask on a sunday I just dont know who else to ask",
           "ago": "3 hours ago",
           "createdAt": "2026-08-30T09:41:00-04:00"
+        },
+        {
+          "role": "team",
+          "name": "Tony Woodworth",
+          "roleLabel": "Question Responder",
+          "body": "Hi Aaron, it's Tony. A red tag on the door is frightening, but Monday is further away than it feels. Do these three things today, in this order.\n\n1. Call the electric company first and say these words: \"I have a shutoff notice and I want a deferred payment agreement.\" In New York they must offer you a payment plan you can afford before they shut you off, and asking for it stops the clock.\n2. Dial 2-1-1 and ask for emergency utility help in Monroe County. They hold the list of who has money this month, including your local Community Action Agency.\n3. Ask the electric company for the HEAP emergency line while you have them. If anyone in the house is over 60, on certain medicines, or uses medical equipment, say so — that adds protections.\n\nI attached the checklist with the numbers. Write back after the first call and tell me what they said — we will take the next step together.\n- Tony",
+          "attachments": [
+            {
+              "name": "Stop_A_Shutoff_Checklist.pdf",
+              "kind": "PDF",
+              "size": "1 page"
+            }
+          ],
+          "ago": "3 hours ago",
+          "createdAt": "2026-08-30T16:10:00Z"
         }
-      ]
+      ],
+      "unread": true
     },
     {
       "id": "q-mother-83-alone",
@@ -427,7 +443,7 @@ window.LZ_SEED = {
           "createdAt": "2026-08-26T09:35:00-04:00"
         }
       ],
-      "unread": true
+      "unread": false
     },
     {
       "id": "q-rent-14-day-notice",

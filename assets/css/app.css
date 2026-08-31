@@ -199,57 +199,85 @@ h3 em {
   font-style: italic;
 }
 
-/* ------------------------------------------------------------ two tabs */
+/* ---------------------------------------------------- two split tabs
+   The main part opens the form; the small ☰ opens that side's list. */
 
 .tabbar {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 4px;
-  padding: 4px;
-  border: 1px solid var(--hairline);
-  border-radius: 22px;
-  background: var(--paper-2);
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
   margin: 10px 0 16px;
 }
 
-.tab {
-  position: relative;
-  font: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
-  padding: 10px 4px;
-  border: 1px solid transparent;
+.tabsplit {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--hairline);
   border-radius: 999px;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+
+.tabsplit.active {
+  background: var(--yellow);
+  border-color: var(--ink);
+}
+
+.tab-main {
+  flex: 1;
+  font: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  padding: 11px 6px;
+  border: 0;
   background: transparent;
   color: var(--ink-soft);
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.12s ease, color 0.12s ease;
 }
 
-.tab:hover {
-  background: var(--tint-yellow);
-}
-
-.tab.active {
-  background: var(--yellow);
-  border-color: var(--ink);
+.tabsplit.active .tab-main {
   color: var(--ink);
 }
 
-.tab .bub {
-  display: inline-grid;
+.tab-main:hover {
+  background: rgba(22, 34, 63, 0.05);
+}
+
+.tab-list {
+  position: relative;
+  width: 44px;
+  border: 0;
+  border-left: 1px solid rgba(22, 34, 63, 0.18);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.tabsplit.active .tab-list {
+  color: var(--ink);
+}
+
+.tab-list:hover,
+.tab-list.on {
+  background: rgba(22, 34, 63, 0.08);
+}
+
+.tab-list .bub {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
   place-items: center;
-  min-width: 18px;
-  height: 18px;
-  margin-left: 7px;
-  padding: 0 5px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
   border-radius: 999px;
   background: var(--red);
   color: #fff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  vertical-align: 1px;
 }
 
 /* --------------------------------------------------------------- panels */
@@ -445,6 +473,12 @@ h3 em {
   background: var(--paper-2);
 }
 
+.btn.red {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
 /* The two main actions get a bigger, easier target. */
 .btn.big {
   font-size: 12px;
@@ -495,7 +529,9 @@ h3 em {
 .form-card {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
-  background: var(--tint-yellow);
+  background: var(--paper-2);
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
+    0 14px 30px -20px rgba(22, 34, 63, 0.5);
   padding: 15px 16px 14px;
   margin-bottom: 16px;
 }
@@ -555,9 +591,14 @@ h3 em {
   gap: 12px;
 }
 
+.field-row.three {
+  grid-template-columns: 110px 1fr 1fr;
+}
+
 .form-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
   flex-wrap: wrap;
   margin-top: 3px;
@@ -1031,6 +1072,38 @@ select {
   text-align: right;
 }
 
+/* was this answer helpful? */
+
+.feedback {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border: 1px dashed var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  padding: 11px 15px;
+  margin: 2px 0 14px;
+  font-size: 14px;
+}
+
+.feedback .fb-q {
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.feedback .compose {
+  flex: 1 1 100%;
+  margin: 0;
+}
+
+.feedback.done {
+  border-style: solid;
+  border-color: rgba(46, 158, 91, 0.4);
+  background: var(--tint-green);
+  color: var(--ink-soft);
+}
+
 /* typing indicator */
 
 .typing .bubble {
@@ -1453,6 +1526,116 @@ select {
   margin-top: 18px;
 }
 
+/* --------------------------------------------------- sheet work list */
+
+.w-titlebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 2px 0 14px;
+}
+
+.work {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wrow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--paper-2);
+  padding: 12px 14px;
+}
+
+.wrow.done {
+  background: var(--tint-green);
+  border-color: rgba(46, 158, 91, 0.4);
+}
+
+.wrow.done .org-name {
+  text-decoration: line-through;
+  text-decoration-color: var(--green);
+  color: var(--ink-soft);
+}
+
+.w-contacts {
+  margin: 3px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+
+.w-contacts a {
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.w-contacts a:hover {
+  text-decoration: underline;
+}
+
+.w-contacts .w-tel {
+  color: var(--green);
+}
+
+.w-sep {
+  color: var(--ink-faint);
+  margin: 0 7px;
+}
+
+.w-called {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--green);
+  margin-top: 2px;
+}
+
+.w-called:empty {
+  display: none;
+}
+
+.w-note-text {
+  margin: 5px 0 0;
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.w-note-btn {
+  font-size: 13px;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.w-note-edit {
+  display: flex;
+  gap: 8px;
+  margin-top: 7px;
+}
+
+.w-note-edit input {
+  flex: 1;
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 11px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.w-note-edit input:focus {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 1px;
+}
+
 /* ----------------------------------------------------------- generating */
 
 .generating {
@@ -1578,7 +1761,20 @@ select {
 
 @media (max-width: 560px) {
   .tabbar {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+  }
+
+  .field-row.three {
+    grid-template-columns: 1fr;
+  }
+
+  .wrow {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .w-note-btn {
+    grid-column: 2;
+    justify-self: start;
   }
 
   .masthead {
