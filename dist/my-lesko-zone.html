@@ -787,8 +787,9 @@ select {
 }
 
 /* ----------------------------------------------------------------- chat
-   The Questions tab is a chat: bubbles, a compose bar, a typing dot
-   animation. Members already know exactly how this works. */
+   One chat window, like the Lesko Help Navigator: a navy band on top,
+   the messages scrolling in the middle, and "Ask a question…" with a
+   red Ask button pinned at the bottom. */
 
 .private-line {
   display: flex;
@@ -797,6 +798,148 @@ select {
   font-size: 13px;
   color: var(--ink-soft);
   margin: 0 0 14px;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
+    0 14px 30px -20px rgba(22, 34, 63, 0.5);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 14px;
+}
+
+.chat-back {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  margin-left: -6px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #fff;
+  font-size: 19px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.chat-back:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.chat-ava {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 700;
+  user-select: none;
+}
+
+.chat-name {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.1;
+}
+
+.ch-over {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--yellow);
+}
+
+.ch-title {
+  display: block;
+  font-family: var(--serif);
+  font-size: 17px;
+}
+
+.chat-priv,
+.chat-when {
+  flex: 0 0 auto;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  white-space: nowrap;
+}
+
+.chat-body {
+  height: clamp(300px, 52vh, 430px);
+  overflow-y: auto;
+  padding: 14px 14px 10px;
+  scroll-behavior: smooth;
+}
+
+.chat-foot {
+  border-top: 1px solid var(--hairline-soft);
+  background: var(--paper-2);
+  padding: 10px 12px;
+  margin: 0;
+}
+
+.chat-foot .compose {
+  margin: 0;
+}
+
+/* starter-question chips, like the Navigator's related questions */
+
+.chip-block {
+  margin-bottom: 14px;
+}
+
+.chip-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 2px 7px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.chip {
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--ink);
+  background: var(--tint-yellow);
+  border: 1px solid rgba(22, 34, 63, 0.16);
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.chip:hover {
+  background: var(--yellow);
 }
 
 .compose {
@@ -814,7 +957,7 @@ select {
   padding: 12px 16px;
   border: 1px solid var(--hairline);
   border-radius: 22px;
-  background: var(--paper-2);
+  background: #fff;
   color: var(--ink);
   resize: none;
   min-height: 46px;
@@ -855,22 +998,48 @@ select {
   transform: translateY(1px);
 }
 
-/* the small where-are-you row under the chat compose */
+/* the labelled red button beside the compose — "Ask" / "Send" */
+
+.ask-btn {
+  flex: 0 0 auto;
+  height: 46px;
+  padding: 0 24px;
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font: inherit;
+  font-size: 15.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.ask-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.ask-btn:active {
+  transform: translateY(1px);
+}
+
+/* the small where-are-you row above the compose */
 
 .chat-loc {
   display: grid;
   grid-template-columns: 150px 1fr;
   gap: 8px;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
 }
 
 .chat-loc input {
   font: inherit;
   font-size: 14px;
   padding: 8px 13px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   border-radius: 999px;
-  background: var(--paper-2);
+  background: #fff;
   color: var(--ink);
 }
 
@@ -1052,7 +1221,8 @@ select {
   color: var(--ink-soft);
 }
 
-/* bubbles */
+/* bubbles — the member in warm tan on the right, the team as white
+   cards with their face beside them on the left */
 
 .brow {
   display: flex;
@@ -1061,6 +1231,27 @@ select {
 
 .brow.me {
   justify-content: flex-end;
+}
+
+.brow.team {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.b-ava {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--yellow);
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 700;
+  user-select: none;
 }
 
 .bubble {
@@ -1073,19 +1264,17 @@ select {
 }
 
 .brow.team .bubble {
-  background: var(--paper-2);
-  border: 1px solid var(--hairline);
+  background: #fff;
+  border: 1px solid var(--hairline-soft);
   border-radius: 18px 18px 18px 5px;
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.06);
 }
 
 .brow.me .bubble {
-  background: var(--blue);
-  color: #fff;
+  background: #f6e7c3;
+  border: 1px solid rgba(22, 34, 63, 0.14);
+  color: var(--ink);
   border-radius: 18px 18px 5px 18px;
-}
-
-.brow.me .bubble a {
-  color: #fff;
 }
 
 .bubble .b-who {
@@ -1103,6 +1292,10 @@ select {
   text-transform: uppercase;
   color: var(--ink-faint);
   margin: 0 6px 12px;
+}
+
+.bmeta.team {
+  margin-left: 44px;
 }
 
 .brow.me + .bmeta {
@@ -1799,6 +1992,18 @@ select {
 @media (max-width: 560px) {
   .tabbar {
     grid-template-columns: 1fr;
+  }
+
+  .chat-loc {
+    grid-template-columns: 110px 1fr;
+  }
+
+  .bubble {
+    max-width: 90%;
+  }
+
+  .ask-btn {
+    padding: 0 18px;
   }
 
   .field-row.three {
@@ -4502,6 +4707,24 @@ window.LZ_SEED = {
 
   /* ==================================== CHAT WITH A TEAM MEMBER (chat) */
 
+  /** The navy band at the top of the chat window — same as the other
+      Lesko chat apps: round mark, LESKO HELP over the room name. */
+  function chatHead(opts) {
+    opts = opts || {};
+    return (
+      '<div class="chat-head">' +
+      (opts.back
+        ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
+          '" aria-label="Back to my conversations">&larr;</button>'
+        : "") +
+      '<span class="chat-ava" aria-hidden="true">?</span>' +
+      '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
+      '<span class="ch-title">Team Chat</span></span>' +
+      (opts.right || '<span class="chat-priv">&#128274; Private</span>') +
+      "</div>"
+    );
+  }
+
   function questionRows() {
     return store.state.questions
       .map(function (q) {
@@ -4526,19 +4749,43 @@ window.LZ_SEED = {
   }
 
   function ask() {
+    var rows = questionRows();
+    var first = esc((store.member.name || "").split(" ")[0]);
+
+    var body = rows
+      ? '<div class="chip-block">' +
+        '<span class="chip-label">New here? Try one of these</span>' +
+        '<div class="chips">' +
+        '<button type="button" class="chip" data-act="chip">Where do I start?</button>' +
+        '<button type="button" class="chip" data-act="chip">How do I create my call sheet?</button>' +
+        '<button type="button" class="chip" data-act="chip">Is there money to help with my rent?</button>' +
+        "</div></div>" +
+        '<span class="chip-label">Your conversations</span>' +
+        '<div class="convos">' + rows + "</div>"
+      : '<div class="brow team">' +
+        '<span class="b-ava" aria-hidden="true">?</span>' +
+        '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
+        "Hi " + first + "! Ask us anything &mdash; money for bills, your business, " +
+        "school, whatever is going on. A real person answers every question, " +
+        "usually within a day.</div></div>";
+
     return (
       '<section class="panel">' +
-      '<form class="compose" id="new-q">' +
-      '<label class="sr-only" for="q-input">Type your question</label>' +
-      '<textarea id="q-input" rows="1" placeholder="Type your question here&hellip; say it in your own words."></textarea>' +
-      '<button class="send" type="submit" aria-label="Send my question">&#8593;</button>' +
-      "</form>" +
+      '<div class="chat">' +
+      chatHead() +
+      '<div class="chat-body" id="chat-body">' + body + "</div>" +
+      '<form class="chat-foot" id="new-q">' +
       '<div class="chat-loc">' +
       '<input id="ask-zip" inputmode="numeric" autocomplete="postal-code" placeholder="Your ZIP code" aria-label="Your ZIP code">' +
       '<input id="ask-state" autocomplete="address-level1" placeholder="Your state" aria-label="Your state">' +
       "</div>" +
+      '<div class="compose">' +
+      '<label class="sr-only" for="q-input">Ask a question</label>' +
+      '<textarea id="q-input" rows="1" placeholder="Ask a question&hellip;"></textarea>' +
+      '<button class="ask-btn" type="submit">Ask</button>' +
+      "</div></form>" +
+      "</div>" +
       privateLine() +
-      '<div class="convos">' + questionRows() + "</div>" +
       "</section>"
     );
   }
@@ -4576,38 +4823,48 @@ window.LZ_SEED = {
         var isTeam = m.role === "team";
         return (
           '<div class="brow ' + (isTeam ? "team" : "me") + '">' +
+          (isTeam
+            ? '<span class="b-ava" aria-hidden="true">' +
+              esc((m.name || "?").trim().charAt(0).toUpperCase()) + "</span>"
+            : "") +
           '<div class="bubble">' +
           (isTeam ? '<span class="b-who">' + esc(m.name) + " &middot; Lesko Help</span>" : "") +
           rich(m.body) +
           (isTeam ? fileChips(m.attachments) : "") +
           "</div></div>" +
-          '<div class="bmeta">' + esc(store.ago(m.createdAt) || m.ago) + "</div>"
+          '<div class="bmeta' + (isTeam ? " team" : "") + '">' +
+          esc(store.ago(m.createdAt) || m.ago) + "</div>"
         );
       })
       .join("");
 
     var waitingNote =
       q.status === "waiting"
-        ? '<p class="private-line"><span aria-hidden="true">&#8987;</span>' +
+        ? '<p class="private-line" style="margin:4px 2px 0"><span aria-hidden="true">&#8987;</span>' +
           "<span>Your question is with the team — answers usually come back within a day or two.</span></p>"
         : "";
 
     return (
       '<section class="panel">' +
-      '<div class="thread-head">' +
-      '<button class="backlink" data-act="go" data-to="questions" style="margin:0">&larr; My questions</button>' +
-      '<span class="c-when">' + esc(niceDate(q.createdAt)) + "</span>" +
-      "</div>" +
+      '<div class="chat">' +
+      chatHead({
+        back: "ask",
+        right: '<span class="chat-when">' + esc(niceDate(q.createdAt)) + "</span>",
+      }) +
+      '<div class="chat-body" id="chat-body">' +
       msgs +
       feedbackBlock(q) +
       '<div id="typing-slot"></div>' +
       waitingNote +
-      '<form class="compose" id="reply-form" style="margin-top:10px">' +
+      "</div>" +
+      '<form class="chat-foot" id="reply-form">' +
+      '<div class="compose">' +
       '<label class="sr-only" for="reply-input">Write back</label>' +
       '<textarea id="reply-input" rows="1" placeholder="Write back&hellip;"></textarea>' +
-      '<button class="send" type="submit" data-id="' + esc(q.id) +
-      '" aria-label="Send my reply">&#8593;</button>' +
-      "</form>" +
+      '<button class="ask-btn" type="submit" data-id="' + esc(q.id) +
+      '">Send</button>' +
+      "</div></form>" +
+      "</div>" +
       "</section>"
     );
   }
@@ -4651,7 +4908,9 @@ window.LZ_SEED = {
   /** The animated "the team is typing" bubble, injected by app.js. */
   function typingBubble() {
     return (
-      '<div class="brow team typing"><div class="bubble" aria-label="The team is typing">' +
+      '<div class="brow team typing">' +
+      '<span class="b-ava" aria-hidden="true">?</span>' +
+      '<div class="bubble" aria-label="The team is typing">' +
       '<span class="d"></span><span class="d"></span><span class="d"></span>' +
       "</div></div>"
     );
@@ -4956,6 +5215,7 @@ window.LZ_SEED = {
     if (r.name === "ask") wireCompose("new-q", "q-input", onNewQuestion);
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
+      scrollChatDown();
       var fb = document.getElementById("fb-form");
       if (fb) {
         wireCompose("fb-form", "fb-note", function (text) {
@@ -4982,6 +5242,12 @@ window.LZ_SEED = {
   }
 
   /* ------------------------------------------------------------- chat */
+
+  /** The messages scroll inside the chat window, like every chat app. */
+  function scrollChatDown() {
+    var body = document.getElementById("chat-body");
+    if (body) body.scrollTop = body.scrollHeight;
+  }
 
   /** Compose bars submit on the button and on Enter (Shift+Enter = newline). */
   function wireCompose(formId, inputId, onSend) {
@@ -5041,7 +5307,7 @@ window.LZ_SEED = {
       var here = parseHash();
       if (slot && here.name === "thread" && here.id === thread.id) {
         slot.innerHTML = views.typingBubble();
-        slot.scrollIntoView({ block: "end", behavior: "smooth" });
+        scrollChatDown();
       }
     }, 1400);
 
@@ -5316,6 +5582,17 @@ window.LZ_SEED = {
       case "export-csv":
         exportCsv(t.getAttribute("data-sheet"));
         break;
+
+      case "chip": {
+        /* A starter question drops into the compose, ready to send. */
+        var qi = document.getElementById("q-input");
+        if (qi) {
+          qi.value = t.textContent.trim();
+          qi.dispatchEvent(new Event("input"));
+          qi.focus();
+        }
+        break;
+      }
 
       case "demo-file":
         toast("Demo — in the real zone this opens " + (t.getAttribute("data-name") || "the file") + ".");

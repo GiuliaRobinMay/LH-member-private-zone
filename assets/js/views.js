@@ -115,6 +115,24 @@
 
   /* ==================================== CHAT WITH A TEAM MEMBER (chat) */
 
+  /** The navy band at the top of the chat window — same as the other
+      Lesko chat apps: round mark, LESKO HELP over the room name. */
+  function chatHead(opts) {
+    opts = opts || {};
+    return (
+      '<div class="chat-head">' +
+      (opts.back
+        ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
+          '" aria-label="Back to my conversations">&larr;</button>'
+        : "") +
+      '<span class="chat-ava" aria-hidden="true">?</span>' +
+      '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
+      '<span class="ch-title">Team Chat</span></span>' +
+      (opts.right || '<span class="chat-priv">&#128274; Private</span>') +
+      "</div>"
+    );
+  }
+
   function questionRows() {
     return store.state.questions
       .map(function (q) {
@@ -139,19 +157,43 @@
   }
 
   function ask() {
+    var rows = questionRows();
+    var first = esc((store.member.name || "").split(" ")[0]);
+
+    var body = rows
+      ? '<div class="chip-block">' +
+        '<span class="chip-label">New here? Try one of these</span>' +
+        '<div class="chips">' +
+        '<button type="button" class="chip" data-act="chip">Where do I start?</button>' +
+        '<button type="button" class="chip" data-act="chip">How do I create my call sheet?</button>' +
+        '<button type="button" class="chip" data-act="chip">Is there money to help with my rent?</button>' +
+        "</div></div>" +
+        '<span class="chip-label">Your conversations</span>' +
+        '<div class="convos">' + rows + "</div>"
+      : '<div class="brow team">' +
+        '<span class="b-ava" aria-hidden="true">?</span>' +
+        '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
+        "Hi " + first + "! Ask us anything &mdash; money for bills, your business, " +
+        "school, whatever is going on. A real person answers every question, " +
+        "usually within a day.</div></div>";
+
     return (
       '<section class="panel">' +
-      '<form class="compose" id="new-q">' +
-      '<label class="sr-only" for="q-input">Type your question</label>' +
-      '<textarea id="q-input" rows="1" placeholder="Type your question here&hellip; say it in your own words."></textarea>' +
-      '<button class="send" type="submit" aria-label="Send my question">&#8593;</button>' +
-      "</form>" +
+      '<div class="chat">' +
+      chatHead() +
+      '<div class="chat-body" id="chat-body">' + body + "</div>" +
+      '<form class="chat-foot" id="new-q">' +
       '<div class="chat-loc">' +
       '<input id="ask-zip" inputmode="numeric" autocomplete="postal-code" placeholder="Your ZIP code" aria-label="Your ZIP code">' +
       '<input id="ask-state" autocomplete="address-level1" placeholder="Your state" aria-label="Your state">' +
       "</div>" +
+      '<div class="compose">' +
+      '<label class="sr-only" for="q-input">Ask a question</label>' +
+      '<textarea id="q-input" rows="1" placeholder="Ask a question&hellip;"></textarea>' +
+      '<button class="ask-btn" type="submit">Ask</button>' +
+      "</div></form>" +
+      "</div>" +
       privateLine() +
-      '<div class="convos">' + questionRows() + "</div>" +
       "</section>"
     );
   }
@@ -189,38 +231,48 @@
         var isTeam = m.role === "team";
         return (
           '<div class="brow ' + (isTeam ? "team" : "me") + '">' +
+          (isTeam
+            ? '<span class="b-ava" aria-hidden="true">' +
+              esc((m.name || "?").trim().charAt(0).toUpperCase()) + "</span>"
+            : "") +
           '<div class="bubble">' +
           (isTeam ? '<span class="b-who">' + esc(m.name) + " &middot; Lesko Help</span>" : "") +
           rich(m.body) +
           (isTeam ? fileChips(m.attachments) : "") +
           "</div></div>" +
-          '<div class="bmeta">' + esc(store.ago(m.createdAt) || m.ago) + "</div>"
+          '<div class="bmeta' + (isTeam ? " team" : "") + '">' +
+          esc(store.ago(m.createdAt) || m.ago) + "</div>"
         );
       })
       .join("");
 
     var waitingNote =
       q.status === "waiting"
-        ? '<p class="private-line"><span aria-hidden="true">&#8987;</span>' +
+        ? '<p class="private-line" style="margin:4px 2px 0"><span aria-hidden="true">&#8987;</span>' +
           "<span>Your question is with the team — answers usually come back within a day or two.</span></p>"
         : "";
 
     return (
       '<section class="panel">' +
-      '<div class="thread-head">' +
-      '<button class="backlink" data-act="go" data-to="questions" style="margin:0">&larr; My questions</button>' +
-      '<span class="c-when">' + esc(niceDate(q.createdAt)) + "</span>" +
-      "</div>" +
+      '<div class="chat">' +
+      chatHead({
+        back: "ask",
+        right: '<span class="chat-when">' + esc(niceDate(q.createdAt)) + "</span>",
+      }) +
+      '<div class="chat-body" id="chat-body">' +
       msgs +
       feedbackBlock(q) +
       '<div id="typing-slot"></div>' +
       waitingNote +
-      '<form class="compose" id="reply-form" style="margin-top:10px">' +
+      "</div>" +
+      '<form class="chat-foot" id="reply-form">' +
+      '<div class="compose">' +
       '<label class="sr-only" for="reply-input">Write back</label>' +
       '<textarea id="reply-input" rows="1" placeholder="Write back&hellip;"></textarea>' +
-      '<button class="send" type="submit" data-id="' + esc(q.id) +
-      '" aria-label="Send my reply">&#8593;</button>' +
-      "</form>" +
+      '<button class="ask-btn" type="submit" data-id="' + esc(q.id) +
+      '">Send</button>' +
+      "</div></form>" +
+      "</div>" +
       "</section>"
     );
   }
@@ -264,7 +316,9 @@
   /** The animated "the team is typing" bubble, injected by app.js. */
   function typingBubble() {
     return (
-      '<div class="brow team typing"><div class="bubble" aria-label="The team is typing">' +
+      '<div class="brow team typing">' +
+      '<span class="b-ava" aria-hidden="true">?</span>' +
+      '<div class="bubble" aria-label="The team is typing">' +
       '<span class="d"></span><span class="d"></span><span class="d"></span>' +
       "</div></div>"
     );

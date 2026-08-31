@@ -11,14 +11,12 @@ Answer Vault) — same cream paper, navy ink, red italics, card suits, hairline 
 ## What it is
 
 One narrow rectangle — `min(640px, 94vw)` — made to sit inside a Mighty Networks space without
-competing with it. Four tabs, almost no copy:
+competing with it. Two split tabs, each with a small ☰ that opens its list:
 
 | Tab | What it does |
 |---|---|
-| **Ask a question** | A guided form: what you need in your own words, plus ZIP and state. Sending opens the conversation. |
-| **My questions** | Every question with the date asked and **Answered ✓ / No answer yet / New answer**. Opening one shows the question and the team's answers together as a chat — including the links and file attachments the team sends along. Unread answers show as a red count on the tab. |
-| **Create a call sheet** | Three fields (what, where, your own words) and one button. |
-| **My call sheets** | Every sheet with the date it was made and how many calls are ticked. Opening one shows the working document — first call, scripts, tick boxes — with **Download for Excel** at the top and bottom. |
+| **Chat with a Team Member** | A real chat window, styled after the Lesko Help Navigator: navy band with the room name, starter-question chips, every conversation listed inside the window, and **Ask a question…** with a red **Ask** button pinned at the bottom. The member's messages are warm tan bubbles on the right; the team answers as white cards with an avatar on the left — with the links and file attachments they send along. Its ☰ is **My questions**: date on the right, **Answered ✓ / No answer yet / New answer**, unread answers as a red count on the tab. |
+| **Create my call sheet** | Topic, ZIP / city / state as separate fields, then the member's own words — one red button, on the right. Its ☰ is **My call sheets**: every sheet with its date and how many calls are ticked. A sheet opens straight into the working list: Called tick (stamps the date), phone, email, website, a private note per row, and **Download** for Excel. |
 
 That's the whole surface. No sidebar, no home page, no app-in-an-app.
 
@@ -69,7 +67,7 @@ index.html            the widget shell — topbar, masthead, tabs, footer
 assets/css/app.css    the App Lab design language, plus print styles
 assets/js/seed.js     all demo content (generated; safe to edit by hand)
 assets/js/store.js    state + localStorage — the only place data changes
-assets/js/views.js    the four faces + thread + call sheet, as HTML strings
+assets/js/views.js    the chat, the lists, the builder, the call sheet — HTML strings
 assets/js/app.js      tab router, forms, export, copy, print
 tools/bundle.js       inlines everything into dist/my-lesko-zone.html
 docs/                 what changed in the call sheet, and why

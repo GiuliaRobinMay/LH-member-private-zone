@@ -104,6 +104,7 @@
     if (r.name === "ask") wireCompose("new-q", "q-input", onNewQuestion);
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
+      scrollChatDown();
       var fb = document.getElementById("fb-form");
       if (fb) {
         wireCompose("fb-form", "fb-note", function (text) {
@@ -130,6 +131,12 @@
   }
 
   /* ------------------------------------------------------------- chat */
+
+  /** The messages scroll inside the chat window, like every chat app. */
+  function scrollChatDown() {
+    var body = document.getElementById("chat-body");
+    if (body) body.scrollTop = body.scrollHeight;
+  }
 
   /** Compose bars submit on the button and on Enter (Shift+Enter = newline). */
   function wireCompose(formId, inputId, onSend) {
@@ -189,7 +196,7 @@
       var here = parseHash();
       if (slot && here.name === "thread" && here.id === thread.id) {
         slot.innerHTML = views.typingBubble();
-        slot.scrollIntoView({ block: "end", behavior: "smooth" });
+        scrollChatDown();
       }
     }, 1400);
 
@@ -464,6 +471,17 @@
       case "export-csv":
         exportCsv(t.getAttribute("data-sheet"));
         break;
+
+      case "chip": {
+        /* A starter question drops into the compose, ready to send. */
+        var qi = document.getElementById("q-input");
+        if (qi) {
+          qi.value = t.textContent.trim();
+          qi.dispatchEvent(new Event("input"));
+          qi.focus();
+        }
+        break;
+      }
 
       case "demo-file":
         toast("Demo — in the real zone this opens " + (t.getAttribute("data-name") || "the file") + ".");
