@@ -22,18 +22,26 @@
 
   /* ------------------------------------------------------------- tabs */
 
+  var TABS = [
+    { key: "ask", label: "Ask a question" },
+    { key: "questions", label: "My questions" },
+    { key: "build", label: "Create a call sheet" },
+    { key: "sheets", label: "My call sheets" },
+  ];
+
   function renderTabs(active) {
     var n = store.counts();
-    var qBub = n.unread
-      ? '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>'
-      : "";
-    document.getElementById("tabbar").innerHTML =
-      '<button class="tab' + (active === "q" ? " active" : "") +
-      '" role="tab" aria-selected="' + (active === "q") +
-      '" data-act="go" data-to="q">&#128172; Questions' + qBub + "</button>" +
-      '<button class="tab' + (active === "build" ? " active" : "") +
-      '" role="tab" aria-selected="' + (active === "build") +
-      '" data-act="go" data-to="build">&#128203; Call sheets</button>';
+    document.getElementById("tabbar").innerHTML = TABS.map(function (t) {
+      var bub = "";
+      if (t.key === "questions" && n.unread) {
+        bub = '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>';
+      }
+      return (
+        '<button class="tab' + (active === t.key ? " active" : "") +
+        '" role="tab" aria-selected="' + (active === t.key) +
+        '" data-act="go" data-to="' + t.key + '">' + t.label + bub + "</button>"
+      );
+    }).join("");
   }
 
   /* ----------------------------------------------------------- router */
@@ -41,7 +49,7 @@
   function parseHash() {
     var h = (global.location.hash || "").replace(/^#\/?/, "");
     var parts = h.split("/").filter(Boolean);
-    return { name: parts[0] || "q", id: parts[1] || null };
+    return { name: parts[0] || "ask", id: parts[1] || null };
   }
 
   function go(to, id) {
@@ -49,7 +57,9 @@
   }
 
   function activeTabFor(name) {
-    return name === "thread" || name === "q" ? "q" : "build";
+    if (name === "thread") return "questions";
+    if (name === "sheet") return "sheets";
+    return name;
   }
 
   var firstRender = true;
@@ -59,6 +69,9 @@
     var html;
 
     switch (r.name) {
+      case "questions":
+        html = views.questions();
+        break;
       case "thread":
         store.markRead(r.id);
         html = views.thread(r.id);
@@ -66,12 +79,15 @@
       case "build":
         html = views.build();
         break;
+      case "sheets":
+        html = views.sheets();
+        break;
       case "sheet":
         html = views.sheet(r.id);
         break;
       default:
-        r.name = "q";
-        html = views.chat();
+        r.name = "ask";
+        html = views.ask();
     }
 
     face.innerHTML = html;
@@ -80,7 +96,7 @@
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
 
-    if (r.name === "q") wireCompose("new-q", "q-input", onNewQuestion);
+    if (r.name === "ask") wireAskForm();
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
       store.clearNew(r.id);
@@ -131,10 +147,30 @@
     });
   }
 
-  function onNewQuestion(body) {
-    var thread = store.addQuestion({ body: body, topic: "", location: "" });
-    go("thread", thread.id);
-    scheduleTeamReply(thread);
+  function wireAskForm() {
+    var form = document.getElementById("ask-form");
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var body = document.getElementById("ask-body").value.trim();
+      var err = document.getElementById("ask-error");
+      if (!body) {
+        err.classList.add("show");
+        document.getElementById("ask-body").focus();
+        return;
+      }
+      err.classList.remove("show");
+
+      var zip = document.getElementById("ask-zip").value.trim();
+      var st = document.getElementById("ask-state").value.trim();
+      var thread = store.addQuestion({
+        body: body,
+        topic: "",
+        location: [zip, st].filter(Boolean).join(", "),
+      });
+      go("thread", thread.id);
+      scheduleTeamReply(thread);
+    });
   }
 
   function onReply(body, form) {
@@ -397,10 +433,14 @@
         exportCsv(t.getAttribute("data-sheet"));
         break;
 
+      case "demo-file":
+        toast("Demo — in the real zone this opens " + (t.getAttribute("data-name") || "the file") + ".");
+        break;
+
       case "reset": {
         if (t.getAttribute("data-armed") === "yes") {
           store.reset();
-          go("q");
+          go("ask");
           route();
           toast("The demo is back to how it started.");
           t.removeAttribute("data-armed");
@@ -434,7 +474,7 @@
   global.addEventListener("hashchange", route);
 
   store.init();
-  if (!global.location.hash) global.location.hash = "/q";
+  if (!global.location.hash) global.location.hash = "/ask";
   route();
 
   /* A quiet way to reset the demo before showing it to someone. */

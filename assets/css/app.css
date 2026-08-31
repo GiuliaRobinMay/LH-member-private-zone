@@ -203,11 +203,11 @@ h3 em {
 
 .tabbar {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--hairline);
-  border-radius: 999px;
+  border-radius: 22px;
   background: var(--paper-2);
   margin: 10px 0 16px;
 }
@@ -215,9 +215,9 @@ h3 em {
 .tab {
   position: relative;
   font: inherit;
-  font-size: 15px;
+  font-size: 13.5px;
   font-weight: 600;
-  padding: 10px 8px;
+  padding: 10px 4px;
   border: 1px solid transparent;
   border-radius: 999px;
   background: transparent;
@@ -885,6 +885,95 @@ select {
   padding-top: 3px;
 }
 
+/* second line of a list row: date + answered state */
+.c-meta {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.c-meta .st-ok {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.c-meta .st-wait {
+  color: #b8860b;
+  font-weight: 700;
+}
+
+.c-meta .st-new {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.c-arrow {
+  align-self: center;
+  color: var(--ink-faint);
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* attachments inside a team answer */
+.file-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.file-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--paper);
+  padding: 7px 11px;
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: left;
+}
+
+.file-chip:hover {
+  background: var(--tint-yellow);
+}
+
+.file-chip .f-ico {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: var(--red);
+  flex: 0 0 auto;
+}
+
+.file-chip .f-ico.xls {
+  background: var(--green);
+}
+
+.file-chip .f-name {
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.file-chip .f-size {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
 /* bubbles */
 
 .brow {
@@ -1488,6 +1577,10 @@ select {
 /* ------------------------------------------------------------ responsive */
 
 @media (max-width: 560px) {
+  .tabbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .masthead {
     grid-template-columns: 1fr;
     gap: 10px;

@@ -150,6 +150,7 @@
       name: responder.name,
       roleLabel: responder.roleLabel,
       body: responder.body.replace(/\{name\}/g, state.member.name.split(" ")[0]),
+      attachments: responder.attachments ? clone(responder.attachments) : [],
       createdAt: new Date().toISOString(),
       ago: "just now",
     });

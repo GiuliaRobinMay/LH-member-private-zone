@@ -452,7 +452,14 @@ window.LZ_SEED = {
           "roleLabel": "Question Responder",
           "body": "Hi Aaron, it's Tony. First, take a breath. A 14 day notice is not an eviction. It is a demand for the rent, and it is the step that comes before anything goes to a court. You have time, and eleven years of paying on time is a real thing that we are going to use.\n\nStart with one call, today or first thing Monday. Dial 2-1-1. It is free, somebody answers around the clock, and they hold the list of the local funds that pay back rent in Monroe County. When they pick up, say it in these words: \"I have a 14 day rent demand notice for $1,850 and I need help with back rent and a housing counselor.\"\n\nSay help and assistance. Never say grant or free money. That one habit changes the answers you get.\n\nThen, in this order:\n\n1. A free HUD housing counselor. The government pays them, so they cost you nothing, and they will get on the phone with your landlord alongside you. Call 1-800-569-4287, or go to hud.gov/findacounselor.\n2. Free legal help, before there is ever a court date. Go to lawhelp.org and choose New York, or lsc.gov/find-legal-aid. Tell them \"I received a 14 day demand notice.\" Eviction cases move them faster than anything else.\n3. Your local Community Action Agency. They are the ones holding emergency rent and utility money. Find yours at communityactionpartnership.com/find-a-cap.\n4. The CFPB keeps a live list of rental assistance programs county by county at consumerfinance.gov, search for \"find rental assistance\". Careful of any website still advertising the COVID rental assistance money. That federal program ended and those sites will waste a week of your life.\n5. Then build yourself a call sheet in here. Build a Call Sheet, choose Housing and rent, put in 14604, and in the box that asks what is going on, type it exactly the way you typed it to me. You will get the local names, the numbers, and the words to say when they answer.\n\nHave these four things sitting next to the phone before you dial: your lease, the 14 day notice, your last two pay stubs, and the date your hours were cut to 22. Every one of them is going to ask.\n\nTwo more things, Aaron. Do not move out because of that paper. Leaving on your own costs you every protection you have. And pay something, even fifty dollars, and keep the receipt, because it shows you are acting in good faith and that matters later.\n\nWrite back and tell me what 211 says and we will take the next step together.\n- Tony",
           "ago": "12 days ago",
-          "createdAt": "2026-08-18T16:40:00-04:00"
+          "createdAt": "2026-08-18T16:40:00-04:00",
+          "attachments": [
+            {
+              "name": "Rochester_Rent_Help_Numbers.pdf",
+              "kind": "PDF",
+              "size": "2 pages"
+            }
+          ]
         },
         {
           "role": "member",
@@ -496,7 +503,14 @@ window.LZ_SEED = {
           "roleLabel": "Lesko Help Team",
           "body": "Hello Aaron, and thank you for asking. This is the question we get most, and there are two different things going on here. We are going to fix both.\n\nThe $23 first, because that is the bigger money. Food stamp amounts are worked out from your income, and when your income or your hours change, the amount is supposed to change with it. A lot of people are living on an old number that nobody ever went back and updated.\n\nCall the New York State food stamp hotline at 1-800-342-3009, or go to mybenefits.ny.gov, and say: \"My income has changed and I would like my case looked at again.\" While you have them, ask them to check that your rent and your utility costs are on your case, because those raise the amount and they are very often missing.\n\nNow, food this week:\n\n1. Dial 2-1-1 and say \"I need food and I have no transportation.\" Ask specifically about a home delivery route or a volunteer driver. Most food banks have one and they almost never advertise it.\n2. Find your food bank at feedingamerica.org/find-your-local-foodbank and put in 14604. Call the food bank itself, not only the little pantry. The food bank knows every pantry, mobile pantry and delivery run in the county.\n3. You can spend food stamps online. Walmart and Amazon both take EBT for groceries in New York and deliver to the door. It doesn't fix the amount, but it fixes the three miles.\n4. You are 63, so the senior food programs are open to you. Ask 2-1-1 about the senior food box and about the farmers market coupons for people 60 and over.\n\nNone of this costs a dollar, and none of it is charity you need to feel funny about. Tell us what they say and we will take it from there.\n\nQuestions are free. Always were.\n- The Lesko Help Team",
           "ago": "17 days ago",
-          "createdAt": "2026-08-13T10:20:00-04:00"
+          "createdAt": "2026-08-13T10:20:00-04:00",
+          "attachments": [
+            {
+              "name": "SNAP_Recalculation_Checklist.pdf",
+              "kind": "PDF",
+              "size": "1 page"
+            }
+          ]
         },
         {
           "role": "member",
@@ -531,7 +545,19 @@ window.LZ_SEED = {
           "roleLabel": "Question Responder",
           "body": "Hi Aaron, it's Tony. Twenty years of people asking you to come back and do more work is called market research. Most folks who walk into a bank with a business plan do not have the thing you already have, which is customers.\n\nNow let me be straight with you about the money, because I would rather you hear it from me. There is very little in the way of a plain cash grant for a brand new handyman business. What there is, and there is a lot of it, is free expert help and money you can borrow at zero interest. An hour with an advisor who does this for a living is worth real money, and there is one sitting inside your own zip code.\n\nStart with one call. The Finger Lakes Small Business Development Center, (585) 395-8410. Their Rochester office is at 161 Chestnut Street, 5th floor, which is 14604, your zip. New York State and the SBA pay for it, so it costs you nothing, and there is no limit on how many times you go back.\n\nSay this when they answer: \"My name is Aaron Gavenda. I have done handyman work in Rochester for twenty years and I want to make it a real business. I was told your advising is free and I would like an appointment with an advisor. I am right at the beginning so I don't have much on paper. What should I bring?\"\n\nThen these, in order:\n\n1. SCORE Greater Rochester, (585) 263-6473. Retired business owners who mentor you for free, for as long as you want them. Ask them for one who ran a trades or service business.\n2. The Enterprise Center at PathStone, (585) 340-3324, and the Urban League of Rochester Entrepreneurship Assistance Center, (585) 325-6530. Both run free classes for people starting out, and the state's EAC classes have a name for getting people ready for a loan.\n3. Money. Kiva is a 0% interest loan, no fees, up to $15,000, and it does not hang on your credit score the way a bank does, because it is ordinary people lending you small amounts. The City of Rochester runs the local Kiva hub, (585) 428-6912. Look at kiva.org/borrow first so you know what you are looking at.\n4. And build yourself a call sheet in here. Build a Call Sheet, choose Starting or growing a business, put in 14604, and in the box where it asks what is going on, type it just the way you typed it to me, truck and trailer and all.\n\nOne house rule and it matters more than anything above: never ask anybody for a grant, or for free money. Ask for help, or assistance, or programs for a new small business. Same question, completely different answer.\n\nLast thing, about the computers. Every single one of these is a phone call and a chair in somebody's office. Nobody is going to make you fill in a form on your own. Sitting next to you while you do the paperwork is literally the advisor's job.\n\nYou are not behind, Aaron. You are at the start, which is where every one of them started.\n- Tony",
           "ago": "25 days ago",
-          "createdAt": "2026-08-05T11:35:00-04:00"
+          "createdAt": "2026-08-05T11:35:00-04:00",
+          "attachments": [
+            {
+              "name": "Start_Your_Business_Call_Sheet.xlsx",
+              "kind": "Excel",
+              "size": "14 columns"
+            },
+            {
+              "name": "First_Call_Script.pdf",
+              "kind": "PDF",
+              "size": "1 page"
+            }
+          ]
         },
         {
           "role": "member",
@@ -601,7 +627,14 @@ window.LZ_SEED = {
           "roleLabel": "Question Responder",
           "body": "Aaron, I'm glad you wrote. Splitting blood pressure pills is something a great many people quietly do, and it frightens me for her, so let us take the medicine first and let us do it this week.\n\nYour one call is the community health center nearest you. These are federally funded clinics. They see you with insurance or without it, and what you pay slides according to your income, sometimes down to a few dollars a visit. Most of them have a pharmacy and a dental chair under the same roof, which takes care of that tooth as well.\n\nFind yours by putting 14604 into findahealthcenter.hrsa.gov, or call 1-877-464-4772 and they will find it for you.\n\nWhen they answer, say: \"My wife has no insurance and she needs to be seen, and we need help with the cost of her medicine. Do you have a sliding fee scale?\" They have to have one. That is how they are funded.\n\nThen:\n\n1. Her prescriptions right now. needymeds.org and rxassist.org list the drug companies' own patient assistance programs, and people on blood pressure medicine and inhalers get them free or nearly free all the time. NeedyMeds has a real person on the line at 1-800-503-6897.\n2. At the pharmacy counter, ask two questions out loud: \"What is the cash price without insurance?\" and \"Is there a generic?\" People are shocked how often the cash price is less than what they were paying.\n3. The insurance itself, and I would not skip this one. Too much for Medicaid but not by much, in New York, usually means the Essential Plan, where most people pay nothing at all in premiums. And losing job coverage opens a special sign-up window, so she does not have to wait for January. Call NY State of Health free on 1-855-355-5777 and ask for a navigator to sit and do it with you. The navigator costs nothing either.\n4. If a hospital bill turns up out of any of this, do not pay it before you ask about charity care. Nonprofit hospitals are required to have a financial assistance policy, and dollarfor.org will help you apply for it, free.\n\nYou are not failing her, Aaron. You are doing the hard part, which is asking out loud.\n- Misty",
           "ago": "6 weeks ago",
-          "createdAt": "2026-07-18T09:50:00-04:00"
+          "createdAt": "2026-07-18T09:50:00-04:00",
+          "attachments": [
+            {
+              "name": "Prescription_Help_Programs.pdf",
+              "kind": "PDF",
+              "size": "2 pages"
+            }
+          ]
         }
       ]
     },
@@ -849,7 +882,11 @@ window.LZ_SEED = {
           "priority": 3
         }
       ],
-      "called": [],
+      "called": [
+        "flx-sbdc",
+        "kiva-rochester",
+        "pathstone-enterprise-center"
+      ],
       "createdAt": "2026-08-28T14:20:00Z"
     },
     {
@@ -1963,6 +2000,13 @@ window.LZ_SEED = {
   "autoReply": {
     "name": "Tony Woodworth",
     "roleLabel": "Question Responder",
-    "body": "Hi {name}, it's Tony! Thanks for asking — you are in exactly the right place.\n\nHere is what I would do first:\n\n1. Go to Build a call sheet and pick the topic that fits your question.\n2. Put in your ZIP code (or your city and state).\n3. In the last box, tell it what is going on in your own words — exactly the way you just told me.\n4. Press the button and give it a moment.\n\nYou will get back a list of places near you, with phone numbers and the words to say when they answer. Tick each one off as you call it.\n\nI will keep an eye on this conversation, so come straight back here if anything is unclear. You are doing the right thing by asking."
+    "body": "Hi {name}, it's Tony! Thanks for asking — you are in exactly the right place.\n\nHere is what I would do first:\n\n1. Go to Build a call sheet and pick the topic that fits your question.\n2. Put in your ZIP code (or your city and state).\n3. In the last box, tell it what is going on in your own words — exactly the way you just told me.\n4. Press the button and give it a moment.\n\nYou will get back a list of places near you, with phone numbers and the words to say when they answer. Tick each one off as you call it.\n\nI will keep an eye on this conversation, so come straight back here if anything is unclear. You are doing the right thing by asking.",
+    "attachments": [
+      {
+        "name": "How_To_Build_Your_Call_Sheet.pdf",
+        "kind": "PDF",
+        "size": "1 page"
+      }
+    ]
   }
 };

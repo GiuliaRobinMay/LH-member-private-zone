@@ -129,6 +129,41 @@
     return Math.round(months / 12) + "y";
   }
 
+  /** The date a thing happened, the way a person says it. */
+  function niceDate(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return "";
+    var now = new Date();
+    var oneDay = 86400000;
+    var startToday = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+    if (d.getTime() >= startToday) return "Today";
+    if (d.getTime() >= startToday - oneDay) return "Yesterday";
+    return fmtDate(iso);
+  }
+
+  /** Attachment chips on a team answer — files the team sent along. */
+  function fileChips(list) {
+    if (!list || !list.length) return "";
+    return (
+      '<span class="file-chips">' +
+      list
+        .map(function (f) {
+          var isXls = /excel|xls|sheet/i.test(f.kind || "");
+          return (
+            '<button type="button" class="file-chip" data-act="demo-file" data-name="' +
+            esc(f.name) + '">' +
+            '<span class="f-ico' + (isXls ? " xls" : "") + '" aria-hidden="true">' +
+            esc(isXls ? "XLS" : "PDF") + "</span>" +
+            '<span class="f-name">' + esc(f.name) +
+            '<span class="f-size">' + esc((f.kind || "") + (f.size ? " · " + f.size : "")) +
+            "</span></span></button>"
+          );
+        })
+        .join("") +
+      "</span>"
+    );
+  }
+
   function unnumber(text) {
     return String(text || "").replace(/^\s*(?:step\s*)?\d+[.):]\s*/i, "");
   }
@@ -167,40 +202,70 @@
     );
   }
 
-  /* =================================================== QUESTIONS (chat) */
+  /* ============================================== ASK A QUESTION (form) */
 
-  function chat() {
+  function ask() {
+    return (
+      '<section class="panel">' +
+      '<form class="form-card" id="ask-form" novalidate>' +
+      '<div class="field">' +
+      '<label for="ask-body">What do you need help with?</label>' +
+      '<textarea id="ask-body" rows="5" placeholder="Tell us in your own words. For example: I\u2019m behind on my electric bill and I don\u2019t know who to call. Spelling doesn\u2019t matter."></textarea>' +
+      "</div>" +
+      '<div class="field-row">' +
+      '<div class="field"><label for="ask-zip">Your ZIP code</label>' +
+      '<input id="ask-zip" inputmode="numeric" autocomplete="postal-code" placeholder="Example: 14604"></div>' +
+      '<div class="field"><label for="ask-state">Your state</label>' +
+      '<input id="ask-state" autocomplete="address-level1" placeholder="Example: New York"></div>' +
+      "</div>" +
+      '<p class="form-error" id="ask-error">Please type your question first — even a few words is enough.</p>' +
+      '<button class="btn big" type="submit">Send my question</button>' +
+      "</form>" +
+      privateLine() +
+      "</section>"
+    );
+  }
+
+  /* ============================================== MY QUESTIONS (list) */
+
+  function questions() {
     var qs = store.state.questions;
+    if (!qs.length) {
+      return (
+        '<section class="panel"><div class="card empty-note">' +
+        '<div class="q" aria-hidden="true">?</div>' +
+        "<h3>No questions yet</h3>" +
+        '<button class="btn" data-act="go" data-to="ask">Ask your first question</button>' +
+        "</div></section>"
+      );
+    }
 
     var rows = qs
       .map(function (q) {
-        var last = q.messages[q.messages.length - 1] || { body: "" };
         var dot = q.unread ? "new" : q.status === "answered" ? "" : "waiting";
-        var lastWho = last.role === "team" ? "" : "You: ";
+        var st = q.unread
+          ? '<span class="st-new">New answer</span>'
+          : q.status === "answered"
+          ? '<span class="st-ok">Answered &#10003;</span>'
+          : '<span class="st-wait">No answer yet</span>';
         return (
           '<button class="convo' + (q.unread ? " unread" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
           '<span class="c-dot ' + dot + '" aria-hidden="true"></span>' +
           "<span>" +
           '<span class="c-subj">' + esc(q.subject) + "</span>" +
-          '<span class="c-prev">' + esc(lastWho + store.shorten(last.body, 80)) + "</span>" +
+          '<span class="c-meta">Asked ' + esc(niceDate(q.createdAt)) +
+          " &nbsp;&middot;&nbsp; " + st + "</span>" +
           "</span>" +
-          '<span class="c-when">' + esc(agoShort(q.createdAt)) +
-          (q.unread ? '<span class="sr-only"> — new answer</span>' : "") +
-          "</span></button>"
+          '<span class="c-arrow" aria-hidden="true">&rsaquo;</span></button>'
         );
       })
       .join("");
 
     return (
       '<section class="panel">' +
-      '<form class="compose" id="new-q">' +
-      '<label class="sr-only" for="q-input">Type your question</label>' +
-      '<textarea id="q-input" rows="1" placeholder="Type your question here&hellip;"></textarea>' +
-      '<button class="send" type="submit" aria-label="Send my question">&#8593;</button>' +
-      "</form>" +
-      privateLine() +
       '<div class="convos">' + rows + "</div>" +
+      privateLine() +
       "</section>"
     );
   }
@@ -209,7 +274,7 @@
 
   function thread(id) {
     var q = store.getQuestion(id);
-    if (!q) return notFound("conversation", "q");
+    if (!q) return notFound("conversation", "questions");
 
     var msgs = q.messages
       .map(function (m) {
@@ -219,6 +284,7 @@
           '<div class="bubble">' +
           (isTeam ? '<span class="b-who">' + esc(m.name) + " &middot; Lesko Help</span>" : "") +
           rich(m.body) +
+          (isTeam ? fileChips(m.attachments) : "") +
           "</div></div>" +
           '<div class="bmeta">' + esc(store.ago(m.createdAt) || m.ago) + "</div>"
         );
@@ -228,7 +294,7 @@
     return (
       '<section class="panel">' +
       '<div class="thread-head">' +
-      '<button class="backlink" data-act="go" data-to="q" style="margin:0">&larr; My questions</button>' +
+      '<button class="backlink" data-act="go" data-to="questions" style="margin:0">&larr; My questions</button>' +
       (q.status === "waiting"
         ? '<span class="badge wait">' + esc(label("waiting", "Waiting for an answer")) + "</span>"
         : "") +
@@ -265,24 +331,6 @@
       opts += '<option value="' + esc(t.key) + '">' + esc(t.label) + "</option>";
     });
 
-    var list = store.state.sheets;
-    var rows = list
-      .map(function (sh) {
-        var called = (sh.called || []).length;
-        var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
-        return (
-          '<button class="convo" data-act="sheet" data-id="' + esc(sh.id) + '">' +
-          '<span class="c-dot' + (called ? "" : " waiting") + '" aria-hidden="true"></span>' +
-          "<span>" +
-          '<span class="c-subj">' + esc(sh.title) + "</span>" +
-          '<span class="c-prev">' + esc(place) + " &middot; " + sh.orgs.length +
-          " places to call" + (called ? " &middot; " + called + " called" : "") + "</span>" +
-          "</span>" +
-          '<span class="c-when">' + esc(agoShort(sh.createdAt)) + "</span></button>"
-        );
-      })
-      .join("");
-
     return (
       '<section class="panel">' +
       '<form class="form-card" id="build-form" novalidate>' +
@@ -294,16 +342,55 @@
       '<input id="b-where" placeholder="ZIP code, or city and state"></div>' +
       '<div class="field">' +
       '<label for="b-problem">Tell us what&rsquo;s going on</label>' +
-      '<textarea id="b-problem" placeholder="Your own words are perfect — spelling doesn&rsquo;t matter."></textarea>' +
+      '<textarea id="b-problem" rows="4" placeholder="Your own words are perfect — spelling doesn&rsquo;t matter."></textarea>' +
       "</div>" +
       '<p class="form-error" id="build-error"></p>' +
-      '<button class="btn big" type="submit">' + esc(c.button || "Find my help") + "</button>" +
+      '<button class="btn big" type="submit">' + esc(c.button || "Create my call sheet") + "</button>" +
       "</form>" +
       privateLine() +
-      (list.length
-        ? '<div class="mono-label" style="margin-bottom:8px">Your call sheets</div>' +
-          '<div class="convos">' + rows + "</div>"
-        : "") +
+      "</section>"
+    );
+  }
+
+  /* ============================================= MY CALL SHEETS (list) */
+
+  function sheets() {
+    var list = store.state.sheets;
+    if (!list.length) {
+      return (
+        '<section class="panel"><div class="card empty-note">' +
+        '<div class="q" aria-hidden="true">?</div>' +
+        "<h3>No call sheets yet</h3>" +
+        '<button class="btn" data-act="go" data-to="build">Create your first call sheet</button>' +
+        "</div></section>"
+      );
+    }
+
+    var rows = list
+      .map(function (sh) {
+        var called = (sh.called || []).length;
+        var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+        return (
+          '<button class="convo" data-act="sheet" data-id="' + esc(sh.id) + '">' +
+          '<span class="c-dot' + (called ? "" : " waiting") + '" aria-hidden="true"></span>' +
+          "<span>" +
+          '<span class="c-subj">' + esc(sh.title) + "</span>" +
+          '<span class="c-meta">Made ' + esc(niceDate(sh.createdAt)) +
+          " &nbsp;&middot;&nbsp; " + esc(place) +
+          " &nbsp;&middot;&nbsp; " + sh.orgs.length + " places" +
+          (called
+            ? ' &nbsp;&middot;&nbsp; <span class="st-ok">' + called + " called &#10003;</span>"
+            : "") +
+          "</span></span>" +
+          '<span class="c-arrow" aria-hidden="true">&rsaquo;</span></button>'
+        );
+      })
+      .join("");
+
+    return (
+      '<section class="panel">' +
+      '<div class="convos">' + rows + "</div>" +
+      privateLine() +
       "</section>"
     );
   }
@@ -322,7 +409,7 @@
 
   function sheet(id) {
     var sh = store.getSheet(id);
-    if (!sh) return notFound("call sheet", "build");
+    if (!sh) return notFound("call sheet", "sheets");
 
     var firstOrg = null;
     sh.orgs.forEach(function (o) {
@@ -351,7 +438,7 @@
 
     return (
       '<section class="panel">' +
-      '<button class="backlink" data-act="go" data-to="build">&larr; My call sheets</button>' +
+      '<button class="backlink" data-act="go" data-to="sheets">&larr; My call sheets</button>' +
 
       '<div class="badges">' +
       '<span class="badge warm">' + esc(sh.topic) + "</span>" +
@@ -361,6 +448,12 @@
         : "") +
       "</div>" +
       '<h2 class="sheet-title">' + esc(sh.title) + "</h2>" +
+
+      '<div class="org-links" style="margin:0 0 16px">' +
+      '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) +
+      '">&#11015; Download for Excel</button>' +
+      '<button class="btn ghost" data-act="print">Print or save as PDF</button>' +
+      "</div>" +
 
       '<div class="note"><span class="mono-label">What you told us</span>' +
       '<p class="said">&ldquo;' + esc(sh.problem) + "&rdquo;</p></div>" +
@@ -396,9 +489,10 @@
       '<div class="orgs">' + orgCards + "</div>" +
 
       '<div class="sheet-actions">' +
+      '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) +
+      '">&#11015; Download for Excel</button>' +
       '<button class="btn ghost" data-act="print">' +
       esc(label("printSave", "Print or save as PDF")) + "</button>" +
-      '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) + '">Download spreadsheet</button>' +
       "</div>" +
       "</section>"
     );
@@ -479,10 +573,12 @@
 
   global.LZ = global.LZ || {};
   global.LZ.views = {
-    chat: chat,
+    ask: ask,
+    questions: questions,
     thread: thread,
     typingBubble: typingBubble,
     build: build,
+    sheets: sheets,
     generating: generating,
     sheet: sheet,
     esc: esc,

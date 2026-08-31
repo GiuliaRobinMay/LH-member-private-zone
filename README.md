@@ -11,12 +11,14 @@ Answer Vault) — same cream paper, navy ink, red italics, card suits, hairline 
 ## What it is
 
 One narrow rectangle — `min(640px, 94vw)` — made to sit inside a Mighty Networks space without
-competing with it. Two tabs, everything visible, almost no copy:
+competing with it. Four tabs, almost no copy:
 
 | Tab | What it does |
 |---|---|
-| **💬 Questions** | A chat. Compose bar at the top, conversations below. Type, send, and the team's answer arrives as a bubble in the same conversation — with a typing indicator, like every messaging app. Unread answers show as a red count on the tab. |
-| **📋 Call sheets** | Three fields (what, where, your own words) and one button — with the archive of every sheet right underneath. A sheet opens as a document: who to call first, the script to read aloud, tick boxes. |
+| **Ask a question** | A guided form: what you need in your own words, plus ZIP and state. Sending opens the conversation. |
+| **My questions** | Every question with the date asked and **Answered ✓ / No answer yet / New answer**. Opening one shows the question and the team's answers together as a chat — including the links and file attachments the team sends along. Unread answers show as a red count on the tab. |
+| **Create a call sheet** | Three fields (what, where, your own words) and one button. |
+| **My call sheets** | Every sheet with the date it was made and how many calls are ticked. Opening one shows the working document — first call, scripts, tick boxes — with **Download for Excel** at the top and bottom. |
 
 That's the whole surface. No sidebar, no home page, no app-in-an-app.
 
