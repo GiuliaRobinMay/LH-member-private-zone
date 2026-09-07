@@ -840,9 +840,10 @@ select {
 }
 
 .chat-ava {
+  position: relative;
   flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--yellow);
   color: var(--ink);
@@ -852,6 +853,19 @@ select {
   font-size: 19px;
   font-weight: 700;
   user-select: none;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+/* the real photo sits over the initial; if it can't load, the initial shows */
+.chat-ava img,
+.b-ava img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .chat-name {
@@ -904,42 +918,92 @@ select {
   margin: 0;
 }
 
-/* starter-question chips, like the Navigator's related questions */
-
-.chip-block {
-  margin-bottom: 14px;
+/* a fresh chat is shorter — one greeting and the bar to start */
+.chat.blank .chat-body {
+  height: clamp(220px, 38vh, 300px);
 }
 
-.chip-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+/* the bar that opens the question pop-up — looks like a chat input */
+.compose-fake {
+  flex: 1;
+  min-height: 46px;
+  padding: 12px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  background: #fff;
   color: var(--ink-faint);
-  margin: 0 2px 7px;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.chip {
   font: inherit;
-  font-size: 13.5px;
-  color: var(--ink);
-  background: var(--tint-yellow);
-  border: 1px solid rgba(22, 34, 63, 0.16);
-  border-radius: 999px;
-  padding: 7px 14px;
-  cursor: pointer;
-  transition: background 0.12s ease;
+  font-size: 16px;
+  text-align: left;
+  cursor: text;
 }
 
-.chip:hover {
-  background: var(--yellow);
+.compose-fake:hover {
+  border-color: var(--ink-soft);
+}
+
+/* the question pop-up */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(22, 34, 63, 0.5);
+}
+
+.modal {
+  width: min(470px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  box-shadow: 0 30px 60px -20px rgba(22, 34, 63, 0.6);
+  padding: 16px 20px 20px;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.modal-head h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.modal-x {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-x:hover {
+  background: var(--tint-yellow);
+  color: var(--ink);
+}
+
+.modal .field textarea {
+  min-height: 170px;
+}
+
+.field-row.two {
+  grid-template-columns: 130px 1fr;
 }
 
 .compose {
@@ -1022,34 +1086,6 @@ select {
 
 .ask-btn:active {
   transform: translateY(1px);
-}
-
-/* the small where-are-you row above the compose */
-
-.chat-loc {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 8px;
-  margin: 0 0 8px;
-}
-
-.chat-loc input {
-  font: inherit;
-  font-size: 14px;
-  padding: 8px 13px;
-  border: 1px solid var(--hairline-soft);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--ink);
-}
-
-.chat-loc input:focus {
-  outline: 2px solid var(--gold-2);
-  outline-offset: 1px;
-}
-
-.chat-loc input::placeholder {
-  color: var(--ink-faint);
 }
 
 /* conversation list */
@@ -1239,9 +1275,10 @@ select {
 }
 
 .b-ava {
+  position: relative;
   flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   margin-top: 2px;
   border-radius: 50%;
   background: var(--ink);
@@ -1249,9 +1286,21 @@ select {
   display: grid;
   place-items: center;
   font-family: var(--serif);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   user-select: none;
+  overflow: hidden;
+}
+
+/* each person gets their own colour until their photo loads */
+.b-ava.t2 {
+  background: var(--red);
+  color: #fff;
+}
+
+.b-ava.t3 {
+  background: var(--blue);
+  color: #fff;
 }
 
 .bubble {
@@ -1994,8 +2043,8 @@ select {
     grid-template-columns: 1fr;
   }
 
-  .chat-loc {
-    grid-template-columns: 110px 1fr;
+  .field-row.two {
+    grid-template-columns: 1fr 1fr;
   }
 
   .bubble {
@@ -4178,6 +4227,15 @@ window.LZ_SEED = {
   }
 };
 
+/* The team's real profile photos, straight from the community. They load
+   when the widget is hosted; where outside images are blocked (some
+   previews) the coloured initial shows instead. */
+window.LZ_SEED.teamPhotos = {
+  "Lesko Help Team": "https://media1-production-mightynetworks.imgix.net/asset/c0214fbb-bbd9-4edc-af1b-0740a9f4996e/Matthew.jpeg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
+  "Tony Woodworth": "https://media1-production-mightynetworks.imgix.net/asset/dd1e23a3-508a-46f6-98e3-5f5f73f2e09c/4ee8f1f25c17f31f.png?ixlib=rails-4.3.1&auto=format&w=96&h=96&fit=crop&impolicy=Avatar",
+  "Misty Fowlds": "https://media1-production-mightynetworks.imgix.net/asset/1704521b-3c30-433e-a893-8866e36f7ebd/f76aa8ee0169b49c.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar"
+};
+
 </script>
 <script>
 /* ==================================================================
@@ -4707,8 +4765,25 @@ window.LZ_SEED = {
 
   /* ==================================== CHAT WITH A TEAM MEMBER (chat) */
 
+  /** A team member's face: their real photo when it loads, otherwise a
+      coloured circle with their initial — like every chat app. */
+  function avatar(name, cls) {
+    var photos = global.LZ_SEED.teamPhotos || {};
+    var src = photos[name] || "";
+    var initial = String(name || "?").trim().charAt(0).toUpperCase() || "?";
+    var tone = "t" + ((initial.charCodeAt(0) % 3) + 1);
+    return (
+      '<span class="' + cls + " " + tone + '" aria-hidden="true">' +
+      '<span class="ini">' + esc(initial) + "</span>" +
+      (src
+        ? '<img src="' + esc(src) + '" alt="" loading="lazy" onerror="this.remove()">'
+        : "") +
+      "</span>"
+    );
+  }
+
   /** The navy band at the top of the chat window — same as the other
-      Lesko chat apps: round mark, LESKO HELP over the room name. */
+      Lesko chat apps: the team's face, LESKO HELP over the room name. */
   function chatHead(opts) {
     opts = opts || {};
     return (
@@ -4717,9 +4792,9 @@ window.LZ_SEED = {
         ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
           '" aria-label="Back to my conversations">&larr;</button>'
         : "") +
-      '<span class="chat-ava" aria-hidden="true">?</span>' +
+      avatar("Lesko Help Team", "chat-ava") +
       '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
-      '<span class="ch-title">Team Chat</span></span>' +
+      '<span class="ch-title">Chat with a Team Member</span></span>' +
       (opts.right || '<span class="chat-priv">&#128274; Private</span>') +
       "</div>"
     );
@@ -4748,45 +4823,59 @@ window.LZ_SEED = {
       .join("");
   }
 
+  /* The tab opens on a fresh chat — a greeting from the team and the bar
+     to start. Earlier conversations live behind ☰ (My questions). */
   function ask() {
-    var rows = questionRows();
     var first = esc((store.member.name || "").split(" ")[0]);
-
-    var body = rows
-      ? '<div class="chip-block">' +
-        '<span class="chip-label">New here? Try one of these</span>' +
-        '<div class="chips">' +
-        '<button type="button" class="chip" data-act="chip">Where do I start?</button>' +
-        '<button type="button" class="chip" data-act="chip">How do I create my call sheet?</button>' +
-        '<button type="button" class="chip" data-act="chip">Is there money to help with my rent?</button>' +
-        "</div></div>" +
-        '<span class="chip-label">Your conversations</span>' +
-        '<div class="convos">' + rows + "</div>"
-      : '<div class="brow team">' +
-        '<span class="b-ava" aria-hidden="true">?</span>' +
-        '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
-        "Hi " + first + "! Ask us anything &mdash; money for bills, your business, " +
-        "school, whatever is going on. A real person answers every question, " +
-        "usually within a day.</div></div>";
 
     return (
       '<section class="panel">' +
-      '<div class="chat">' +
+      '<div class="chat blank">' +
       chatHead() +
-      '<div class="chat-body" id="chat-body">' + body + "</div>" +
-      '<form class="chat-foot" id="new-q">' +
-      '<div class="chat-loc">' +
-      '<input id="ask-zip" inputmode="numeric" autocomplete="postal-code" placeholder="Your ZIP code" aria-label="Your ZIP code">' +
-      '<input id="ask-state" autocomplete="address-level1" placeholder="Your state" aria-label="Your state">' +
+      '<div class="chat-body" id="chat-body">' +
+      '<div class="brow team">' +
+      avatar("Lesko Help Team", "b-ava") +
+      '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
+      "How can we help, " + first + "? Tell us what is going on in your own " +
+      "words &mdash; as much detail as you like, and where you are, so we can " +
+      "find help near you. A real person on the team reads it and answers " +
+      "you right here.</div></div>" +
       "</div>" +
+      '<div class="chat-foot">' +
       '<div class="compose">' +
-      '<label class="sr-only" for="q-input">Ask a question</label>' +
-      '<textarea id="q-input" rows="1" placeholder="Ask a question&hellip;"></textarea>' +
-      '<button class="ask-btn" type="submit">Ask</button>' +
-      "</div></form>" +
+      '<button type="button" class="compose-fake" data-act="ask-open">Describe what you need&hellip;</button>' +
+      '<button type="button" class="ask-btn" data-act="ask-open">Ask</button>' +
+      "</div></div>" +
       "</div>" +
       privateLine() +
       "</section>"
+    );
+  }
+
+  /** The pop-up where a question is written: ZIP, state, and room to
+      really describe what is going on. */
+  function askModal() {
+    return (
+      '<div class="overlay" id="ask-modal" role="dialog" aria-modal="true" aria-labelledby="am-title">' +
+      '<form class="modal" id="ask-form" novalidate>' +
+      '<div class="modal-head">' +
+      '<h3 id="am-title">Ask a Team Member</h3>' +
+      '<button type="button" class="modal-x" data-act="ask-close" aria-label="Close">&times;</button>' +
+      "</div>" +
+      '<div class="field-row two">' +
+      '<div class="field"><label for="am-zip">ZIP code</label>' +
+      '<input id="am-zip" inputmode="numeric" autocomplete="postal-code" placeholder="14604"></div>' +
+      '<div class="field"><label for="am-state">State</label>' +
+      '<input id="am-state" autocomplete="address-level1" placeholder="New York"></div>' +
+      "</div>" +
+      '<div class="field">' +
+      '<label for="am-body">Describe what you need</label>' +
+      '<textarea id="am-body" rows="7" placeholder="Take your time. What is going on, what you have already tried, and what would help. Your own words are perfect &mdash; spelling doesn&rsquo;t matter."></textarea>' +
+      "</div>" +
+      '<p class="form-error" id="am-error"></p>' +
+      '<div class="form-actions">' +
+      '<button class="btn red big" type="submit">Send my question</button>' +
+      "</div></form></div>"
     );
   }
 
@@ -4823,10 +4912,7 @@ window.LZ_SEED = {
         var isTeam = m.role === "team";
         return (
           '<div class="brow ' + (isTeam ? "team" : "me") + '">' +
-          (isTeam
-            ? '<span class="b-ava" aria-hidden="true">' +
-              esc((m.name || "?").trim().charAt(0).toUpperCase()) + "</span>"
-            : "") +
+          (isTeam ? avatar(m.name, "b-ava") : "") +
           '<div class="bubble">' +
           (isTeam ? '<span class="b-who">' + esc(m.name) + " &middot; Lesko Help</span>" : "") +
           rich(m.body) +
@@ -4907,9 +4993,10 @@ window.LZ_SEED = {
 
   /** The animated "the team is typing" bubble, injected by app.js. */
   function typingBubble() {
+    var who = (global.LZ_SEED.autoReply || {}).name || "Lesko Help Team";
     return (
       '<div class="brow team typing">' +
-      '<span class="b-ava" aria-hidden="true">?</span>' +
+      avatar(who, "b-ava") +
       '<div class="bubble" aria-label="The team is typing">' +
       '<span class="d"></span><span class="d"></span><span class="d"></span>' +
       "</div></div>"
@@ -5094,6 +5181,7 @@ window.LZ_SEED = {
   global.LZ = global.LZ || {};
   global.LZ.views = {
     ask: ask,
+    askModal: askModal,
     questions: questions,
     thread: thread,
     typingBubble: typingBubble,
@@ -5212,7 +5300,7 @@ window.LZ_SEED = {
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
 
-    if (r.name === "ask") wireCompose("new-q", "q-input", onNewQuestion);
+    closeAskModal();
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
       scrollChatDown();
@@ -5279,17 +5367,56 @@ window.LZ_SEED = {
     });
   }
 
-  function onNewQuestion(body) {
-    var zip = (document.getElementById("ask-zip") || { value: "" }).value.trim();
-    var st = (document.getElementById("ask-state") || { value: "" }).value.trim();
-    var thread = store.addQuestion({
-      body: body,
-      topic: "",
-      location: [zip, st].filter(Boolean).join(", "),
+  /* ---- the pop-up where a new question is written (no browser dialogs:
+          it is our own overlay, so it works inside an embed) */
+
+  function openAskModal() {
+    closeAskModal();
+    var root = document.createElement("div");
+    root.id = "modal-root";
+    root.innerHTML = views.askModal();
+    document.body.appendChild(root);
+
+    var form = document.getElementById("ask-form");
+    var body = document.getElementById("am-body");
+    body.focus();
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var text = body.value.trim();
+      var err = document.getElementById("am-error");
+      if (!text) {
+        err.textContent = "Tell us what is going on — a few lines is plenty.";
+        err.classList.add("show");
+        body.focus();
+        return;
+      }
+      var zip = document.getElementById("am-zip").value.trim();
+      var st = document.getElementById("am-state").value.trim();
+      var thread = store.addQuestion({
+        body: text,
+        topic: "",
+        location: [zip, st].filter(Boolean).join(", "),
+      });
+      closeAskModal();
+      go("thread", thread.id);
+      scheduleTeamReply(thread);
     });
-    go("thread", thread.id);
-    scheduleTeamReply(thread);
+
+    /* tap outside the card, or Escape, to put it away */
+    root.querySelector(".overlay").addEventListener("click", function (e) {
+      if (e.target === e.currentTarget) closeAskModal();
+    });
   }
+
+  function closeAskModal() {
+    var root = document.getElementById("modal-root");
+    if (root) root.parentNode.removeChild(root);
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeAskModal();
+  });
 
   function onReply(body, form) {
     var id = form.querySelector("button[data-id]").getAttribute("data-id");
@@ -5583,16 +5710,13 @@ window.LZ_SEED = {
         exportCsv(t.getAttribute("data-sheet"));
         break;
 
-      case "chip": {
-        /* A starter question drops into the compose, ready to send. */
-        var qi = document.getElementById("q-input");
-        if (qi) {
-          qi.value = t.textContent.trim();
-          qi.dispatchEvent(new Event("input"));
-          qi.focus();
-        }
+      case "ask-open":
+        openAskModal();
         break;
-      }
+
+      case "ask-close":
+        closeAskModal();
+        break;
 
       case "demo-file":
         toast("Demo — in the real zone this opens " + (t.getAttribute("data-name") || "the file") + ".");

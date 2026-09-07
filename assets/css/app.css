@@ -831,9 +831,10 @@ select {
 }
 
 .chat-ava {
+  position: relative;
   flex: 0 0 auto;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   background: var(--yellow);
   color: var(--ink);
@@ -843,6 +844,19 @@ select {
   font-size: 19px;
   font-weight: 700;
   user-select: none;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+}
+
+/* the real photo sits over the initial; if it can't load, the initial shows */
+.chat-ava img,
+.b-ava img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .chat-name {
@@ -895,42 +909,92 @@ select {
   margin: 0;
 }
 
-/* starter-question chips, like the Navigator's related questions */
-
-.chip-block {
-  margin-bottom: 14px;
+/* a fresh chat is shorter — one greeting and the bar to start */
+.chat.blank .chat-body {
+  height: clamp(220px, 38vh, 300px);
 }
 
-.chip-label {
-  display: block;
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+/* the bar that opens the question pop-up — looks like a chat input */
+.compose-fake {
+  flex: 1;
+  min-height: 46px;
+  padding: 12px 16px;
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  background: #fff;
   color: var(--ink-faint);
-  margin: 0 2px 7px;
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-.chip {
   font: inherit;
-  font-size: 13.5px;
-  color: var(--ink);
-  background: var(--tint-yellow);
-  border: 1px solid rgba(22, 34, 63, 0.16);
-  border-radius: 999px;
-  padding: 7px 14px;
-  cursor: pointer;
-  transition: background 0.12s ease;
+  font-size: 16px;
+  text-align: left;
+  cursor: text;
 }
 
-.chip:hover {
-  background: var(--yellow);
+.compose-fake:hover {
+  border-color: var(--ink-soft);
+}
+
+/* the question pop-up */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(22, 34, 63, 0.5);
+}
+
+.modal {
+  width: min(470px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  box-shadow: 0 30px 60px -20px rgba(22, 34, 63, 0.6);
+  padding: 16px 20px 20px;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.modal-head h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.modal-x {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-x:hover {
+  background: var(--tint-yellow);
+  color: var(--ink);
+}
+
+.modal .field textarea {
+  min-height: 170px;
+}
+
+.field-row.two {
+  grid-template-columns: 130px 1fr;
 }
 
 .compose {
@@ -1013,34 +1077,6 @@ select {
 
 .ask-btn:active {
   transform: translateY(1px);
-}
-
-/* the small where-are-you row above the compose */
-
-.chat-loc {
-  display: grid;
-  grid-template-columns: 150px 1fr;
-  gap: 8px;
-  margin: 0 0 8px;
-}
-
-.chat-loc input {
-  font: inherit;
-  font-size: 14px;
-  padding: 8px 13px;
-  border: 1px solid var(--hairline-soft);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--ink);
-}
-
-.chat-loc input:focus {
-  outline: 2px solid var(--gold-2);
-  outline-offset: 1px;
-}
-
-.chat-loc input::placeholder {
-  color: var(--ink-faint);
 }
 
 /* conversation list */
@@ -1230,9 +1266,10 @@ select {
 }
 
 .b-ava {
+  position: relative;
   flex: 0 0 auto;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   margin-top: 2px;
   border-radius: 50%;
   background: var(--ink);
@@ -1240,9 +1277,21 @@ select {
   display: grid;
   place-items: center;
   font-family: var(--serif);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   user-select: none;
+  overflow: hidden;
+}
+
+/* each person gets their own colour until their photo loads */
+.b-ava.t2 {
+  background: var(--red);
+  color: #fff;
+}
+
+.b-ava.t3 {
+  background: var(--blue);
+  color: #fff;
 }
 
 .bubble {
@@ -1985,8 +2034,8 @@ select {
     grid-template-columns: 1fr;
   }
 
-  .chat-loc {
-    grid-template-columns: 110px 1fr;
+  .field-row.two {
+    grid-template-columns: 1fr 1fr;
   }
 
   .bubble {

@@ -2026,3 +2026,12 @@ window.LZ_SEED = {
     ]
   }
 };
+
+/* The team's real profile photos, straight from the community. They load
+   when the widget is hosted; where outside images are blocked (some
+   previews) the coloured initial shows instead. */
+window.LZ_SEED.teamPhotos = {
+  "Lesko Help Team": "https://media1-production-mightynetworks.imgix.net/asset/c0214fbb-bbd9-4edc-af1b-0740a9f4996e/Matthew.jpeg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
+  "Tony Woodworth": "https://media1-production-mightynetworks.imgix.net/asset/dd1e23a3-508a-46f6-98e3-5f5f73f2e09c/4ee8f1f25c17f31f.png?ixlib=rails-4.3.1&auto=format&w=96&h=96&fit=crop&impolicy=Avatar",
+  "Misty Fowlds": "https://media1-production-mightynetworks.imgix.net/asset/1704521b-3c30-433e-a893-8866e36f7ebd/f76aa8ee0169b49c.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar"
+};

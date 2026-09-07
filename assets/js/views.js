@@ -115,8 +115,25 @@
 
   /* ==================================== CHAT WITH A TEAM MEMBER (chat) */
 
+  /** A team member's face: their real photo when it loads, otherwise a
+      coloured circle with their initial — like every chat app. */
+  function avatar(name, cls) {
+    var photos = global.LZ_SEED.teamPhotos || {};
+    var src = photos[name] || "";
+    var initial = String(name || "?").trim().charAt(0).toUpperCase() || "?";
+    var tone = "t" + ((initial.charCodeAt(0) % 3) + 1);
+    return (
+      '<span class="' + cls + " " + tone + '" aria-hidden="true">' +
+      '<span class="ini">' + esc(initial) + "</span>" +
+      (src
+        ? '<img src="' + esc(src) + '" alt="" loading="lazy" onerror="this.remove()">'
+        : "") +
+      "</span>"
+    );
+  }
+
   /** The navy band at the top of the chat window — same as the other
-      Lesko chat apps: round mark, LESKO HELP over the room name. */
+      Lesko chat apps: the team's face, LESKO HELP over the room name. */
   function chatHead(opts) {
     opts = opts || {};
     return (
@@ -125,9 +142,9 @@
         ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
           '" aria-label="Back to my conversations">&larr;</button>'
         : "") +
-      '<span class="chat-ava" aria-hidden="true">?</span>' +
+      avatar("Lesko Help Team", "chat-ava") +
       '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
-      '<span class="ch-title">Team Chat</span></span>' +
+      '<span class="ch-title">Chat with a Team Member</span></span>' +
       (opts.right || '<span class="chat-priv">&#128274; Private</span>') +
       "</div>"
     );
@@ -156,45 +173,59 @@
       .join("");
   }
 
+  /* The tab opens on a fresh chat — a greeting from the team and the bar
+     to start. Earlier conversations live behind ☰ (My questions). */
   function ask() {
-    var rows = questionRows();
     var first = esc((store.member.name || "").split(" ")[0]);
-
-    var body = rows
-      ? '<div class="chip-block">' +
-        '<span class="chip-label">New here? Try one of these</span>' +
-        '<div class="chips">' +
-        '<button type="button" class="chip" data-act="chip">Where do I start?</button>' +
-        '<button type="button" class="chip" data-act="chip">How do I create my call sheet?</button>' +
-        '<button type="button" class="chip" data-act="chip">Is there money to help with my rent?</button>' +
-        "</div></div>" +
-        '<span class="chip-label">Your conversations</span>' +
-        '<div class="convos">' + rows + "</div>"
-      : '<div class="brow team">' +
-        '<span class="b-ava" aria-hidden="true">?</span>' +
-        '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
-        "Hi " + first + "! Ask us anything &mdash; money for bills, your business, " +
-        "school, whatever is going on. A real person answers every question, " +
-        "usually within a day.</div></div>";
 
     return (
       '<section class="panel">' +
-      '<div class="chat">' +
+      '<div class="chat blank">' +
       chatHead() +
-      '<div class="chat-body" id="chat-body">' + body + "</div>" +
-      '<form class="chat-foot" id="new-q">' +
-      '<div class="chat-loc">' +
-      '<input id="ask-zip" inputmode="numeric" autocomplete="postal-code" placeholder="Your ZIP code" aria-label="Your ZIP code">' +
-      '<input id="ask-state" autocomplete="address-level1" placeholder="Your state" aria-label="Your state">' +
+      '<div class="chat-body" id="chat-body">' +
+      '<div class="brow team">' +
+      avatar("Lesko Help Team", "b-ava") +
+      '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
+      "How can we help, " + first + "? Tell us what is going on in your own " +
+      "words &mdash; as much detail as you like, and where you are, so we can " +
+      "find help near you. A real person on the team reads it and answers " +
+      "you right here.</div></div>" +
       "</div>" +
+      '<div class="chat-foot">' +
       '<div class="compose">' +
-      '<label class="sr-only" for="q-input">Ask a question</label>' +
-      '<textarea id="q-input" rows="1" placeholder="Ask a question&hellip;"></textarea>' +
-      '<button class="ask-btn" type="submit">Ask</button>' +
-      "</div></form>" +
+      '<button type="button" class="compose-fake" data-act="ask-open">Describe what you need&hellip;</button>' +
+      '<button type="button" class="ask-btn" data-act="ask-open">Ask</button>' +
+      "</div></div>" +
       "</div>" +
       privateLine() +
       "</section>"
+    );
+  }
+
+  /** The pop-up where a question is written: ZIP, state, and room to
+      really describe what is going on. */
+  function askModal() {
+    return (
+      '<div class="overlay" id="ask-modal" role="dialog" aria-modal="true" aria-labelledby="am-title">' +
+      '<form class="modal" id="ask-form" novalidate>' +
+      '<div class="modal-head">' +
+      '<h3 id="am-title">Ask a Team Member</h3>' +
+      '<button type="button" class="modal-x" data-act="ask-close" aria-label="Close">&times;</button>' +
+      "</div>" +
+      '<div class="field-row two">' +
+      '<div class="field"><label for="am-zip">ZIP code</label>' +
+      '<input id="am-zip" inputmode="numeric" autocomplete="postal-code" placeholder="14604"></div>' +
+      '<div class="field"><label for="am-state">State</label>' +
+      '<input id="am-state" autocomplete="address-level1" placeholder="New York"></div>' +
+      "</div>" +
+      '<div class="field">' +
+      '<label for="am-body">Describe what you need</label>' +
+      '<textarea id="am-body" rows="7" placeholder="Take your time. What is going on, what you have already tried, and what would help. Your own words are perfect &mdash; spelling doesn&rsquo;t matter."></textarea>' +
+      "</div>" +
+      '<p class="form-error" id="am-error"></p>' +
+      '<div class="form-actions">' +
+      '<button class="btn red big" type="submit">Send my question</button>' +
+      "</div></form></div>"
     );
   }
 
@@ -231,10 +262,7 @@
         var isTeam = m.role === "team";
         return (
           '<div class="brow ' + (isTeam ? "team" : "me") + '">' +
-          (isTeam
-            ? '<span class="b-ava" aria-hidden="true">' +
-              esc((m.name || "?").trim().charAt(0).toUpperCase()) + "</span>"
-            : "") +
+          (isTeam ? avatar(m.name, "b-ava") : "") +
           '<div class="bubble">' +
           (isTeam ? '<span class="b-who">' + esc(m.name) + " &middot; Lesko Help</span>" : "") +
           rich(m.body) +
@@ -315,9 +343,10 @@
 
   /** The animated "the team is typing" bubble, injected by app.js. */
   function typingBubble() {
+    var who = (global.LZ_SEED.autoReply || {}).name || "Lesko Help Team";
     return (
       '<div class="brow team typing">' +
-      '<span class="b-ava" aria-hidden="true">?</span>' +
+      avatar(who, "b-ava") +
       '<div class="bubble" aria-label="The team is typing">' +
       '<span class="d"></span><span class="d"></span><span class="d"></span>' +
       "</div></div>"
@@ -502,6 +531,7 @@
   global.LZ = global.LZ || {};
   global.LZ.views = {
     ask: ask,
+    askModal: askModal,
     questions: questions,
     thread: thread,
     typingBubble: typingBubble,

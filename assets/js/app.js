@@ -101,7 +101,7 @@
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
 
-    if (r.name === "ask") wireCompose("new-q", "q-input", onNewQuestion);
+    closeAskModal();
     if (r.name === "thread") {
       wireCompose("reply-form", "reply-input", onReply);
       scrollChatDown();
@@ -168,17 +168,56 @@
     });
   }
 
-  function onNewQuestion(body) {
-    var zip = (document.getElementById("ask-zip") || { value: "" }).value.trim();
-    var st = (document.getElementById("ask-state") || { value: "" }).value.trim();
-    var thread = store.addQuestion({
-      body: body,
-      topic: "",
-      location: [zip, st].filter(Boolean).join(", "),
+  /* ---- the pop-up where a new question is written (no browser dialogs:
+          it is our own overlay, so it works inside an embed) */
+
+  function openAskModal() {
+    closeAskModal();
+    var root = document.createElement("div");
+    root.id = "modal-root";
+    root.innerHTML = views.askModal();
+    document.body.appendChild(root);
+
+    var form = document.getElementById("ask-form");
+    var body = document.getElementById("am-body");
+    body.focus();
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var text = body.value.trim();
+      var err = document.getElementById("am-error");
+      if (!text) {
+        err.textContent = "Tell us what is going on — a few lines is plenty.";
+        err.classList.add("show");
+        body.focus();
+        return;
+      }
+      var zip = document.getElementById("am-zip").value.trim();
+      var st = document.getElementById("am-state").value.trim();
+      var thread = store.addQuestion({
+        body: text,
+        topic: "",
+        location: [zip, st].filter(Boolean).join(", "),
+      });
+      closeAskModal();
+      go("thread", thread.id);
+      scheduleTeamReply(thread);
     });
-    go("thread", thread.id);
-    scheduleTeamReply(thread);
+
+    /* tap outside the card, or Escape, to put it away */
+    root.querySelector(".overlay").addEventListener("click", function (e) {
+      if (e.target === e.currentTarget) closeAskModal();
+    });
   }
+
+  function closeAskModal() {
+    var root = document.getElementById("modal-root");
+    if (root) root.parentNode.removeChild(root);
+  }
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeAskModal();
+  });
 
   function onReply(body, form) {
     var id = form.querySelector("button[data-id]").getAttribute("data-id");
@@ -472,16 +511,13 @@
         exportCsv(t.getAttribute("data-sheet"));
         break;
 
-      case "chip": {
-        /* A starter question drops into the compose, ready to send. */
-        var qi = document.getElementById("q-input");
-        if (qi) {
-          qi.value = t.textContent.trim();
-          qi.dispatchEvent(new Event("input"));
-          qi.focus();
-        }
+      case "ask-open":
+        openAskModal();
         break;
-      }
+
+      case "ask-close":
+        closeAskModal();
+        break;
 
       case "demo-file":
         toast("Demo — in the real zone this opens " + (t.getAttribute("data-name") || "the file") + ".");
