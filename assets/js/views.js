@@ -257,7 +257,7 @@
       '<div class="msgbox">' +
       '<div class="msglist" id="chat-body">' + (rows || empty) + "</div>" +
       '<div class="msg-cta">' +
-      '<button type="button" class="pill-cta" data-act="ask-open">Ask us a question ' +
+      '<button type="button" class="pill-cta" data-act="ask-open">Ask a grant coach ' +
       '<span aria-hidden="true">&#10148;</span></button>' +
       "</div></div></div>" +
       "</section>"
@@ -271,7 +271,7 @@
       '<div class="overlay" id="ask-modal" role="dialog" aria-modal="true" aria-labelledby="am-title">' +
       '<form class="modal" id="ask-form" novalidate>' +
       '<div class="modal-head">' +
-      '<h3 id="am-title">Ask us a question</h3>' +
+      '<h3 id="am-title">Ask a grant coach</h3>' +
       '<button type="button" class="modal-x" data-act="ask-close" aria-label="Close">&times;</button>' +
       "</div>" +
       '<div class="field-row two">' +
@@ -283,6 +283,11 @@
       '<div class="field">' +
       '<label for="am-body">Describe what you need</label>' +
       '<textarea id="am-body" rows="7" placeholder="Take your time. What is going on, what you have already tried, and what would help. Your own words are perfect &mdash; spelling doesn&rsquo;t matter."></textarea>' +
+      '<div class="mic-row" id="mic-row" hidden>' +
+      '<button type="button" class="mic-btn" id="mic-btn">' +
+      '<span class="mic-dot" aria-hidden="true"></span>Speak it instead</button>' +
+      '<span class="mic-note" id="mic-note"></span>' +
+      "</div>" +
       '<p class="hint">Private &mdash; only you and the Lesko Help team can see this.</p>' +
       "</div>" +
       '<p class="form-error" id="am-error"></p>' +

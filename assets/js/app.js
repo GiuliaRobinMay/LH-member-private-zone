@@ -20,6 +20,7 @@
   var pendingAnswer = null;
   var typingTimer = null;
   var resetTimer = null;
+  var stopMic = null;
 
   /* ----------------------------------------------------------- router */
 
@@ -158,6 +159,7 @@
     var form = document.getElementById("ask-form");
     var body = document.getElementById("am-body");
     body.focus();
+    wireMic();
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -187,7 +189,92 @@
     });
   }
 
+  /* Speaking is easier than typing for a lot of members. The browser can
+     do it on its own; the button only appears where that is possible, and
+     says so plainly when the microphone is not allowed. */
+  function wireMic() {
+    var Rec = global.SpeechRecognition || global.webkitSpeechRecognition;
+    var row = document.getElementById("mic-row");
+    var btn = document.getElementById("mic-btn");
+    var note = document.getElementById("mic-note");
+    var box = document.getElementById("am-body");
+    if (!Rec || !row || !btn || !box) return;
+
+    row.hidden = false;
+    var rec = null;
+    var listening = false;
+    var before = "";
+
+    function idle() {
+      listening = false;
+      btn.classList.remove("on");
+      btn.lastChild.nodeValue = "Speak it instead";
+    }
+
+    stopMic = function () {
+      if (rec) {
+        try {
+          rec.abort();
+        } catch (e) {
+          /* already stopped */
+        }
+      }
+      rec = null;
+      idle();
+    };
+
+    btn.addEventListener("click", function () {
+      if (listening) {
+        try {
+          rec.stop();
+        } catch (e) {
+          /* nothing to stop */
+        }
+        idle();
+        return;
+      }
+
+      rec = new Rec();
+      rec.lang = "en-US";
+      rec.continuous = true;
+      rec.interimResults = true;
+      before = box.value ? box.value.replace(/\s+$/, "") + " " : "";
+      note.textContent = "";
+
+      rec.onresult = function (e) {
+        var said = "";
+        for (var i = 0; i < e.results.length; i++) said += e.results[i][0].transcript;
+        box.value = before + said;
+        box.dispatchEvent(new Event("input"));
+      };
+
+      rec.onerror = function (e) {
+        note.textContent =
+          e.error === "not-allowed" || e.error === "service-not-allowed"
+            ? "The microphone is switched off here. On a phone, the little microphone on your keyboard works too."
+            : "That did not come through. Try again, or type it.";
+        idle();
+      };
+
+      rec.onend = idle;
+
+      try {
+        rec.start();
+        listening = true;
+        btn.classList.add("on");
+        btn.lastChild.nodeValue = "Listening\u2026 tap when you are done";
+      } catch (e) {
+        note.textContent = "The microphone could not start here.";
+        idle();
+      }
+    });
+  }
+
   function closeAskModal() {
+    if (stopMic) {
+      stopMic();
+      stopMic = null;
+    }
     var root = document.getElementById("modal-root");
     if (root) root.parentNode.removeChild(root);
   }

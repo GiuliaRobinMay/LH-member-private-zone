@@ -79,8 +79,21 @@ body {
 /* the four suits, top right — the one bit of play on the page */
 .topbar {
   display: flex;
-  justify-content: flex-end;
-  padding: 0 6px 4px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 6px 6px;
+}
+
+/* the one line at the top, in the App Lab lettering */
+.tagline {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
 
 .suits {
@@ -1039,15 +1052,16 @@ select {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font: inherit;
-  font-size: 16px;
+  font-family: var(--mono);
+  font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: #fff;
   background: var(--red);
   border: 1px solid var(--red);
   border-radius: 999px;
-  padding: 15px 28px;
-  font-size: 17px;
+  padding: 16px 26px;
   cursor: pointer;
   box-shadow: 0 10px 24px -10px rgba(232, 69, 60, 0.7);
   transition: transform 0.12s ease, filter 0.12s ease;
@@ -1164,6 +1178,72 @@ select {
 
 .modal .field textarea {
   min-height: 170px;
+}
+
+/* speak it instead of typing it */
+
+.mic-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 9px;
+}
+
+.mic-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.mic-btn:hover {
+  background: var(--tint-yellow);
+}
+
+.mic-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.mic-btn.on {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+.mic-btn.on .mic-dot {
+  background: #fff;
+  animation: pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.mic-note {
+  flex: 1 1 190px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--ink-soft);
 }
 
 .field-row.two {
@@ -2376,6 +2456,7 @@ select {
 <div class="wrap">
 
   <div class="topbar">
+    <p class="tagline">Talk to a grant coach 1:1</p>
     <div class="suits" aria-hidden="true">
       <span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span>
     </div>
@@ -5022,7 +5103,7 @@ window.LZ_SEED.teamArt = {
       '<div class="msgbox">' +
       '<div class="msglist" id="chat-body">' + (rows || empty) + "</div>" +
       '<div class="msg-cta">' +
-      '<button type="button" class="pill-cta" data-act="ask-open">Ask us a question ' +
+      '<button type="button" class="pill-cta" data-act="ask-open">Ask a grant coach ' +
       '<span aria-hidden="true">&#10148;</span></button>' +
       "</div></div></div>" +
       "</section>"
@@ -5036,7 +5117,7 @@ window.LZ_SEED.teamArt = {
       '<div class="overlay" id="ask-modal" role="dialog" aria-modal="true" aria-labelledby="am-title">' +
       '<form class="modal" id="ask-form" novalidate>' +
       '<div class="modal-head">' +
-      '<h3 id="am-title">Ask us a question</h3>' +
+      '<h3 id="am-title">Ask a grant coach</h3>' +
       '<button type="button" class="modal-x" data-act="ask-close" aria-label="Close">&times;</button>' +
       "</div>" +
       '<div class="field-row two">' +
@@ -5048,6 +5129,11 @@ window.LZ_SEED.teamArt = {
       '<div class="field">' +
       '<label for="am-body">Describe what you need</label>' +
       '<textarea id="am-body" rows="7" placeholder="Take your time. What is going on, what you have already tried, and what would help. Your own words are perfect &mdash; spelling doesn&rsquo;t matter."></textarea>' +
+      '<div class="mic-row" id="mic-row" hidden>' +
+      '<button type="button" class="mic-btn" id="mic-btn">' +
+      '<span class="mic-dot" aria-hidden="true"></span>Speak it instead</button>' +
+      '<span class="mic-note" id="mic-note"></span>' +
+      "</div>" +
       '<p class="hint">Private &mdash; only you and the Lesko Help team can see this.</p>' +
       "</div>" +
       '<p class="form-error" id="am-error"></p>' +
@@ -5326,6 +5412,7 @@ window.LZ_SEED.teamArt = {
   var pendingAnswer = null;
   var typingTimer = null;
   var resetTimer = null;
+  var stopMic = null;
 
   /* ----------------------------------------------------------- router */
 
@@ -5464,6 +5551,7 @@ window.LZ_SEED.teamArt = {
     var form = document.getElementById("ask-form");
     var body = document.getElementById("am-body");
     body.focus();
+    wireMic();
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -5493,7 +5581,92 @@ window.LZ_SEED.teamArt = {
     });
   }
 
+  /* Speaking is easier than typing for a lot of members. The browser can
+     do it on its own; the button only appears where that is possible, and
+     says so plainly when the microphone is not allowed. */
+  function wireMic() {
+    var Rec = global.SpeechRecognition || global.webkitSpeechRecognition;
+    var row = document.getElementById("mic-row");
+    var btn = document.getElementById("mic-btn");
+    var note = document.getElementById("mic-note");
+    var box = document.getElementById("am-body");
+    if (!Rec || !row || !btn || !box) return;
+
+    row.hidden = false;
+    var rec = null;
+    var listening = false;
+    var before = "";
+
+    function idle() {
+      listening = false;
+      btn.classList.remove("on");
+      btn.lastChild.nodeValue = "Speak it instead";
+    }
+
+    stopMic = function () {
+      if (rec) {
+        try {
+          rec.abort();
+        } catch (e) {
+          /* already stopped */
+        }
+      }
+      rec = null;
+      idle();
+    };
+
+    btn.addEventListener("click", function () {
+      if (listening) {
+        try {
+          rec.stop();
+        } catch (e) {
+          /* nothing to stop */
+        }
+        idle();
+        return;
+      }
+
+      rec = new Rec();
+      rec.lang = "en-US";
+      rec.continuous = true;
+      rec.interimResults = true;
+      before = box.value ? box.value.replace(/\s+$/, "") + " " : "";
+      note.textContent = "";
+
+      rec.onresult = function (e) {
+        var said = "";
+        for (var i = 0; i < e.results.length; i++) said += e.results[i][0].transcript;
+        box.value = before + said;
+        box.dispatchEvent(new Event("input"));
+      };
+
+      rec.onerror = function (e) {
+        note.textContent =
+          e.error === "not-allowed" || e.error === "service-not-allowed"
+            ? "The microphone is switched off here. On a phone, the little microphone on your keyboard works too."
+            : "That did not come through. Try again, or type it.";
+        idle();
+      };
+
+      rec.onend = idle;
+
+      try {
+        rec.start();
+        listening = true;
+        btn.classList.add("on");
+        btn.lastChild.nodeValue = "Listening\u2026 tap when you are done";
+      } catch (e) {
+        note.textContent = "The microphone could not start here.";
+        idle();
+      }
+    });
+  }
+
   function closeAskModal() {
+    if (stopMic) {
+      stopMic();
+      stopMic = null;
+    }
     var root = document.getElementById("modal-root");
     if (root) root.parentNode.removeChild(root);
   }
