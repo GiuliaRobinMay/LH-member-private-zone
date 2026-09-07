@@ -171,8 +171,9 @@
   function menu(active) {
     var n = store.counts();
     var items = [
-      { to: "chats", label: "Chat with a Team Member", badge: n.unread, count: 0 },
-      { to: "sheets", label: "My call sheets", badge: 0, count: n.sheets },
+      { act: "ask-open", label: "Chat with a Team Member" },
+      { to: "sheets", label: "My call sheets", count: n.sheets },
+      { to: "chats", label: "My conversations", badge: n.unread },
     ];
     return (
       '<div class="dd">' +
@@ -183,7 +184,8 @@
         .map(function (it) {
           return (
             '<button type="button" role="menuitem" class="dd-item' +
-            (it.to === active ? " on" : "") + '" data-act="go" data-to="' + it.to + '">' +
+            (it.to && it.to === active ? " on" : "") + '" data-act="' +
+            (it.act || "go") + '"' + (it.to ? ' data-to="' + it.to + '"' : "") + ">" +
             it.label +
             (it.badge
               ? '<span class="bub">' + it.badge + '<span class="sr-only"> new answers</span></span>'
@@ -248,7 +250,7 @@
     return (
       '<section class="panel">' +
       '<div class="chat">' +
-      chatHead({ title: "Chat with a Team Member", active: "chats" }) +
+      chatHead({ title: "My conversations", active: "chats" }) +
       '<div class="msgbox">' +
       '<div class="msglist" id="chat-body">' + (rows || empty) + "</div>" +
       '<div class="msg-cta">' +
@@ -322,7 +324,7 @@
         back: "chats",
         who: who || GENERIC,
         title: who || "Lesko Help team",
-        sub: who ? "Lesko Help team" : "Waiting for a reply",
+        sub: q.subject,
         active: "chats",
       }) +
       '<div class="chat-body" id="chat-body">' +

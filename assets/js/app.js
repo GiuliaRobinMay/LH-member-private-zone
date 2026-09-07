@@ -393,6 +393,7 @@
         break;
 
       case "ask-open":
+        closeMenus();
         openAskModal();
         break;
 
