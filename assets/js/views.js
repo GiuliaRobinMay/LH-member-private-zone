@@ -1,7 +1,7 @@
 /* ==================================================================
    views.js — the screens of My Lesko Zone.
 
-   One window, like the Messages panel inside Mighty. The first thing
+   One quiet window, like the Messages panel inside Mighty. The first thing
    a member sees is the list of their conversations — the team member's
    face, the title, their name, how long ago — with a red pill to ask a
    new question. A conversation is a chat: the member in blue on the
@@ -130,32 +130,23 @@
     );
   }
 
-  function privateLine() {
-    return (
-      '<p class="private-line"><span aria-hidden="true">&#128274;</span>' +
-      "<span>Private — only you and the Lesko Help team can see this.</span></p>"
-    );
-  }
-
   /* ------------------------------------------------------------ team */
 
   var GENERIC = "Lesko Help Team";
 
-  /** A team member's face: their real photo when it loads, otherwise a
-      coloured circle with their initial — like every chat app. The
-      generic team account shows the Lesko question mark. */
+  /** A team member's face: the illustrated mock-up portrait, with their
+      real photo laid over it when it loads (it is removed if it cannot). */
   function avatar(name, cls) {
     var photos = global.LZ_SEED.teamPhotos || {};
-    var team = global.LZ_SEED.team || [];
+    var art = global.LZ_SEED.teamArt || {};
     var who = name || GENERIC;
     var src = photos[who] || "";
-    var generic = who === GENERIC;
-    var initial = generic ? "?" : String(who).trim().charAt(0).toUpperCase() || "?";
-    var at = team.indexOf(who);
-    var tone = generic ? "mark" : "t" + ((at < 0 ? 0 : at) % 4 + 1);
+    var svg = art[who] || art[GENERIC] || "";
     return (
-      '<span class="' + cls + " " + tone + '" aria-hidden="true">' +
-      '<span class="ini">' + esc(initial) + "</span>" +
+      '<span class="' + cls + '" aria-hidden="true">' +
+      (svg
+        ? '<img class="art" src="data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '" alt="">'
+        : '<span class="ini">' + esc(String(who).trim().charAt(0).toUpperCase()) + "</span>") +
       (src ? '<img src="' + esc(src) + '" alt="" loading="lazy">' : "") +
       "</span>"
     );
@@ -186,9 +177,7 @@
     return (
       '<div class="dd">' +
       '<button type="button" class="dd-btn" data-act="dd-toggle" aria-haspopup="menu" ' +
-      'aria-expanded="false">Menu <span aria-hidden="true">&#9662;</span>' +
-      (n.unread ? '<span class="dd-dot" aria-hidden="true"></span>' : "") +
-      "</button>" +
+      'aria-expanded="false">Menu <span aria-hidden="true">&#9662;</span></button>' +
       '<div class="dd-menu" role="menu" hidden>' +
       items
         .map(function (it) {
@@ -216,9 +205,11 @@
         ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
           '" aria-label="Back">&larr;</button>'
         : "") +
-      avatar(opts.who || GENERIC, "chat-ava") +
-      '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
-      '<span class="ch-title">' + esc(opts.title) + "</span></span>" +
+      (opts.who ? avatar(opts.who, "chat-ava") : "") +
+      '<span class="chat-name">' +
+      '<span class="ch-title">' + esc(opts.title) + "</span>" +
+      (opts.sub ? '<span class="ch-sub">' + esc(opts.sub) + "</span>" : "") +
+      "</span>" +
       menu(opts.active) +
       "</div>"
     );
@@ -232,11 +223,7 @@
     var rows = qs
       .map(function (q) {
         var who = lastTeam(q);
-        var sub = q.unread
-          ? '<span class="st-new">New answer from ' + esc(firstName(who)) + "</span>"
-          : who
-          ? esc(who)
-          : '<span class="st-wait">No answer yet</span>';
+        var sub = who ? esc(who) : '<span class="m-wait">Waiting for a reply</span>';
         return (
           '<button class="mrow' + (q.unread ? " unread" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
@@ -245,7 +232,9 @@
           '<span class="m-title">' + esc(q.subject) + "</span>" +
           '<span class="m-sub">' + sub + "</span>" +
           "</span>" +
-          '<span class="m-when">' + esc(shortAgo(lastAt(q))) + "</span>" +
+          '<span class="m-when">' + esc(shortAgo(lastAt(q))) +
+          (q.unread ? '<span class="m-dot"><span class="sr-only">new answer</span></span>' : "") +
+          "</span>" +
           "</button>"
         );
       })
@@ -266,7 +255,6 @@
       '<button type="button" class="pill-cta" data-act="ask-open">Ask us a question ' +
       '<span aria-hidden="true">&#10148;</span></button>' +
       "</div></div></div>" +
-      privateLine() +
       "</section>"
     );
   }
@@ -290,6 +278,7 @@
       '<div class="field">' +
       '<label for="am-body">Describe what you need</label>' +
       '<textarea id="am-body" rows="7" placeholder="Take your time. What is going on, what you have already tried, and what would help. Your own words are perfect &mdash; spelling doesn&rsquo;t matter."></textarea>' +
+      '<p class="hint">Private &mdash; only you and the Lesko Help team can see this.</p>' +
       "</div>" +
       '<p class="form-error" id="am-error"></p>' +
       '<div class="form-actions">' +
@@ -313,20 +302,17 @@
           '<div class="brow ' + (isTeam ? "team" : "me") + '">' +
           (isTeam ? avatar(m.name, "b-ava") : "") +
           '<div class="bubble">' +
-          (isTeam ? '<span class="b-who">' + esc(m.name) + " &middot; Lesko Help</span>" : "") +
+          (isTeam && m.name !== who ? '<span class="b-who">' + esc(m.name) + "</span>" : "") +
           rich(m.body) +
           (isTeam ? fileChips(m.attachments) : "") +
-          "</div></div>" +
-          '<div class="bmeta' + (isTeam ? " team" : "") + '">' +
-          esc(store.ago(m.createdAt) || m.ago) + "</div>"
+          "</div></div>"
         );
       })
       .join("");
 
     var waitingNote =
       q.status === "waiting"
-        ? '<p class="private-line" style="margin:4px 2px 0"><span aria-hidden="true">&#8987;</span>' +
-          "<span>Your question is with the team — answers usually come back within a day or two.</span></p>"
+        ? '<p class="quiet">Your question is with the team &mdash; answers usually come back within a day or two.</p>'
         : "";
 
     return (
@@ -336,6 +322,7 @@
         back: "chats",
         who: who || GENERIC,
         title: who || "Lesko Help team",
+        sub: who ? "Lesko Help team" : "Waiting for a reply",
         active: "chats",
       }) +
       '<div class="chat-body" id="chat-body">' +
@@ -414,18 +401,16 @@
       .map(function (sh) {
         var called = (sh.called || []).length;
         var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+        var bits = [place, sh.orgs.length + " places"];
+        if (called) bits.push(called + " called");
         return (
-          '<button class="convo" data-act="sheet" data-id="' + esc(sh.id) + '">' +
-          '<span class="c-dot' + (called ? "" : " waiting") + '" aria-hidden="true"></span>' +
-          "<span>" +
-          '<span class="c-subj">' + esc(sh.title) + "</span>" +
-          '<span class="c-meta">' + esc(place) + " &nbsp;&middot;&nbsp; " +
-          sh.orgs.length + " places" +
-          (called
-            ? ' &nbsp;&middot;&nbsp; <span class="st-ok">' + called + " called &#10003;</span>"
-            : "") +
-          "</span></span>" +
-          '<span class="c-when">' + esc(niceDate(sh.createdAt)) + "</span></button>"
+          '<button class="mrow noava" data-act="sheet" data-id="' + esc(sh.id) + '">' +
+          '<span class="m-main">' +
+          '<span class="m-title">' + esc(sh.title) + "</span>" +
+          '<span class="m-sub">' + esc(bits.join(" · ")) + "</span>" +
+          "</span>" +
+          '<span class="m-when">' + esc(shortAgo(sh.createdAt)) + "</span>" +
+          "</button>"
         );
       })
       .join("");
@@ -438,10 +423,8 @@
       '<section class="panel">' +
       '<div class="chat">' +
       chatHead({ title: "My call sheets", active: "sheets" }) +
-      '<div class="chat-body grow">' +
-      (rows ? '<div class="convos">' + rows + "</div>" : empty) +
-      "</div></div>" +
-      privateLine() +
+      '<div class="msgbox"><div class="msglist plain">' + (rows || empty) + "</div></div>" +
+      "</div>" +
       "</section>"
     );
   }
@@ -527,7 +510,6 @@
   function notFound(what, backTo) {
     return (
       '<section class="panel"><div class="card empty-note">' +
-      '<div class="q" aria-hidden="true">?</div>' +
       "<h3>We could not find that " + esc(what) + "</h3>" +
       '<button class="btn red" data-act="go" data-to="' + esc(backTo) + '">Go back</button>' +
       "</div></section>"

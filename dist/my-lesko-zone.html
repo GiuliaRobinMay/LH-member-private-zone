@@ -15,7 +15,7 @@
    to load, nothing to break inside an embed.
 
    This is a compact embeddable widget, not a full-page site: one
-   narrow column, mono pill tabs at the top, everything else stacked.
+   quiet white window on the cream page.
    ================================================================== */
 
 :root {
@@ -110,102 +110,6 @@ a {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
-}
-
-/* ---------------------------------------------------------------- header */
-
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 0 2px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.brand-mark {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--blue);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-family: var(--serif);
-  font-size: 17px;
-  font-weight: 700;
-  user-select: none;
-  transition: transform 0.18s ease;
-}
-
-.brand-mark:hover {
-  transform: rotate(-12deg) scale(1.08);
-}
-
-.brand-name {
-  font-family: var(--serif);
-  line-height: 1.05;
-}
-
-.brand-name i {
-  display: block;
-  color: var(--red);
-  font-size: 18px;
-  font-style: italic;
-}
-
-.brand-name b {
-  display: block;
-  font-size: 18px;
-  font-weight: 400;
-}
-
-.suits {
-  display: flex;
-  gap: 9px;
-  font-size: 17px;
-  font-family: var(--suit-font);
-}
-
-.suits span {
-  animation: bob 3.4s ease-in-out infinite;
-}
-
-.suits span:nth-child(1) {
-  color: var(--blue);
-}
-.suits span:nth-child(2) {
-  color: var(--red);
-  animation-delay: 0.25s;
-}
-.suits span:nth-child(3) {
-  color: var(--yellow);
-  animation-delay: 0.5s;
-}
-.suits span:nth-child(4) {
-  color: var(--green);
-  animation-delay: 0.75s;
-}
-
-@keyframes bob {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-5px) rotate(8deg);
-  }
-}
-
-h2 em,
-h3 em {
-  color: var(--red);
-  font-style: italic;
 }
 
 /* --------------------------------------------------------------- panels */
@@ -722,12 +626,12 @@ select {
 .chat {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   border-radius: var(--radius);
-  background: var(--paper);
-  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
-    0 14px 30px -20px rgba(22, 34, 63, 0.5);
-  margin-bottom: 12px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.04),
+    0 18px 34px -24px rgba(22, 34, 63, 0.45);
+  margin: 14px 0 12px;
 }
 
 .chat-head {
@@ -759,7 +663,7 @@ select {
   background: rgba(255, 255, 255, 0.14);
 }
 
-/* faces: the real photo when it loads, a coloured initial until then */
+/* faces: the illustrated portrait, the real photo over it when it loads */
 
 .chat-ava,
 .b-ava,
@@ -773,58 +677,28 @@ select {
   font-weight: 700;
   user-select: none;
   overflow: hidden;
-  background: var(--ink);
-  color: var(--yellow);
+  background: #e9ecf1;
+  color: var(--ink-soft);
 }
 
 .chat-ava {
   width: 36px;
   height: 36px;
-  font-size: 19px;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
+  font-size: 18px;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
 }
 
 .b-ava {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   margin-top: 2px;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .m-ava {
   width: 46px;
   height: 46px;
   font-size: 21px;
-}
-
-/* each person keeps their own colour */
-.chat-ava.t2,
-.b-ava.t2,
-.m-ava.t2 {
-  background: var(--red);
-  color: #fff;
-}
-
-.chat-ava.t3,
-.b-ava.t3,
-.m-ava.t3 {
-  background: var(--blue);
-  color: #fff;
-}
-
-.chat-ava.t4,
-.b-ava.t4,
-.m-ava.t4 {
-  background: var(--green);
-  color: #fff;
-}
-
-/* the Lesko question mark, for the team as a whole */
-.chat-ava.mark,
-.b-ava.mark,
-.m-ava.mark {
-  background: var(--yellow);
-  color: var(--ink);
 }
 
 .chat-ava img,
@@ -844,22 +718,20 @@ select {
   line-height: 1.1;
 }
 
-.ch-over {
-  display: block;
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--yellow);
-}
-
 .ch-title {
   display: block;
   font-family: var(--serif);
-  font-size: 17px;
+  font-size: 18px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.ch-sub {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 1px;
 }
 
 /* the dropdown at the right of the band — the aspects of the zone */
@@ -875,8 +747,8 @@ select {
   font-size: 13px;
   font-weight: 600;
   color: #fff;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 999px;
   padding: 7px 12px;
   cursor: pointer;
@@ -888,16 +760,6 @@ select {
   background: rgba(255, 255, 255, 0.22);
 }
 
-.dd-dot {
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 0 0 2px var(--ink);
-}
 
 .dd-menu {
   position: absolute;
@@ -946,7 +808,7 @@ select {
   height: 20px;
   padding: 0 6px;
   border-radius: 999px;
-  background: var(--red);
+  background: var(--blue);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -967,18 +829,26 @@ select {
 .msglist {
   height: clamp(340px, 58vh, 480px);
   overflow-y: auto;
-  padding: 4px 10px 88px;
+  padding: 4px 12px 88px;
   scroll-behavior: smooth;
+}
+
+/* the call sheets list has no pill floating over it */
+.msglist.plain {
+  height: auto;
+  max-height: clamp(340px, 58vh, 480px);
+  padding-bottom: 8px;
+  border-radius: 0 0 15px 15px;
 }
 
 .mrow {
   display: grid;
   grid-template-columns: 46px minmax(0, 1fr) auto;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
   width: 100%;
   text-align: left;
-  padding: 12px 6px;
+  padding: 13px 6px;
   border: 0;
   border-bottom: 1px solid var(--hairline-soft);
   background: transparent;
@@ -989,7 +859,11 @@ select {
 }
 
 .mrow:hover {
-  background: rgba(22, 34, 63, 0.045);
+  background: rgba(22, 34, 63, 0.035);
+}
+
+.mrow.noava {
+  grid-template-columns: minmax(0, 1fr) auto;
 }
 
 .mrow:last-child {
@@ -1025,27 +899,29 @@ select {
   text-overflow: ellipsis;
 }
 
-.m-sub .st-new {
-  color: var(--red);
-  font-weight: 700;
-}
-
-.m-sub .st-wait {
-  color: #b8860b;
-  font-weight: 600;
+.m-wait {
+  font-style: italic;
+  color: var(--ink-faint);
 }
 
 .m-when {
   align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
   padding-top: 4px;
   font-size: 13px;
   color: var(--ink-faint);
   white-space: nowrap;
 }
 
-.mrow.unread .m-when {
-  color: var(--red);
-  font-weight: 700;
+/* one small dot says "something new" — nothing shouts */
+.m-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--blue);
 }
 
 .m-empty {
@@ -1075,7 +951,7 @@ select {
   justify-content: center;
   padding: 34px 0 14px;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(250, 246, 236, 0), var(--paper) 55%);
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff 55%);
   border-radius: 0 0 15px 15px;
 }
 
@@ -1125,7 +1001,7 @@ select {
 
 .chat-foot {
   border-top: 1px solid var(--hairline-soft);
-  background: var(--paper-2);
+  background: #fff;
   padding: 10px 12px;
   margin: 0;
   border-radius: 0 0 15px 15px;
@@ -1137,12 +1013,17 @@ select {
 
 .day-mark {
   text-align: center;
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 12px;
   color: var(--ink-faint);
-  margin: 0 0 12px;
+  margin: 2px 0 14px;
+}
+
+.quiet {
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin: 6px 24px 4px;
+  line-height: 1.45;
 }
 
 /* the question pop-up */
@@ -1484,9 +1365,9 @@ select {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   border-radius: 10px;
-  background: var(--paper);
+  background: #fff;
   padding: 7px 11px;
   font-size: 13px;
   color: var(--ink);
@@ -1535,7 +1416,7 @@ select {
 
 .brow {
   display: flex;
-  margin-bottom: 3px;
+  margin-bottom: 10px;
 }
 
 .brow.me {
@@ -1557,10 +1438,8 @@ select {
 }
 
 .brow.team .bubble {
-  background: #fff;
-  border: 1px solid var(--hairline-soft);
+  background: #f1f3f7;
   border-radius: 18px 18px 18px 5px;
-  box-shadow: 0 1px 2px rgba(22, 34, 63, 0.06);
 }
 
 /* the member's own words: unmistakably a different colour */
@@ -1576,9 +1455,9 @@ select {
 
 .bubble .b-who {
   display: block;
-  font-size: 11.5px;
-  font-weight: 700;
-  color: var(--red);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
   margin-bottom: 3px;
 }
 
@@ -1606,12 +1485,12 @@ select {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  border: 1px dashed var(--hairline);
   border-radius: var(--radius);
-  background: var(--paper-2);
+  background: #f7f8fa;
   padding: 11px 15px;
   margin: 2px 0 14px;
   font-size: 14px;
+  color: var(--ink-soft);
 }
 
 .feedback .fb-q {
@@ -2074,9 +1953,9 @@ select {
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: start;
   gap: 12px;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-soft);
   border-radius: 14px;
-  background: var(--paper-2);
+  background: #fff;
   padding: 12px 14px;
 }
 
@@ -2208,24 +2087,17 @@ select {
 /* --------------------------------------------------------------- footer */
 
 .foot {
-  margin-top: 36px;
-  border-top: 1px solid var(--hairline);
-  padding: 16px 0 30px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
+  justify-content: center;
+  padding: 6px 0 26px;
 }
 
 .foot .reset-link {
   background: none;
   border: 0;
   padding: 4px 0;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font: inherit;
+  font-size: 12px;
   color: var(--ink-faint);
   cursor: pointer;
   text-decoration: underline;
@@ -2233,20 +2105,7 @@ select {
 }
 
 .foot .reset-link:hover {
-  color: var(--red);
-}
-
-.foot-suit {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--blue);
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-family: var(--serif);
-  font-size: 14px;
-  user-select: none;
+  color: var(--ink);
 }
 
 /* ---------------------------------------------------------------- toast */
@@ -2376,7 +2235,6 @@ select {
     width: 100%;
   }
 
-  .topbar .suits,
   .masthead .side-note,
   .foot,
   .toast,
@@ -2432,22 +2290,10 @@ select {
 
 <div class="wrap">
 
-  <header class="topbar">
-    <div class="brand">
-      <div class="brand-mark" title="Lesko Help">?</div>
-      <div class="brand-name"><i>Lesko</i><b>Help</b></div>
-    </div>
-    <div class="suits" aria-hidden="true">
-      <span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span>
-    </div>
-  </header>
-
   <main id="face"></main>
 
   <footer class="foot">
-    <div class="mono-label">Lesko Help &middot; questions are free. always were.</div>
     <button class="reset-link" data-act="reset" type="button">Start the demo over</button>
-    <div class="foot-suit" title="?">?</div>
   </footer>
 
 </div>
@@ -4487,14 +4333,22 @@ window.LZ_SEED = {
 
 /* The team who answers: Tony, Misty and Rose. Their real profile photos
    come straight from the community and load when the widget is hosted;
-   where outside images are blocked (some previews) a coloured initial
-   shows instead. Rose's photo and full name are still to come. */
+   until then the illustrated mock-up portraits below stand in. Rose's
+   photo and full name are still to come. */
 window.LZ_SEED.team = ["Tony Woodworth", "Misty Fowlds", "Rose"];
 window.LZ_SEED.teamPhotos = {
   "Lesko Help Team": "https://media1-production-mightynetworks.imgix.net/asset/c0214fbb-bbd9-4edc-af1b-0740a9f4996e/Matthew.jpeg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
   "Tony Woodworth": "https://media1-production-mightynetworks.imgix.net/asset/dd1e23a3-508a-46f6-98e3-5f5f73f2e09c/4ee8f1f25c17f31f.png?ixlib=rails-4.3.1&auto=format&w=96&h=96&fit=crop&impolicy=Avatar",
   "Misty Fowlds": "https://media1-production-mightynetworks.imgix.net/asset/1704521b-3c30-433e-a893-8866e36f7ebd/f76aa8ee0169b49c.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
   "Rose": ""
+};
+
+/* Mock-up portraits (flat illustrations, not likenesses) for the demo. */
+window.LZ_SEED.teamArt = {
+  "Tony Woodworth": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><clipPath id='c'><circle cx='32' cy='32' r='32'/></clipPath></defs><g clip-path='url(#c)'><rect width='64' height='64' fill='#d9e2f5'/><path d='M8 66c0-13 10-21 24-21s24 8 24 21z' fill='#2e43c8'/><rect x='26' y='34' width='12' height='12' rx='4' fill='#c9895e'/><ellipse cx='32' cy='27' rx='11.5' ry='13' fill='#d99a6c'/><path d='M22.5 30c1 7 4.5 10.5 9.5 10.5S40.5 37 41.5 30c-1.5 4.5-4.5 7-9.5 7s-8-2.5-9.5-7z' fill='#2a1f17' opacity='.5'/><path d='M20.5 27c-.5-10 5-15.5 11.5-15.5S44 17 43.5 27c-1.5-5.5-5.5-8-11.5-8s-10 2.5-11.5 8z' fill='#2a1f17'/><path d='M25 23.5h5M34 23.5h5' stroke='#2a1f17' stroke-width='1.4' stroke-linecap='round'/><circle cx='27.5' cy='27' r='1.4' fill='#22180f'/><circle cx='36.5' cy='27' r='1.4' fill='#22180f'/><path d='M28.5 33q3.5 2.2 7 0' stroke='#8a4a30' stroke-width='1.3' fill='none' stroke-linecap='round'/></g></svg>",
+  "Misty Fowlds": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><clipPath id='c'><circle cx='32' cy='32' r='32'/></clipPath></defs><g clip-path='url(#c)'><rect width='64' height='64' fill='#fbe3d6'/><path d='M18 30c0-12 6-18 14-18s14 6 14 18v20H18z' fill='#3b2314'/><path d='M8 66c0-13 10-21 24-21s24 8 24 21z' fill='#e8453c'/><path d='M18 30v22c3.5 0 6.5-4 6.5-9V30zM46 30v22c-3.5 0-6.5-4-6.5-9V30z' fill='#3b2314'/><rect x='26' y='34' width='12' height='12' rx='4' fill='#a86a48'/><ellipse cx='32' cy='27' rx='11.5' ry='13' fill='#b97a55'/><path d='M20.5 26c0-9 5-14 11.5-14S43.5 17 43.5 26c-3-4-6-6-11.5-6S23.5 22 20.5 26z' fill='#3b2314'/><path d='M25 23.5h5M34 23.5h5' stroke='#3b2314' stroke-width='1.3' stroke-linecap='round'/><circle cx='27.5' cy='27' r='1.4' fill='#22180f'/><circle cx='36.5' cy='27' r='1.4' fill='#22180f'/><path d='M28.5 33q3.5 2.2 7 0' stroke='#8a3a3a' stroke-width='1.3' fill='none' stroke-linecap='round'/></g></svg>",
+  "Rose": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><clipPath id='c'><circle cx='32' cy='32' r='32'/></clipPath></defs><g clip-path='url(#c)'><rect width='64' height='64' fill='#dff1e6'/><path d='M19 29c0-11 5.5-16 13-16s13 5 13 16v9c0 3-2.5 5-5.5 5h-15C21.5 43 19 41 19 38z' fill='#cfd4da'/><path d='M8 66c0-13 10-21 24-21s24 8 24 21z' fill='#2e9e5b'/><rect x='26' y='34' width='12' height='12' rx='4' fill='#e2b393'/><ellipse cx='32' cy='27' rx='11.5' ry='13' fill='#efc4a5'/><path d='M20.5 27c0-10 5-14.5 11.5-14.5S43.5 17 43.5 27c-2.5-5-6-7-11.5-7s-9 2-11.5 7z' fill='#dfe3e8'/><circle cx='27.5' cy='28' r='4.2' fill='none' stroke='#3a3a3a' stroke-width='1.2'/><circle cx='36.5' cy='28' r='4.2' fill='none' stroke='#3a3a3a' stroke-width='1.2'/><path d='M31.7 28h.6' stroke='#3a3a3a' stroke-width='1.2'/><circle cx='27.5' cy='28' r='1.4' fill='#2b2b2b'/><circle cx='36.5' cy='28' r='1.4' fill='#2b2b2b'/><path d='M28.5 34q3.5 2.2 7 0' stroke='#b0655a' stroke-width='1.3' fill='none' stroke-linecap='round'/></g></svg>",
+  "Lesko Help Team": "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><clipPath id='c'><circle cx='32' cy='32' r='32'/></clipPath></defs><g clip-path='url(#c)'><rect width='64' height='64' fill='#e9ecf1'/><circle cx='32' cy='25' r='11' fill='#b6bdca'/><path d='M9 66c0-13 10-21 23-21s23 8 23 21z' fill='#b6bdca'/></g></svg>"
 };
 
 </script>
@@ -4821,7 +4675,7 @@ window.LZ_SEED.teamPhotos = {
 /* ==================================================================
    views.js — the screens of My Lesko Zone.
 
-   One window, like the Messages panel inside Mighty. The first thing
+   One quiet window, like the Messages panel inside Mighty. The first thing
    a member sees is the list of their conversations — the team member's
    face, the title, their name, how long ago — with a red pill to ask a
    new question. A conversation is a chat: the member in blue on the
@@ -4950,32 +4804,23 @@ window.LZ_SEED.teamPhotos = {
     );
   }
 
-  function privateLine() {
-    return (
-      '<p class="private-line"><span aria-hidden="true">&#128274;</span>' +
-      "<span>Private — only you and the Lesko Help team can see this.</span></p>"
-    );
-  }
-
   /* ------------------------------------------------------------ team */
 
   var GENERIC = "Lesko Help Team";
 
-  /** A team member's face: their real photo when it loads, otherwise a
-      coloured circle with their initial — like every chat app. The
-      generic team account shows the Lesko question mark. */
+  /** A team member's face: the illustrated mock-up portrait, with their
+      real photo laid over it when it loads (it is removed if it cannot). */
   function avatar(name, cls) {
     var photos = global.LZ_SEED.teamPhotos || {};
-    var team = global.LZ_SEED.team || [];
+    var art = global.LZ_SEED.teamArt || {};
     var who = name || GENERIC;
     var src = photos[who] || "";
-    var generic = who === GENERIC;
-    var initial = generic ? "?" : String(who).trim().charAt(0).toUpperCase() || "?";
-    var at = team.indexOf(who);
-    var tone = generic ? "mark" : "t" + ((at < 0 ? 0 : at) % 4 + 1);
+    var svg = art[who] || art[GENERIC] || "";
     return (
-      '<span class="' + cls + " " + tone + '" aria-hidden="true">' +
-      '<span class="ini">' + esc(initial) + "</span>" +
+      '<span class="' + cls + '" aria-hidden="true">' +
+      (svg
+        ? '<img class="art" src="data:image/svg+xml;utf8,' + encodeURIComponent(svg) + '" alt="">'
+        : '<span class="ini">' + esc(String(who).trim().charAt(0).toUpperCase()) + "</span>") +
       (src ? '<img src="' + esc(src) + '" alt="" loading="lazy">' : "") +
       "</span>"
     );
@@ -5006,9 +4851,7 @@ window.LZ_SEED.teamPhotos = {
     return (
       '<div class="dd">' +
       '<button type="button" class="dd-btn" data-act="dd-toggle" aria-haspopup="menu" ' +
-      'aria-expanded="false">Menu <span aria-hidden="true">&#9662;</span>' +
-      (n.unread ? '<span class="dd-dot" aria-hidden="true"></span>' : "") +
-      "</button>" +
+      'aria-expanded="false">Menu <span aria-hidden="true">&#9662;</span></button>' +
       '<div class="dd-menu" role="menu" hidden>' +
       items
         .map(function (it) {
@@ -5036,9 +4879,11 @@ window.LZ_SEED.teamPhotos = {
         ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
           '" aria-label="Back">&larr;</button>'
         : "") +
-      avatar(opts.who || GENERIC, "chat-ava") +
-      '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
-      '<span class="ch-title">' + esc(opts.title) + "</span></span>" +
+      (opts.who ? avatar(opts.who, "chat-ava") : "") +
+      '<span class="chat-name">' +
+      '<span class="ch-title">' + esc(opts.title) + "</span>" +
+      (opts.sub ? '<span class="ch-sub">' + esc(opts.sub) + "</span>" : "") +
+      "</span>" +
       menu(opts.active) +
       "</div>"
     );
@@ -5052,11 +4897,7 @@ window.LZ_SEED.teamPhotos = {
     var rows = qs
       .map(function (q) {
         var who = lastTeam(q);
-        var sub = q.unread
-          ? '<span class="st-new">New answer from ' + esc(firstName(who)) + "</span>"
-          : who
-          ? esc(who)
-          : '<span class="st-wait">No answer yet</span>';
+        var sub = who ? esc(who) : '<span class="m-wait">Waiting for a reply</span>';
         return (
           '<button class="mrow' + (q.unread ? " unread" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
@@ -5065,7 +4906,9 @@ window.LZ_SEED.teamPhotos = {
           '<span class="m-title">' + esc(q.subject) + "</span>" +
           '<span class="m-sub">' + sub + "</span>" +
           "</span>" +
-          '<span class="m-when">' + esc(shortAgo(lastAt(q))) + "</span>" +
+          '<span class="m-when">' + esc(shortAgo(lastAt(q))) +
+          (q.unread ? '<span class="m-dot"><span class="sr-only">new answer</span></span>' : "") +
+          "</span>" +
           "</button>"
         );
       })
@@ -5086,7 +4929,6 @@ window.LZ_SEED.teamPhotos = {
       '<button type="button" class="pill-cta" data-act="ask-open">Ask us a question ' +
       '<span aria-hidden="true">&#10148;</span></button>' +
       "</div></div></div>" +
-      privateLine() +
       "</section>"
     );
   }
@@ -5110,6 +4952,7 @@ window.LZ_SEED.teamPhotos = {
       '<div class="field">' +
       '<label for="am-body">Describe what you need</label>' +
       '<textarea id="am-body" rows="7" placeholder="Take your time. What is going on, what you have already tried, and what would help. Your own words are perfect &mdash; spelling doesn&rsquo;t matter."></textarea>' +
+      '<p class="hint">Private &mdash; only you and the Lesko Help team can see this.</p>' +
       "</div>" +
       '<p class="form-error" id="am-error"></p>' +
       '<div class="form-actions">' +
@@ -5133,20 +4976,17 @@ window.LZ_SEED.teamPhotos = {
           '<div class="brow ' + (isTeam ? "team" : "me") + '">' +
           (isTeam ? avatar(m.name, "b-ava") : "") +
           '<div class="bubble">' +
-          (isTeam ? '<span class="b-who">' + esc(m.name) + " &middot; Lesko Help</span>" : "") +
+          (isTeam && m.name !== who ? '<span class="b-who">' + esc(m.name) + "</span>" : "") +
           rich(m.body) +
           (isTeam ? fileChips(m.attachments) : "") +
-          "</div></div>" +
-          '<div class="bmeta' + (isTeam ? " team" : "") + '">' +
-          esc(store.ago(m.createdAt) || m.ago) + "</div>"
+          "</div></div>"
         );
       })
       .join("");
 
     var waitingNote =
       q.status === "waiting"
-        ? '<p class="private-line" style="margin:4px 2px 0"><span aria-hidden="true">&#8987;</span>' +
-          "<span>Your question is with the team — answers usually come back within a day or two.</span></p>"
+        ? '<p class="quiet">Your question is with the team &mdash; answers usually come back within a day or two.</p>'
         : "";
 
     return (
@@ -5156,6 +4996,7 @@ window.LZ_SEED.teamPhotos = {
         back: "chats",
         who: who || GENERIC,
         title: who || "Lesko Help team",
+        sub: who ? "Lesko Help team" : "Waiting for a reply",
         active: "chats",
       }) +
       '<div class="chat-body" id="chat-body">' +
@@ -5234,18 +5075,16 @@ window.LZ_SEED.teamPhotos = {
       .map(function (sh) {
         var called = (sh.called || []).length;
         var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+        var bits = [place, sh.orgs.length + " places"];
+        if (called) bits.push(called + " called");
         return (
-          '<button class="convo" data-act="sheet" data-id="' + esc(sh.id) + '">' +
-          '<span class="c-dot' + (called ? "" : " waiting") + '" aria-hidden="true"></span>' +
-          "<span>" +
-          '<span class="c-subj">' + esc(sh.title) + "</span>" +
-          '<span class="c-meta">' + esc(place) + " &nbsp;&middot;&nbsp; " +
-          sh.orgs.length + " places" +
-          (called
-            ? ' &nbsp;&middot;&nbsp; <span class="st-ok">' + called + " called &#10003;</span>"
-            : "") +
-          "</span></span>" +
-          '<span class="c-when">' + esc(niceDate(sh.createdAt)) + "</span></button>"
+          '<button class="mrow noava" data-act="sheet" data-id="' + esc(sh.id) + '">' +
+          '<span class="m-main">' +
+          '<span class="m-title">' + esc(sh.title) + "</span>" +
+          '<span class="m-sub">' + esc(bits.join(" · ")) + "</span>" +
+          "</span>" +
+          '<span class="m-when">' + esc(shortAgo(sh.createdAt)) + "</span>" +
+          "</button>"
         );
       })
       .join("");
@@ -5258,10 +5097,8 @@ window.LZ_SEED.teamPhotos = {
       '<section class="panel">' +
       '<div class="chat">' +
       chatHead({ title: "My call sheets", active: "sheets" }) +
-      '<div class="chat-body grow">' +
-      (rows ? '<div class="convos">' + rows + "</div>" : empty) +
-      "</div></div>" +
-      privateLine() +
+      '<div class="msgbox"><div class="msglist plain">' + (rows || empty) + "</div></div>" +
+      "</div>" +
       "</section>"
     );
   }
@@ -5347,7 +5184,6 @@ window.LZ_SEED.teamPhotos = {
   function notFound(what, backTo) {
     return (
       '<section class="panel"><div class="card empty-note">' +
-      '<div class="q" aria-hidden="true">?</div>' +
       "<h3>We could not find that " + esc(what) + "</h3>" +
       '<button class="btn red" data-act="go" data-to="' + esc(backTo) + '">Go back</button>' +
       "</div></section>"
