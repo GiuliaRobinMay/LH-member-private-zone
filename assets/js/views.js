@@ -225,14 +225,17 @@
     var rows = qs
       .map(function (q) {
         var who = lastTeam(q);
-        var sub = who ? esc(who) : '<span class="m-wait">Waiting for a reply</span>';
+        /* the person first, then what the conversation was about */
+        var name = who
+          ? esc(who)
+          : '<span class="m-wait">Waiting for a reply</span>';
         return (
           '<button class="mrow' + (q.unread ? " unread" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
           avatar(who || GENERIC, "m-ava") +
           '<span class="m-main">' +
-          '<span class="m-title">' + esc(q.subject) + "</span>" +
-          '<span class="m-sub">' + sub + "</span>" +
+          '<span class="m-title">' + name + "</span>" +
+          '<span class="m-sub">' + esc(q.subject) + "</span>" +
           "</span>" +
           '<span class="m-when">' + esc(shortAgo(lastAt(q))) +
           (q.unread ? '<span class="m-dot"><span class="sr-only">new answer</span></span>' : "") +

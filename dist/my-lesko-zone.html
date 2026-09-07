@@ -29,13 +29,13 @@
 
   --red: #e8453c;
   --yellow: #f6c544;
-  --blue: #2e43c8;
+  --blue: #1560d0;
   --green: #2e9e5b;
   --gold-2: #e9a725;
 
   --tint-yellow: #fdf1d4;
   --tint-red: #fce7e5;
-  --tint-blue: #e9edfc;
+  --tint-blue: #e7eefb;
   --tint-green: #e3f3e9;
 
   --radius: 16px;
@@ -939,6 +939,10 @@ select {
   grid-template-columns: minmax(0, 1fr) auto;
 }
 
+.mrow.noava .m-sub {
+  font-style: normal;
+}
+
 .mrow:last-child {
   border-bottom: 0;
 }
@@ -949,8 +953,8 @@ select {
 
 .m-title {
   display: block;
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16.5px;
+  font-weight: 700;
   line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
@@ -961,9 +965,11 @@ select {
   font-weight: 700;
 }
 
+/* what the conversation was about — smaller, italic, under the name */
 .m-sub {
   display: block;
-  font-size: 14px;
+  font-size: 13.5px;
+  font-style: italic;
   color: var(--ink-soft);
   line-height: 1.35;
   margin-top: 3px;
@@ -4984,14 +4990,17 @@ window.LZ_SEED.teamArt = {
     var rows = qs
       .map(function (q) {
         var who = lastTeam(q);
-        var sub = who ? esc(who) : '<span class="m-wait">Waiting for a reply</span>';
+        /* the person first, then what the conversation was about */
+        var name = who
+          ? esc(who)
+          : '<span class="m-wait">Waiting for a reply</span>';
         return (
           '<button class="mrow' + (q.unread ? " unread" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
           avatar(who || GENERIC, "m-ava") +
           '<span class="m-main">' +
-          '<span class="m-title">' + esc(q.subject) + "</span>" +
-          '<span class="m-sub">' + sub + "</span>" +
+          '<span class="m-title">' + name + "</span>" +
+          '<span class="m-sub">' + esc(q.subject) + "</span>" +
           "</span>" +
           '<span class="m-when">' + esc(shortAgo(lastAt(q))) +
           (q.unread ? '<span class="m-dot"><span class="sr-only">new answer</span></span>' : "") +
