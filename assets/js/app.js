@@ -1,5 +1,5 @@
 /* ==================================================================
-   app.js — two tabs, a chat, a call sheet builder.
+   app.js — one window: the conversations, a chat, the call sheets.
 
    Hash routing on purpose: the widget works opened straight from
    disk and inside a Mighty Networks iframe, and a member can be
@@ -21,46 +21,12 @@
   var typingTimer = null;
   var resetTimer = null;
 
-  /* ------------------------------------------------------------- tabs */
-
-  /* Two split tabs. The main part opens the form; the small ☰ opens
-     that side's list, so the archive is always one tap away. */
-  var TABS = [
-    { key: "ask", list: "questions", label: "Chat with a Team Member", listLabel: "My questions" },
-    { key: "build", list: "sheets", label: "Create my call sheet", listLabel: "My call sheets" },
-  ];
-
-  function renderTabs(activeName) {
-    var n = store.counts();
-    document.getElementById("tabbar").innerHTML = TABS.map(function (t) {
-      var section =
-        activeName === t.key ||
-        activeName === t.list ||
-        (t.list === "questions" && activeName === "thread") ||
-        (t.list === "sheets" && activeName === "sheet");
-      var onList = section && activeName !== t.key;
-      var bub = "";
-      if (t.list === "questions" && n.unread) {
-        bub = '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>';
-      }
-      return (
-        '<div class="tabsplit' + (section ? " active" : "") + '">' +
-        '<button class="tab-main" data-act="go" data-to="' + t.key + '">' +
-        t.label + "</button>" +
-        '<button class="tab-list' + (onList ? " on" : "") +
-        '" data-act="go" data-to="' + t.list + '" aria-label="' + t.listLabel + '">' +
-        "&#9776;" + bub + "</button>" +
-        "</div>"
-      );
-    }).join("");
-  }
-
   /* ----------------------------------------------------------- router */
 
   function parseHash() {
     var h = (global.location.hash || "").replace(/^#\/?/, "");
     var parts = h.split("/").filter(Boolean);
-    return { name: parts[0] || "ask", id: parts[1] || null };
+    return { name: parts[0] || "chats", id: parts[1] || null };
   }
 
   function go(to, id) {
@@ -74,15 +40,9 @@
     var html;
 
     switch (r.name) {
-      case "questions":
-        html = views.questions();
-        break;
       case "thread":
         store.markRead(r.id);
         html = views.thread(r.id);
-        break;
-      case "build":
-        html = views.build();
         break;
       case "sheets":
         html = views.sheets();
@@ -91,12 +51,11 @@
         html = views.sheet(r.id);
         break;
       default:
-        r.name = "ask";
-        html = views.ask();
+        r.name = "chats";
+        html = views.chats();
     }
 
     face.innerHTML = html;
-    renderTabs(r.name);
 
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
@@ -116,7 +75,6 @@
       }
       store.clearNew(r.id);
     }
-    if (r.name === "build") wireBuildForm();
   }
 
   /* ------------------------------------------------------------ toast */
@@ -128,6 +86,25 @@
     toastTimer = setTimeout(function () {
       toastEl.hidden = true;
     }, 3200);
+  }
+
+  /* --------------------------------------------- the dropdown menu */
+
+  function closeMenus() {
+    var menus = document.querySelectorAll(".dd-menu");
+    for (var i = 0; i < menus.length; i++) menus[i].hidden = true;
+    var btns = document.querySelectorAll(".dd-btn");
+    for (var j = 0; j < btns.length; j++) btns[j].setAttribute("aria-expanded", "false");
+  }
+
+  function toggleMenu(btn) {
+    var menu = btn.parentNode.querySelector(".dd-menu");
+    var wasHidden = menu.hidden;
+    closeMenus();
+    if (wasHidden) {
+      menu.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+    }
   }
 
   /* ------------------------------------------------------------- chat */
@@ -216,7 +193,10 @@
   }
 
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeAskModal();
+    if (e.key === "Escape") {
+      closeAskModal();
+      closeMenus();
+    }
   });
 
   function onReply(body, form) {
@@ -248,87 +228,26 @@
       } else {
         thread.unread = true;
         store.save();
-        renderTabs(here.name);
+        /* the list and the menu badge show the new answer straight away */
+        if (here.name === "chats" || here.name === "sheets") route();
         toast("The Lesko Help team replied to your question.");
       }
     }, 5200);
   }
 
-  /* ------------------------------------------------ build a call sheet */
-
-  /* A tiny ZIP lookup so the demo shows a real place name. */
-  var ZIPS = {
-    "14604": ["Rochester", "New York"],
-    "91302": ["Calabasas", "California"],
-    "73110": ["Midwest City", "Oklahoma"],
-    "77044": ["Houston", "Texas"],
-    "83702": ["Boise", "Idaho"],
-  };
-
-  function wireBuildForm() {
-    var form = document.getElementById("build-form");
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      var topicKey = document.getElementById("b-topic").value;
-      var zip = document.getElementById("b-zip").value.trim();
-      var city = document.getElementById("b-city").value.trim();
-      var state = document.getElementById("b-state").value.trim();
-      var problem = document.getElementById("b-problem").value.trim();
-      var err = document.getElementById("build-error");
-
-      var missing = [];
-      if (!topicKey) missing.push("pick what you need help with");
-      if (!zip && !city) missing.push("add your ZIP code or your city");
-      if (!problem) missing.push("tell us what is going on");
-
-      if (missing.length) {
-        err.textContent = "Almost there — please " + missing.join(", and ") + ".";
-        err.classList.add("show");
-        return;
+  /* A photo that cannot load (outside images are blocked in some
+     previews) quietly gives way to the coloured initial under it. */
+  document.addEventListener(
+    "error",
+    function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== "IMG" || !img.parentNode) return;
+      if (/\b(chat-ava|b-ava|m-ava)\b/.test(img.parentNode.className || "")) {
+        img.parentNode.removeChild(img);
       }
-      err.classList.remove("show");
-
-      if (zip && !city && ZIPS[zip]) {
-        city = ZIPS[zip][0];
-        state = state || ZIPS[zip][1];
-      }
-
-      runGeneration({
-        topicKey: topicKey,
-        zip: zip,
-        city: city,
-        state: state,
-        problem: problem,
-      });
-    });
-  }
-
-  function runGeneration(input) {
-    face.innerHTML = views.generating();
-    global.scrollTo(0, 0);
-
-    var msgs = store.copy.callsheet.progress;
-    var msgEl = document.getElementById("progress-msg");
-    var barEl = document.getElementById("progress-bar");
-    var i = 0;
-
-    function tick() {
-      if (i < msgs.length) {
-        msgEl.textContent = msgs[i];
-        barEl.style.width = Math.round(((i + 1) / msgs.length) * 100) + "%";
-        i++;
-        setTimeout(tick, 1000);
-      } else {
-        var sheet = store.buildSheet(input);
-        go("sheet", sheet.id);
-        toast("Saved under Call sheets — it is yours for good.");
-      }
-    }
-    setTimeout(tick, 250);
-  }
+    },
+    true
+  );
 
   /* ------------------------------------------- spreadsheet export
      Keeps the original 14 research columns, plus Called. */
@@ -381,35 +300,6 @@
       URL.revokeObjectURL(url);
     }, 1500);
     toast("Downloading your call sheet as a spreadsheet.");
-  }
-
-  /* ------------------------------------------------ copy to clipboard */
-
-  function copyText(text) {
-    function done() {
-      toast("Copied. Paste it anywhere.");
-    }
-    function fallback() {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand("copy");
-        done();
-      } catch (e) {
-        toast("Select the words and copy them by hand.");
-      }
-      document.body.removeChild(ta);
-    }
-    if (global.navigator.clipboard && global.navigator.clipboard.writeText) {
-      global.navigator.clipboard.writeText(text).then(done, fallback);
-    } else {
-      fallback();
-    }
   }
 
   /* ------------------------------------------ per-row notes on a sheet */
@@ -473,6 +363,10 @@
 
   document.addEventListener("click", function (e) {
     if (!e.target || !e.target.closest) return;
+
+    /* a tap anywhere outside the dropdown puts it away */
+    if (!e.target.closest(".dd")) closeMenus();
+
     var t = e.target.closest("[data-act]");
     if (!t) return;
     var act = t.getAttribute("data-act");
@@ -482,29 +376,16 @@
         go(t.getAttribute("data-to"));
         break;
 
+      case "dd-toggle":
+        toggleMenu(t);
+        break;
+
       case "thread":
         go("thread", t.getAttribute("data-id"));
         break;
 
       case "sheet":
         go("sheet", t.getAttribute("data-id"));
-        break;
-
-      case "toggle-org": {
-        var detail = document.getElementById(t.getAttribute("data-target") + "-d");
-        var open = detail.hidden;
-        detail.hidden = !open;
-        t.setAttribute("aria-expanded", open ? "true" : "false");
-        t.querySelector("span[aria-hidden]").innerHTML = open ? "&#9652;" : "&#9662;";
-        break;
-      }
-
-      case "copy":
-        copyText(t.getAttribute("data-text"));
-        break;
-
-      case "print":
-        global.print();
         break;
 
       case "export-csv":
@@ -544,7 +425,7 @@
       case "reset": {
         if (t.getAttribute("data-armed") === "yes") {
           store.reset();
-          go("ask");
+          go("chats");
           route();
           toast("The demo is back to how it started.");
           t.removeAttribute("data-armed");
@@ -566,7 +447,7 @@
       var sheetId = t.getAttribute("data-sheet");
       var orgId = t.getAttribute("data-org");
       var on = store.toggleCalled(sheetId, orgId);
-      var row = t.closest(".wrow") || t.closest(".org");
+      var row = t.closest(".wrow");
       if (row) {
         row.classList.toggle("done", on);
         var slot = row.querySelector('[data-slot="called"]');
@@ -585,7 +466,7 @@
   global.addEventListener("hashchange", route);
 
   store.init();
-  if (!global.location.hash) global.location.hash = "/ask";
+  if (!global.location.hash) global.location.hash = "/chats";
   route();
 
   /* A quiet way to reset the demo before showing it to someone. */

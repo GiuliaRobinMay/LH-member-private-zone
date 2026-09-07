@@ -1,10 +1,13 @@
 /* ==================================================================
    views.js — the screens of My Lesko Zone.
 
-   Two split tabs — Ask a question · Create my call sheet — each with
-   a small ☰ that opens its list. Forms submit with a red button on
-   the right. A call sheet opens straight into the working list:
-   called-tick, phone, email, website, a note, and the date.
+   One window, like the Messages panel inside Mighty. The first thing
+   a member sees is the list of their conversations — the team member's
+   face, the title, their name, how long ago — with a red pill to ask a
+   new question. A conversation is a chat: the member in blue on the
+   right, the team's photo and answer on the left. The dropdown at the
+   right of the navy band moves between the aspects of the zone:
+   the chat and the call sheets.
    Views are pure: state in, markup out. app.js wires interaction
    through data-act attributes.
    ================================================================== */
@@ -83,6 +86,27 @@
     return fmtDate(iso);
   }
 
+  /** "3d", "1mo", "2y" — the way a messages list says it. */
+  function shortAgo(iso) {
+    var then = new Date(iso).getTime();
+    if (isNaN(then)) return "";
+    var s = Math.max(0, (Date.now() - then) / 1000);
+    if (s < 60) return "now";
+    var m = Math.round(s / 60);
+    if (m < 60) return m + "m";
+    var h = Math.round(m / 60);
+    if (h < 24) return h + "h";
+    var d = Math.round(h / 24);
+    if (d < 30) return d + "d";
+    var mo = Math.round(d / 30);
+    if (mo < 12) return mo + "mo";
+    return Math.round(mo / 12) + "y";
+  }
+
+  function firstName(name) {
+    return String(name || "").trim().split(" ")[0];
+  }
+
   /** Attachment chips on a team answer — files the team sent along. */
   function fileChips(list) {
     if (!list || !list.length) return "";
@@ -113,90 +137,135 @@
     );
   }
 
-  /* ==================================== CHAT WITH A TEAM MEMBER (chat) */
+  /* ------------------------------------------------------------ team */
+
+  var GENERIC = "Lesko Help Team";
 
   /** A team member's face: their real photo when it loads, otherwise a
-      coloured circle with their initial — like every chat app. */
+      coloured circle with their initial — like every chat app. The
+      generic team account shows the Lesko question mark. */
   function avatar(name, cls) {
     var photos = global.LZ_SEED.teamPhotos || {};
-    var src = photos[name] || "";
-    var initial = String(name || "?").trim().charAt(0).toUpperCase() || "?";
-    var tone = "t" + ((initial.charCodeAt(0) % 3) + 1);
+    var team = global.LZ_SEED.team || [];
+    var who = name || GENERIC;
+    var src = photos[who] || "";
+    var generic = who === GENERIC;
+    var initial = generic ? "?" : String(who).trim().charAt(0).toUpperCase() || "?";
+    var at = team.indexOf(who);
+    var tone = generic ? "mark" : "t" + ((at < 0 ? 0 : at) % 4 + 1);
     return (
       '<span class="' + cls + " " + tone + '" aria-hidden="true">' +
       '<span class="ini">' + esc(initial) + "</span>" +
-      (src
-        ? '<img src="' + esc(src) + '" alt="" loading="lazy" onerror="this.remove()">'
-        : "") +
+      (src ? '<img src="' + esc(src) + '" alt="" loading="lazy">' : "") +
       "</span>"
     );
   }
 
-  /** The navy band at the top of the chat window — same as the other
-      Lesko chat apps: the team's face, LESKO HELP over the room name. */
+  /** The team member who last answered this conversation, if any. */
+  function lastTeam(q) {
+    for (var i = q.messages.length - 1; i >= 0; i--) {
+      if (q.messages[i].role === "team") return q.messages[i].name;
+    }
+    return "";
+  }
+
+  function lastAt(q) {
+    var m = q.messages[q.messages.length - 1];
+    return (m && m.createdAt) || q.createdAt;
+  }
+
+  /* ------------------------------------------------- the navy band */
+
+  /** The dropdown at the right: the aspects of the zone. */
+  function menu(active) {
+    var n = store.counts();
+    var items = [
+      { to: "chats", label: "Chat with a Team Member", badge: n.unread, count: 0 },
+      { to: "sheets", label: "My call sheets", badge: 0, count: n.sheets },
+    ];
+    return (
+      '<div class="dd">' +
+      '<button type="button" class="dd-btn" data-act="dd-toggle" aria-haspopup="menu" ' +
+      'aria-expanded="false">Menu <span aria-hidden="true">&#9662;</span>' +
+      (n.unread ? '<span class="dd-dot" aria-hidden="true"></span>' : "") +
+      "</button>" +
+      '<div class="dd-menu" role="menu" hidden>' +
+      items
+        .map(function (it) {
+          return (
+            '<button type="button" role="menuitem" class="dd-item' +
+            (it.to === active ? " on" : "") + '" data-act="go" data-to="' + it.to + '">' +
+            it.label +
+            (it.badge
+              ? '<span class="bub">' + it.badge + '<span class="sr-only"> new answers</span></span>'
+              : it.count
+              ? '<span class="dd-count">' + it.count + "</span>"
+              : "") +
+            "</button>"
+          );
+        })
+        .join("") +
+      "</div></div>"
+    );
+  }
+
   function chatHead(opts) {
-    opts = opts || {};
     return (
       '<div class="chat-head">' +
       (opts.back
         ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
-          '" aria-label="Back to my conversations">&larr;</button>'
+          '" aria-label="Back">&larr;</button>'
         : "") +
-      avatar("Lesko Help Team", "chat-ava") +
+      avatar(opts.who || GENERIC, "chat-ava") +
       '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
-      '<span class="ch-title">Chat with a Team Member</span></span>' +
-      (opts.right || '<span class="chat-priv">&#128274; Private</span>') +
+      '<span class="ch-title">' + esc(opts.title) + "</span></span>" +
+      menu(opts.active) +
       "</div>"
     );
   }
 
-  function questionRows() {
-    return store.state.questions
+  /* ============================== CHAT WITH A TEAM MEMBER: the list */
+
+  function chats() {
+    var qs = store.state.questions;
+
+    var rows = qs
       .map(function (q) {
-        var dot = q.unread ? "new" : q.status === "answered" ? "" : "waiting";
-        var st = q.unread
-          ? '<span class="st-new">New answer</span>'
-          : q.status === "answered"
-          ? '<span class="st-ok">Answered &#10003;</span>'
+        var who = lastTeam(q);
+        var sub = q.unread
+          ? '<span class="st-new">New answer from ' + esc(firstName(who)) + "</span>"
+          : who
+          ? esc(who)
           : '<span class="st-wait">No answer yet</span>';
         return (
-          '<button class="convo' + (q.unread ? " unread" : "") +
+          '<button class="mrow' + (q.unread ? " unread" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
-          '<span class="c-dot ' + dot + '" aria-hidden="true"></span>' +
-          "<span>" +
-          '<span class="c-subj">' + esc(q.subject) + "</span>" +
-          '<span class="c-meta">' + st + "</span>" +
+          avatar(who || GENERIC, "m-ava") +
+          '<span class="m-main">' +
+          '<span class="m-title">' + esc(q.subject) + "</span>" +
+          '<span class="m-sub">' + sub + "</span>" +
           "</span>" +
-          '<span class="c-when">' + esc(niceDate(q.createdAt)) + "</span></button>"
+          '<span class="m-when">' + esc(shortAgo(lastAt(q))) + "</span>" +
+          "</button>"
         );
       })
       .join("");
-  }
 
-  /* The tab opens on a fresh chat — a greeting from the team and the bar
-     to start. Earlier conversations live behind ☰ (My questions). */
-  function ask() {
-    var first = esc((store.member.name || "").split(" ")[0]);
+    var empty =
+      '<div class="m-empty"><b>No conversations yet</b>' +
+      "Ask us anything &mdash; money for bills, your business, school, whatever " +
+      "is going on. A real person on the team answers, usually within a day.</div>";
 
     return (
       '<section class="panel">' +
-      '<div class="chat blank">' +
-      chatHead() +
-      '<div class="chat-body" id="chat-body">' +
-      '<div class="brow team">' +
-      avatar("Lesko Help Team", "b-ava") +
-      '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
-      "How can we help, " + first + "? Tell us what is going on in your own " +
-      "words &mdash; as much detail as you like, and where you are, so we can " +
-      "find help near you. A real person on the team reads it and answers " +
-      "you right here.</div></div>" +
-      "</div>" +
-      '<div class="chat-foot">' +
-      '<div class="compose">' +
-      '<button type="button" class="compose-fake" data-act="ask-open">Describe what you need&hellip;</button>' +
-      '<button type="button" class="ask-btn" data-act="ask-open">Ask</button>' +
-      "</div></div>" +
-      "</div>" +
+      '<div class="chat">' +
+      chatHead({ title: "Chat with a Team Member", active: "chats" }) +
+      '<div class="msgbox">' +
+      '<div class="msglist" id="chat-body">' + (rows || empty) + "</div>" +
+      '<div class="msg-cta">' +
+      '<button type="button" class="pill-cta" data-act="ask-open">Ask us a question ' +
+      '<span aria-hidden="true">&#10148;</span></button>' +
+      "</div></div></div>" +
       privateLine() +
       "</section>"
     );
@@ -209,7 +278,7 @@
       '<div class="overlay" id="ask-modal" role="dialog" aria-modal="true" aria-labelledby="am-title">' +
       '<form class="modal" id="ask-form" novalidate>' +
       '<div class="modal-head">' +
-      '<h3 id="am-title">Ask a Team Member</h3>' +
+      '<h3 id="am-title">Ask us a question</h3>' +
       '<button type="button" class="modal-x" data-act="ask-close" aria-label="Close">&times;</button>' +
       "</div>" +
       '<div class="field-row two">' +
@@ -229,33 +298,13 @@
     );
   }
 
-  /* ============================================== MY QUESTIONS (list) */
-
-  function questions() {
-    var qs = store.state.questions;
-    if (!qs.length) {
-      return (
-        '<section class="panel"><div class="card empty-note">' +
-        '<div class="q" aria-hidden="true">?</div>' +
-        "<h3>No questions yet</h3>" +
-        '<button class="btn red" data-act="go" data-to="ask">Ask your first question</button>' +
-        "</div></section>"
-      );
-    }
-
-    return (
-      '<section class="panel">' +
-      '<div class="convos">' + questionRows() + "</div>" +
-      privateLine() +
-      "</section>"
-    );
-  }
-
-  /* ---------------------------------------------------- one thread */
+  /* ------------------------------------------- one conversation */
 
   function thread(id) {
     var q = store.getQuestion(id);
-    if (!q) return notFound("conversation", "questions");
+    if (!q) return notFound("conversation", "chats");
+
+    var who = lastTeam(q);
 
     var msgs = q.messages
       .map(function (m) {
@@ -284,10 +333,13 @@
       '<section class="panel">' +
       '<div class="chat">' +
       chatHead({
-        back: "ask",
-        right: '<span class="chat-when">' + esc(niceDate(q.createdAt)) + "</span>",
+        back: "chats",
+        who: who || GENERIC,
+        title: who || "Lesko Help team",
+        active: "chats",
       }) +
       '<div class="chat-body" id="chat-body">' +
+      '<div class="day-mark">' + esc(niceDate(q.createdAt)) + "</div>" +
       msgs +
       feedbackBlock(q) +
       '<div id="typing-slot"></div>' +
@@ -343,7 +395,7 @@
 
   /** The animated "the team is typing" bubble, injected by app.js. */
   function typingBubble() {
-    var who = (global.LZ_SEED.autoReply || {}).name || "Lesko Help Team";
+    var who = (global.LZ_SEED.autoReply || {}).name || GENERIC;
     return (
       '<div class="brow team typing">' +
       avatar(who, "b-ava") +
@@ -353,65 +405,10 @@
     );
   }
 
-  /* ========================================= CREATE MY CALL SHEET (form) */
-
-  function build() {
-    var topics = store.copy.topics || [];
-    var opts = '<option value="">Choose one&hellip;</option>';
-    topics.forEach(function (t) {
-      opts += '<option value="' + esc(t.key) + '">' + esc(t.label) + "</option>";
-    });
-
-    return (
-      '<section class="panel">' +
-      '<form class="form-card" id="build-form" novalidate>' +
-      '<div class="field">' +
-      '<label for="b-topic">What do you need help with?</label>' +
-      '<select id="b-topic">' + opts + "</select></div>" +
-      '<div class="field-row three">' +
-      '<div class="field"><label for="b-zip">ZIP code</label>' +
-      '<input id="b-zip" inputmode="numeric" autocomplete="postal-code" placeholder="14604"></div>' +
-      '<div class="field"><label for="b-city">City</label>' +
-      '<input id="b-city" autocomplete="address-level2" placeholder="Rochester"></div>' +
-      '<div class="field"><label for="b-state">State</label>' +
-      '<input id="b-state" autocomplete="address-level1" placeholder="New York"></div>' +
-      "</div>" +
-      '<div class="field">' +
-      '<label for="b-problem">Tell us what&rsquo;s going on</label>' +
-      '<textarea id="b-problem" rows="4" placeholder="Your own words are perfect — spelling doesn&rsquo;t matter."></textarea>' +
-      "</div>" +
-      '<p class="form-error" id="build-error"></p>' +
-      '<div class="form-actions">' +
-      '<button class="btn red big" type="submit">Create my call sheet</button>' +
-      "</div></form>" +
-      privateLine() +
-      "</section>"
-    );
-  }
-
-  function generating() {
-    return (
-      '<section class="panel"><div class="card generating">' +
-      '<div class="suits" aria-hidden="true"><span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span></div>' +
-      '<p class="progress-msg" id="progress-msg" role="status" aria-live="polite"></p>' +
-      '<div class="bar"><i id="progress-bar"></i></div>' +
-      "</div></section>"
-    );
-  }
-
   /* ============================================= MY CALL SHEETS (list) */
 
   function sheets() {
     var list = store.state.sheets;
-    if (!list.length) {
-      return (
-        '<section class="panel"><div class="card empty-note">' +
-        '<div class="q" aria-hidden="true">?</div>' +
-        "<h3>No call sheets yet</h3>" +
-        '<button class="btn red" data-act="go" data-to="build">Create your first call sheet</button>' +
-        "</div></section>"
-      );
-    }
 
     var rows = list
       .map(function (sh) {
@@ -433,9 +430,17 @@
       })
       .join("");
 
+    var empty =
+      '<div class="m-empty"><b>No call sheets yet</b>' +
+      "Every call sheet the team makes for you is kept here, for good.</div>";
+
     return (
       '<section class="panel">' +
-      '<div class="convos">' + rows + "</div>" +
+      '<div class="chat">' +
+      chatHead({ title: "My call sheets", active: "sheets" }) +
+      '<div class="chat-body grow">' +
+      (rows ? '<div class="convos">' + rows + "</div>" : empty) +
+      "</div></div>" +
       privateLine() +
       "</section>"
     );
@@ -451,18 +456,21 @@
       return workRow(sh, o);
     }).join("");
 
+    var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+
     return (
       '<section class="panel">' +
-      '<div class="thread-head">' +
-      '<button class="backlink" data-act="go" data-to="sheets" style="margin:0">&larr; My call sheets</button>' +
-      '<span class="c-when">' + esc(niceDate(sh.createdAt)) + "</span>" +
-      "</div>" +
+      '<div class="chat">' +
+      chatHead({ back: "sheets", title: sh.title, active: "sheets" }) +
+      '<div class="chat-body grow">' +
       '<div class="w-titlebar">' +
-      '<h2 class="sheet-title" style="margin:0">' + esc(sh.title) + "</h2>" +
+      '<span class="c-when">' + esc(niceDate(sh.createdAt)) + " &nbsp;&middot;&nbsp; " +
+      esc(place) + "</span>" +
       '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) +
       '">&#11015; Download</button>' +
       "</div>" +
       '<div class="work">' + rows + "</div>" +
+      "</div></div>" +
       "</section>"
     );
   }
@@ -530,14 +538,11 @@
 
   global.LZ = global.LZ || {};
   global.LZ.views = {
-    ask: ask,
+    chats: chats,
     askModal: askModal,
-    questions: questions,
     thread: thread,
     typingBubble: typingBubble,
-    build: build,
     sheets: sheets,
-    generating: generating,
     sheet: sheet,
     workRow: workRow,
     niceDate: niceDate,

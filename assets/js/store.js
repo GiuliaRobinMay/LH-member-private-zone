@@ -183,105 +183,15 @@
     }
   }
 
-  /* ------------------------------------------------------ call sheets */
+  /* ------------------------------------------------------ call sheets
+     Call sheets are made elsewhere (the team's research tool) and land
+     here; this zone keeps them and lets the member work through them. */
 
   function getSheet(id) {
     for (var i = 0; i < state.sheets.length; i++) {
       if (state.sheets[i].id === id) return state.sheets[i];
     }
     return null;
-  }
-
-  /**
-   * Build a new call sheet from the member's inputs.
-   *
-   * MOCK-UP: the research is simulated. We take the prepared sheet that
-   * best matches the chosen topic and re-address it with the member's own
-   * words and place. In the real product this is where the AI research
-   * call goes.
-   */
-  function buildSheet(input) {
-    var library = global.LZ_SEED.callSheets;
-    var map = global.LZ_SEED.topicMap || {};
-    var base = null;
-    var i;
-
-    var wanted = input.topicKey;
-    if (map[wanted]) {
-      for (i = 0; i < library.length; i++) {
-        if (library[i].id === map[wanted]) base = library[i];
-      }
-    }
-    if (!base) {
-      for (i = 0; i < library.length; i++) {
-        if (library[i].topicKey === wanted) base = library[i];
-      }
-    }
-    if (!base) base = library[0];
-
-    var sheet = clone(base);
-    var first = state.member.name.split(" ")[0];
-
-    /* Label the sheet with the topic the member actually chose. */
-    var topics = (state.copy && state.copy.topics) || [];
-    for (i = 0; i < topics.length; i++) {
-      if (topics[i].key === wanted) {
-        sheet.topic = topics[i].label;
-        sheet.topicKey = topics[i].key;
-      }
-    }
-
-    sheet.id = uid("cs");
-    sheet.createdAt = new Date().toISOString();
-    sheet.ago = "just now";
-    sheet.memberName = first;
-    sheet.city = input.city || sheet.city;
-    sheet.state = input.state || sheet.state;
-    sheet.zip = input.zip || sheet.zip;
-    sheet.problem = input.problem || sheet.problem;
-    sheet.called = [];
-
-    var place = [sheet.city, sheet.state].filter(Boolean).join(", ") || sheet.zip;
-
-    sheet.opening = openingFor(first, place, sheet, input);
-    sheet.firstCall.why = personalise(sheet.firstCall.why, first, place, base);
-    sheet.firstCall.whatToSay = personalise(sheet.firstCall.whatToSay, first, place, base);
-    for (i = 0; i < sheet.orgs.length; i++) {
-      sheet.orgs[i].script = personalise(sheet.orgs[i].script, first, place, base);
-    }
-
-    state.sheets.unshift(sheet);
-    save();
-    return sheet;
-  }
-
-  /** Open with the member's actual words, so the sheet is visibly theirs. */
-  function openingFor(first, place, sheet, input) {
-    var said = String(input.problem || "").replace(/\s+/g, " ").trim();
-    if (said.length > 190) {
-      said = said.slice(0, 189).replace(/[\s,.;:]+$/, "") + "…";
-    }
-    return (
-      "Here is what I found for you, " + first + ". You told me: “" + said +
-      "” So I went looking for help with " + (sheet.topic || "").toLowerCase() +
-      " near " + place + ". Below are " + sheet.orgs.length +
-      " places that can help, with the phone numbers and the words to say when " +
-      "they pick up. Start with the first one — that is the call that matters most."
-    );
-  }
-
-  /** Swap the prepared sheet's member name and place for this member's. */
-  function personalise(text, first, place, base) {
-    var out = String(text || "");
-    if (base.memberName) out = out.split(base.memberName).join(first);
-
-    var basePlace = [base.city, base.state].filter(Boolean).join(", ");
-    var city = place.split(",")[0].trim();
-
-    if (basePlace && place && basePlace !== place) out = out.split(basePlace).join(place);
-    if (base.city && city && base.city !== city) out = out.split(base.city).join(city);
-
-    return out.replace(/\s{2,}/g, " ").trim();
   }
 
   /** Tick / untick "called" on a call sheet row, remembering the day. */
@@ -394,7 +304,6 @@
     clearNew: clearNew,
 
     getSheet: getSheet,
-    buildSheet: buildSheet,
     toggleCalled: toggleCalled,
     isCalled: isCalled,
     calledOn: calledOn,

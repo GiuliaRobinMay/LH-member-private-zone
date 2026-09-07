@@ -199,87 +199,6 @@ h3 em {
   font-style: italic;
 }
 
-/* ---------------------------------------------------- two split tabs
-   The main part opens the form; the small ☰ opens that side's list. */
-
-.tabbar {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 10px 0 16px;
-}
-
-.tabsplit {
-  display: flex;
-  align-items: stretch;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  background: var(--paper-2);
-  overflow: hidden;
-}
-
-.tabsplit.active {
-  background: var(--yellow);
-  border-color: var(--ink);
-}
-
-.tab-main {
-  flex: 1;
-  font: inherit;
-  font-size: 14.5px;
-  font-weight: 600;
-  padding: 11px 6px;
-  border: 0;
-  background: transparent;
-  color: var(--ink-soft);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.tabsplit.active .tab-main {
-  color: var(--ink);
-}
-
-.tab-main:hover {
-  background: rgba(22, 34, 63, 0.05);
-}
-
-.tab-list {
-  position: relative;
-  width: 44px;
-  border: 0;
-  border-left: 1px solid rgba(22, 34, 63, 0.18);
-  background: transparent;
-  color: var(--ink-soft);
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.tabsplit.active .tab-list {
-  color: var(--ink);
-}
-
-.tab-list:hover,
-.tab-list.on {
-  background: rgba(22, 34, 63, 0.08);
-}
-
-.tab-list .bub {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  display: grid;
-  place-items: center;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: var(--red);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-}
-
 /* --------------------------------------------------------------- panels */
 
 .panel {
@@ -778,9 +697,9 @@ select {
 }
 
 /* ----------------------------------------------------------------- chat
-   One chat window, like the Lesko Help Navigator: a navy band on top,
-   the messages scrolling in the middle, and "Ask a question…" with a
-   red Ask button pinned at the bottom. */
+   One window, like the Messages panel inside Mighty: a navy band on
+   top with the dropdown at the right, the conversations (or the
+   messages) in the middle, and the way to write pinned at the bottom. */
 
 .private-line {
   display: flex;
@@ -799,17 +718,18 @@ select {
   background: var(--paper);
   box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
     0 14px 30px -20px rgba(22, 34, 63, 0.5);
-  overflow: hidden;
   margin-bottom: 12px;
 }
 
 .chat-head {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   background: var(--ink);
   color: #fff;
   padding: 10px 14px;
+  border-radius: 15px 15px 0 0;
 }
 
 .chat-back {
@@ -830,27 +750,77 @@ select {
   background: rgba(255, 255, 255, 0.14);
 }
 
-.chat-ava {
+/* faces: the real photo when it loads, a coloured initial until then */
+
+.chat-ava,
+.b-ava,
+.m-ava {
   position: relative;
   flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
   border-radius: 50%;
-  background: var(--yellow);
-  color: var(--ink);
   display: grid;
   place-items: center;
   font-family: var(--serif);
-  font-size: 19px;
   font-weight: 700;
   user-select: none;
   overflow: hidden;
+  background: var(--ink);
+  color: var(--yellow);
+}
+
+.chat-ava {
+  width: 36px;
+  height: 36px;
+  font-size: 19px;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
 }
 
-/* the real photo sits over the initial; if it can't load, the initial shows */
+.b-ava {
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+.m-ava {
+  width: 46px;
+  height: 46px;
+  font-size: 21px;
+}
+
+/* each person keeps their own colour */
+.chat-ava.t2,
+.b-ava.t2,
+.m-ava.t2 {
+  background: var(--red);
+  color: #fff;
+}
+
+.chat-ava.t3,
+.b-ava.t3,
+.m-ava.t3 {
+  background: var(--blue);
+  color: #fff;
+}
+
+.chat-ava.t4,
+.b-ava.t4,
+.m-ava.t4 {
+  background: var(--green);
+  color: #fff;
+}
+
+/* the Lesko question mark, for the team as a whole */
+.chat-ava.mark,
+.b-ava.mark,
+.m-ava.mark {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
 .chat-ava img,
-.b-ava img {
+.b-ava img,
+.m-ava img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -878,18 +848,256 @@ select {
   display: block;
   font-family: var(--serif);
   font-size: 17px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.chat-priv,
-.chat-when {
+/* the dropdown at the right of the band — the aspects of the zone */
+
+.dd {
+  position: relative;
   flex: 0 0 auto;
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
+}
+
+.dd-btn {
+  position: relative;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  padding: 7px 12px;
+  cursor: pointer;
   white-space: nowrap;
 }
+
+.dd-btn:hover,
+.dd-btn[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.dd-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.dd-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  min-width: 290px;
+  padding: 6px;
+  background: var(--paper-2);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px -16px rgba(22, 34, 63, 0.55);
+}
+
+.dd-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.dd-item:hover {
+  background: var(--tint-yellow);
+}
+
+.dd-item.on {
+  background: var(--yellow);
+}
+
+.dd-item .bub {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dd-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* the list of conversations — the first thing a member sees */
+
+.msgbox {
+  position: relative;
+}
+
+.msglist {
+  height: clamp(340px, 58vh, 480px);
+  overflow-y: auto;
+  padding: 4px 10px 88px;
+  scroll-behavior: smooth;
+}
+
+.mrow {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--hairline-soft);
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.mrow:hover {
+  background: rgba(22, 34, 63, 0.045);
+}
+
+.mrow:last-child {
+  border-bottom: 0;
+}
+
+.m-main {
+  min-width: 0;
+}
+
+.m-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mrow.unread .m-title {
+  font-weight: 700;
+}
+
+.m-sub {
+  display: block;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.35;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m-sub .st-new {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.m-sub .st-wait {
+  color: #b8860b;
+  font-weight: 600;
+}
+
+.m-when {
+  align-self: start;
+  padding-top: 4px;
+  font-size: 13px;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.mrow.unread .m-when {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.m-empty {
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.m-empty b {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+/* the red pill floating over the bottom of the list */
+
+.msg-cta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 34px 0 14px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(250, 246, 236, 0), var(--paper) 55%);
+  border-radius: 0 0 15px 15px;
+}
+
+.pill-cta {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  padding: 13px 24px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -10px rgba(232, 69, 60, 0.7);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.pill-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.pill-cta:active {
+  transform: translateY(1px);
+}
+
+/* the messages of one conversation */
 
 .chat-body {
   height: clamp(300px, 52vh, 430px);
@@ -898,40 +1106,105 @@ select {
   scroll-behavior: smooth;
 }
 
+/* the call sheets simply grow with their content */
+.chat-body.grow {
+  height: auto;
+  overflow: visible;
+  padding: 12px 14px 14px;
+  border-radius: 0 0 15px 15px;
+}
+
 .chat-foot {
   border-top: 1px solid var(--hairline-soft);
   background: var(--paper-2);
   padding: 10px 12px;
   margin: 0;
+  border-radius: 0 0 15px 15px;
 }
 
 .chat-foot .compose {
   margin: 0;
 }
 
-/* a fresh chat is shorter — one greeting and the bar to start */
-.chat.blank .chat-body {
-  height: clamp(220px, 38vh, 300px);
-}
-
-/* the bar that opens the question pop-up — looks like a chat input */
-.compose-fake {
-  flex: 1;
-  min-height: 46px;
-  padding: 12px 16px;
-  border: 1px solid var(--hairline);
-  border-radius: 22px;
-  background: #fff;
+.day-mark {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--ink-faint);
-  font: inherit;
-  font-size: 16px;
-  text-align: left;
-  cursor: text;
+  margin: 0 0 12px;
 }
 
-.compose-fake:hover {
-  border-color: var(--ink-soft);
+/* the question pop-up */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(22, 34, 63, 0.5);
 }
+
+.modal {
+  width: min(470px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  box-shadow: 0 30px 60px -20px rgba(22, 34, 63, 0.6);
+  padding: 16px 20px 20px;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.modal-head h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.modal-x {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-x:hover {
+  background: var(--tint-yellow);
+  color: var(--ink);
+}
+
+.modal .field textarea {
+  min-height: 170px;
+}
+
+.field-row.two {
+  grid-template-columns: 130px 1fr;
+}
+
+.compose {
+  margin: 0;
+}
+
+
 
 /* the question pop-up */
 
@@ -1265,35 +1538,6 @@ select {
   gap: 8px;
 }
 
-.b-ava {
-  position: relative;
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  margin-top: 2px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--yellow);
-  display: grid;
-  place-items: center;
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 700;
-  user-select: none;
-  overflow: hidden;
-}
-
-/* each person gets their own colour until their photo loads */
-.b-ava.t2 {
-  background: var(--red);
-  color: #fff;
-}
-
-.b-ava.t3 {
-  background: var(--blue);
-  color: #fff;
-}
-
 .bubble {
   max-width: 82%;
   padding: 10px 15px;
@@ -1310,11 +1554,15 @@ select {
   box-shadow: 0 1px 2px rgba(22, 34, 63, 0.06);
 }
 
+/* the member's own words: unmistakably a different colour */
 .brow.me .bubble {
-  background: #f6e7c3;
-  border: 1px solid rgba(22, 34, 63, 0.14);
-  color: var(--ink);
+  background: var(--blue);
+  color: #fff;
   border-radius: 18px 18px 5px 18px;
+}
+
+.brow.me .bubble a {
+  color: #fff;
 }
 
 .bubble .b-who {
@@ -2030,8 +2278,20 @@ select {
 /* ------------------------------------------------------------ responsive */
 
 @media (max-width: 560px) {
-  .tabbar {
-    grid-template-columns: 1fr;
+  .dd-btn {
+    padding: 6px 10px;
+    font-size: 12.5px;
+  }
+
+  .m-ava {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .mrow {
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    gap: 10px;
   }
 
   .field-row.two {
@@ -2109,7 +2369,6 @@ select {
 
   .topbar .suits,
   .masthead .side-note,
-  .tabbar,
   .foot,
   .toast,
   .backlink,

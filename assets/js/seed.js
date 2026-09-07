@@ -515,7 +515,7 @@ window.LZ_SEED = {
         },
         {
           "role": "team",
-          "name": "Lesko Help Team",
+          "name": "Rose",
           "roleLabel": "Lesko Help Team",
           "body": "Hello Aaron, and thank you for asking. This is the question we get most, and there are two different things going on here. We are going to fix both.\n\nThe $23 first, because that is the bigger money. Food stamp amounts are worked out from your income, and when your income or your hours change, the amount is supposed to change with it. A lot of people are living on an old number that nobody ever went back and updated.\n\nCall the New York State food stamp hotline at 1-800-342-3009, or go to mybenefits.ny.gov, and say: \"My income has changed and I would like my case looked at again.\" While you have them, ask them to check that your rent and your utility costs are on your case, because those raise the amount and they are very often missing.\n\nNow, food this week:\n\n1. Dial 2-1-1 and say \"I need food and I have no transportation.\" Ask specifically about a home delivery route or a volunteer driver. Most food banks have one and they almost never advertise it.\n2. Find your food bank at feedingamerica.org/find-your-local-foodbank and put in 14604. Call the food bank itself, not only the little pantry. The food bank knows every pantry, mobile pantry and delivery run in the county.\n3. You can spend food stamps online. Walmart and Amazon both take EBT for groceries in New York and deliver to the door. It doesn't fix the amount, but it fixes the three miles.\n4. You are 63, so the senior food programs are open to you. Ask 2-1-1 about the senior food box and about the farmers market coupons for people 60 and over.\n\nNone of this costs a dollar, and none of it is charity you need to feel funny about. Tell us what they say and we will take it from there.\n\nQuestions are free. Always were.\n- The Lesko Help Team",
           "ago": "17 days ago",
@@ -2027,11 +2027,14 @@ window.LZ_SEED = {
   }
 };
 
-/* The team's real profile photos, straight from the community. They load
-   when the widget is hosted; where outside images are blocked (some
-   previews) the coloured initial shows instead. */
+/* The team who answers: Tony, Misty and Rose. Their real profile photos
+   come straight from the community and load when the widget is hosted;
+   where outside images are blocked (some previews) a coloured initial
+   shows instead. Rose's photo and full name are still to come. */
+window.LZ_SEED.team = ["Tony Woodworth", "Misty Fowlds", "Rose"];
 window.LZ_SEED.teamPhotos = {
   "Lesko Help Team": "https://media1-production-mightynetworks.imgix.net/asset/c0214fbb-bbd9-4edc-af1b-0740a9f4996e/Matthew.jpeg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
   "Tony Woodworth": "https://media1-production-mightynetworks.imgix.net/asset/dd1e23a3-508a-46f6-98e3-5f5f73f2e09c/4ee8f1f25c17f31f.png?ixlib=rails-4.3.1&auto=format&w=96&h=96&fit=crop&impolicy=Avatar",
-  "Misty Fowlds": "https://media1-production-mightynetworks.imgix.net/asset/1704521b-3c30-433e-a893-8866e36f7ebd/f76aa8ee0169b49c.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar"
+  "Misty Fowlds": "https://media1-production-mightynetworks.imgix.net/asset/1704521b-3c30-433e-a893-8866e36f7ebd/f76aa8ee0169b49c.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
+  "Rose": ""
 };

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Lesko Zone</title>
-<meta name="description" content="Ask the Lesko Help team a question or build a call sheet — everything stays in one private place.">
+<meta name="description" content="Chat privately with the Lesko Help team and keep every conversation and call sheet in one place.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>?</text></svg>">
 <style>
 /* ==================================================================
@@ -206,87 +206,6 @@ h2 em,
 h3 em {
   color: var(--red);
   font-style: italic;
-}
-
-/* ---------------------------------------------------- two split tabs
-   The main part opens the form; the small ☰ opens that side's list. */
-
-.tabbar {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 10px 0 16px;
-}
-
-.tabsplit {
-  display: flex;
-  align-items: stretch;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  background: var(--paper-2);
-  overflow: hidden;
-}
-
-.tabsplit.active {
-  background: var(--yellow);
-  border-color: var(--ink);
-}
-
-.tab-main {
-  flex: 1;
-  font: inherit;
-  font-size: 14.5px;
-  font-weight: 600;
-  padding: 11px 6px;
-  border: 0;
-  background: transparent;
-  color: var(--ink-soft);
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.tabsplit.active .tab-main {
-  color: var(--ink);
-}
-
-.tab-main:hover {
-  background: rgba(22, 34, 63, 0.05);
-}
-
-.tab-list {
-  position: relative;
-  width: 44px;
-  border: 0;
-  border-left: 1px solid rgba(22, 34, 63, 0.18);
-  background: transparent;
-  color: var(--ink-soft);
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.tabsplit.active .tab-list {
-  color: var(--ink);
-}
-
-.tab-list:hover,
-.tab-list.on {
-  background: rgba(22, 34, 63, 0.08);
-}
-
-.tab-list .bub {
-  position: absolute;
-  top: 4px;
-  right: 4px;
-  display: grid;
-  place-items: center;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  border-radius: 999px;
-  background: var(--red);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
 }
 
 /* --------------------------------------------------------------- panels */
@@ -787,9 +706,9 @@ select {
 }
 
 /* ----------------------------------------------------------------- chat
-   One chat window, like the Lesko Help Navigator: a navy band on top,
-   the messages scrolling in the middle, and "Ask a question…" with a
-   red Ask button pinned at the bottom. */
+   One window, like the Messages panel inside Mighty: a navy band on
+   top with the dropdown at the right, the conversations (or the
+   messages) in the middle, and the way to write pinned at the bottom. */
 
 .private-line {
   display: flex;
@@ -808,17 +727,18 @@ select {
   background: var(--paper);
   box-shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
     0 14px 30px -20px rgba(22, 34, 63, 0.5);
-  overflow: hidden;
   margin-bottom: 12px;
 }
 
 .chat-head {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   background: var(--ink);
   color: #fff;
   padding: 10px 14px;
+  border-radius: 15px 15px 0 0;
 }
 
 .chat-back {
@@ -839,27 +759,77 @@ select {
   background: rgba(255, 255, 255, 0.14);
 }
 
-.chat-ava {
+/* faces: the real photo when it loads, a coloured initial until then */
+
+.chat-ava,
+.b-ava,
+.m-ava {
   position: relative;
   flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
   border-radius: 50%;
-  background: var(--yellow);
-  color: var(--ink);
   display: grid;
   place-items: center;
   font-family: var(--serif);
-  font-size: 19px;
   font-weight: 700;
   user-select: none;
   overflow: hidden;
+  background: var(--ink);
+  color: var(--yellow);
+}
+
+.chat-ava {
+  width: 36px;
+  height: 36px;
+  font-size: 19px;
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35);
 }
 
-/* the real photo sits over the initial; if it can't load, the initial shows */
+.b-ava {
+  width: 32px;
+  height: 32px;
+  margin-top: 2px;
+  font-size: 16px;
+}
+
+.m-ava {
+  width: 46px;
+  height: 46px;
+  font-size: 21px;
+}
+
+/* each person keeps their own colour */
+.chat-ava.t2,
+.b-ava.t2,
+.m-ava.t2 {
+  background: var(--red);
+  color: #fff;
+}
+
+.chat-ava.t3,
+.b-ava.t3,
+.m-ava.t3 {
+  background: var(--blue);
+  color: #fff;
+}
+
+.chat-ava.t4,
+.b-ava.t4,
+.m-ava.t4 {
+  background: var(--green);
+  color: #fff;
+}
+
+/* the Lesko question mark, for the team as a whole */
+.chat-ava.mark,
+.b-ava.mark,
+.m-ava.mark {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
 .chat-ava img,
-.b-ava img {
+.b-ava img,
+.m-ava img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -887,18 +857,256 @@ select {
   display: block;
   font-family: var(--serif);
   font-size: 17px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.chat-priv,
-.chat-when {
+/* the dropdown at the right of the band — the aspects of the zone */
+
+.dd {
+  position: relative;
   flex: 0 0 auto;
-  font-family: var(--mono);
-  font-size: 9.5px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
+}
+
+.dd-btn {
+  position: relative;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 999px;
+  padding: 7px 12px;
+  cursor: pointer;
   white-space: nowrap;
 }
+
+.dd-btn:hover,
+.dd-btn[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.dd-dot {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.dd-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  min-width: 290px;
+  padding: 6px;
+  background: var(--paper-2);
+  color: var(--ink);
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  box-shadow: 0 18px 40px -16px rgba(22, 34, 63, 0.55);
+}
+
+.dd-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.dd-item:hover {
+  background: var(--tint-yellow);
+}
+
+.dd-item.on {
+  background: var(--yellow);
+}
+
+.dd-item .bub {
+  display: grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--red);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.dd-count {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* the list of conversations — the first thing a member sees */
+
+.msgbox {
+  position: relative;
+}
+
+.msglist {
+  height: clamp(340px, 58vh, 480px);
+  overflow-y: auto;
+  padding: 4px 10px 88px;
+  scroll-behavior: smooth;
+}
+
+.mrow {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+  padding: 12px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--hairline-soft);
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.mrow:hover {
+  background: rgba(22, 34, 63, 0.045);
+}
+
+.mrow:last-child {
+  border-bottom: 0;
+}
+
+.m-main {
+  min-width: 0;
+}
+
+.m-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mrow.unread .m-title {
+  font-weight: 700;
+}
+
+.m-sub {
+  display: block;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.35;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.m-sub .st-new {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.m-sub .st-wait {
+  color: #b8860b;
+  font-weight: 600;
+}
+
+.m-when {
+  align-self: start;
+  padding-top: 4px;
+  font-size: 13px;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.mrow.unread .m-when {
+  color: var(--red);
+  font-weight: 700;
+}
+
+.m-empty {
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.m-empty b {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+/* the red pill floating over the bottom of the list */
+
+.msg-cta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  padding: 34px 0 14px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(250, 246, 236, 0), var(--paper) 55%);
+  border-radius: 0 0 15px 15px;
+}
+
+.pill-cta {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--red);
+  border: 1px solid var(--red);
+  border-radius: 999px;
+  padding: 13px 24px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px -10px rgba(232, 69, 60, 0.7);
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.pill-cta:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.pill-cta:active {
+  transform: translateY(1px);
+}
+
+/* the messages of one conversation */
 
 .chat-body {
   height: clamp(300px, 52vh, 430px);
@@ -907,40 +1115,105 @@ select {
   scroll-behavior: smooth;
 }
 
+/* the call sheets simply grow with their content */
+.chat-body.grow {
+  height: auto;
+  overflow: visible;
+  padding: 12px 14px 14px;
+  border-radius: 0 0 15px 15px;
+}
+
 .chat-foot {
   border-top: 1px solid var(--hairline-soft);
   background: var(--paper-2);
   padding: 10px 12px;
   margin: 0;
+  border-radius: 0 0 15px 15px;
 }
 
 .chat-foot .compose {
   margin: 0;
 }
 
-/* a fresh chat is shorter — one greeting and the bar to start */
-.chat.blank .chat-body {
-  height: clamp(220px, 38vh, 300px);
-}
-
-/* the bar that opens the question pop-up — looks like a chat input */
-.compose-fake {
-  flex: 1;
-  min-height: 46px;
-  padding: 12px 16px;
-  border: 1px solid var(--hairline);
-  border-radius: 22px;
-  background: #fff;
+.day-mark {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--ink-faint);
-  font: inherit;
-  font-size: 16px;
-  text-align: left;
-  cursor: text;
+  margin: 0 0 12px;
 }
 
-.compose-fake:hover {
-  border-color: var(--ink-soft);
+/* the question pop-up */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(22, 34, 63, 0.5);
 }
+
+.modal {
+  width: min(470px, 100%);
+  max-height: 92vh;
+  overflow-y: auto;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--paper-2);
+  box-shadow: 0 30px 60px -20px rgba(22, 34, 63, 0.6);
+  padding: 16px 20px 20px;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.modal-head h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.modal-x {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-x:hover {
+  background: var(--tint-yellow);
+  color: var(--ink);
+}
+
+.modal .field textarea {
+  min-height: 170px;
+}
+
+.field-row.two {
+  grid-template-columns: 130px 1fr;
+}
+
+.compose {
+  margin: 0;
+}
+
+
 
 /* the question pop-up */
 
@@ -1274,35 +1547,6 @@ select {
   gap: 8px;
 }
 
-.b-ava {
-  position: relative;
-  flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  margin-top: 2px;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--yellow);
-  display: grid;
-  place-items: center;
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 700;
-  user-select: none;
-  overflow: hidden;
-}
-
-/* each person gets their own colour until their photo loads */
-.b-ava.t2 {
-  background: var(--red);
-  color: #fff;
-}
-
-.b-ava.t3 {
-  background: var(--blue);
-  color: #fff;
-}
-
 .bubble {
   max-width: 82%;
   padding: 10px 15px;
@@ -1319,11 +1563,15 @@ select {
   box-shadow: 0 1px 2px rgba(22, 34, 63, 0.06);
 }
 
+/* the member's own words: unmistakably a different colour */
 .brow.me .bubble {
-  background: #f6e7c3;
-  border: 1px solid rgba(22, 34, 63, 0.14);
-  color: var(--ink);
+  background: var(--blue);
+  color: #fff;
   border-radius: 18px 18px 5px 18px;
+}
+
+.brow.me .bubble a {
+  color: #fff;
 }
 
 .bubble .b-who {
@@ -2039,8 +2287,20 @@ select {
 /* ------------------------------------------------------------ responsive */
 
 @media (max-width: 560px) {
-  .tabbar {
-    grid-template-columns: 1fr;
+  .dd-btn {
+    padding: 6px 10px;
+    font-size: 12.5px;
+  }
+
+  .m-ava {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  .mrow {
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    gap: 10px;
   }
 
   .field-row.two {
@@ -2118,7 +2378,6 @@ select {
 
   .topbar .suits,
   .masthead .side-note,
-  .tabbar,
   .foot,
   .toast,
   .backlink,
@@ -2183,8 +2442,6 @@ select {
     </div>
   </header>
 
-  <nav class="tabbar" role="tablist" aria-label="Sections" id="tabbar"></nav>
-
   <main id="face"></main>
 
   <footer class="foot">
@@ -2196,6 +2453,7 @@ select {
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div id="modal" hidden></div>
 
 <script>
 /* ==========================================================================
@@ -2715,7 +2973,7 @@ window.LZ_SEED = {
         },
         {
           "role": "team",
-          "name": "Lesko Help Team",
+          "name": "Rose",
           "roleLabel": "Lesko Help Team",
           "body": "Hello Aaron, and thank you for asking. This is the question we get most, and there are two different things going on here. We are going to fix both.\n\nThe $23 first, because that is the bigger money. Food stamp amounts are worked out from your income, and when your income or your hours change, the amount is supposed to change with it. A lot of people are living on an old number that nobody ever went back and updated.\n\nCall the New York State food stamp hotline at 1-800-342-3009, or go to mybenefits.ny.gov, and say: \"My income has changed and I would like my case looked at again.\" While you have them, ask them to check that your rent and your utility costs are on your case, because those raise the amount and they are very often missing.\n\nNow, food this week:\n\n1. Dial 2-1-1 and say \"I need food and I have no transportation.\" Ask specifically about a home delivery route or a volunteer driver. Most food banks have one and they almost never advertise it.\n2. Find your food bank at feedingamerica.org/find-your-local-foodbank and put in 14604. Call the food bank itself, not only the little pantry. The food bank knows every pantry, mobile pantry and delivery run in the county.\n3. You can spend food stamps online. Walmart and Amazon both take EBT for groceries in New York and deliver to the door. It doesn't fix the amount, but it fixes the three miles.\n4. You are 63, so the senior food programs are open to you. Ask 2-1-1 about the senior food box and about the farmers market coupons for people 60 and over.\n\nNone of this costs a dollar, and none of it is charity you need to feel funny about. Tell us what they say and we will take it from there.\n\nQuestions are free. Always were.\n- The Lesko Help Team",
           "ago": "17 days ago",
@@ -4227,13 +4485,16 @@ window.LZ_SEED = {
   }
 };
 
-/* The team's real profile photos, straight from the community. They load
-   when the widget is hosted; where outside images are blocked (some
-   previews) the coloured initial shows instead. */
+/* The team who answers: Tony, Misty and Rose. Their real profile photos
+   come straight from the community and load when the widget is hosted;
+   where outside images are blocked (some previews) a coloured initial
+   shows instead. Rose's photo and full name are still to come. */
+window.LZ_SEED.team = ["Tony Woodworth", "Misty Fowlds", "Rose"];
 window.LZ_SEED.teamPhotos = {
   "Lesko Help Team": "https://media1-production-mightynetworks.imgix.net/asset/c0214fbb-bbd9-4edc-af1b-0740a9f4996e/Matthew.jpeg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
   "Tony Woodworth": "https://media1-production-mightynetworks.imgix.net/asset/dd1e23a3-508a-46f6-98e3-5f5f73f2e09c/4ee8f1f25c17f31f.png?ixlib=rails-4.3.1&auto=format&w=96&h=96&fit=crop&impolicy=Avatar",
-  "Misty Fowlds": "https://media1-production-mightynetworks.imgix.net/asset/1704521b-3c30-433e-a893-8866e36f7ebd/f76aa8ee0169b49c.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar"
+  "Misty Fowlds": "https://media1-production-mightynetworks.imgix.net/asset/1704521b-3c30-433e-a893-8866e36f7ebd/f76aa8ee0169b49c.jpg?ixlib=rails-4.3.1&fm=jpg&q=75&auto=format&w=96&h=96&fit=crop&crop=faces&impolicy=Avatar",
+  "Rose": ""
 };
 
 </script>
@@ -4423,105 +4684,15 @@ window.LZ_SEED.teamPhotos = {
     }
   }
 
-  /* ------------------------------------------------------ call sheets */
+  /* ------------------------------------------------------ call sheets
+     Call sheets are made elsewhere (the team's research tool) and land
+     here; this zone keeps them and lets the member work through them. */
 
   function getSheet(id) {
     for (var i = 0; i < state.sheets.length; i++) {
       if (state.sheets[i].id === id) return state.sheets[i];
     }
     return null;
-  }
-
-  /**
-   * Build a new call sheet from the member's inputs.
-   *
-   * MOCK-UP: the research is simulated. We take the prepared sheet that
-   * best matches the chosen topic and re-address it with the member's own
-   * words and place. In the real product this is where the AI research
-   * call goes.
-   */
-  function buildSheet(input) {
-    var library = global.LZ_SEED.callSheets;
-    var map = global.LZ_SEED.topicMap || {};
-    var base = null;
-    var i;
-
-    var wanted = input.topicKey;
-    if (map[wanted]) {
-      for (i = 0; i < library.length; i++) {
-        if (library[i].id === map[wanted]) base = library[i];
-      }
-    }
-    if (!base) {
-      for (i = 0; i < library.length; i++) {
-        if (library[i].topicKey === wanted) base = library[i];
-      }
-    }
-    if (!base) base = library[0];
-
-    var sheet = clone(base);
-    var first = state.member.name.split(" ")[0];
-
-    /* Label the sheet with the topic the member actually chose. */
-    var topics = (state.copy && state.copy.topics) || [];
-    for (i = 0; i < topics.length; i++) {
-      if (topics[i].key === wanted) {
-        sheet.topic = topics[i].label;
-        sheet.topicKey = topics[i].key;
-      }
-    }
-
-    sheet.id = uid("cs");
-    sheet.createdAt = new Date().toISOString();
-    sheet.ago = "just now";
-    sheet.memberName = first;
-    sheet.city = input.city || sheet.city;
-    sheet.state = input.state || sheet.state;
-    sheet.zip = input.zip || sheet.zip;
-    sheet.problem = input.problem || sheet.problem;
-    sheet.called = [];
-
-    var place = [sheet.city, sheet.state].filter(Boolean).join(", ") || sheet.zip;
-
-    sheet.opening = openingFor(first, place, sheet, input);
-    sheet.firstCall.why = personalise(sheet.firstCall.why, first, place, base);
-    sheet.firstCall.whatToSay = personalise(sheet.firstCall.whatToSay, first, place, base);
-    for (i = 0; i < sheet.orgs.length; i++) {
-      sheet.orgs[i].script = personalise(sheet.orgs[i].script, first, place, base);
-    }
-
-    state.sheets.unshift(sheet);
-    save();
-    return sheet;
-  }
-
-  /** Open with the member's actual words, so the sheet is visibly theirs. */
-  function openingFor(first, place, sheet, input) {
-    var said = String(input.problem || "").replace(/\s+/g, " ").trim();
-    if (said.length > 190) {
-      said = said.slice(0, 189).replace(/[\s,.;:]+$/, "") + "…";
-    }
-    return (
-      "Here is what I found for you, " + first + ". You told me: “" + said +
-      "” So I went looking for help with " + (sheet.topic || "").toLowerCase() +
-      " near " + place + ". Below are " + sheet.orgs.length +
-      " places that can help, with the phone numbers and the words to say when " +
-      "they pick up. Start with the first one — that is the call that matters most."
-    );
-  }
-
-  /** Swap the prepared sheet's member name and place for this member's. */
-  function personalise(text, first, place, base) {
-    var out = String(text || "");
-    if (base.memberName) out = out.split(base.memberName).join(first);
-
-    var basePlace = [base.city, base.state].filter(Boolean).join(", ");
-    var city = place.split(",")[0].trim();
-
-    if (basePlace && place && basePlace !== place) out = out.split(basePlace).join(place);
-    if (base.city && city && base.city !== city) out = out.split(base.city).join(city);
-
-    return out.replace(/\s{2,}/g, " ").trim();
   }
 
   /** Tick / untick "called" on a call sheet row, remembering the day. */
@@ -4634,7 +4805,6 @@ window.LZ_SEED.teamPhotos = {
     clearNew: clearNew,
 
     getSheet: getSheet,
-    buildSheet: buildSheet,
     toggleCalled: toggleCalled,
     isCalled: isCalled,
     calledOn: calledOn,
@@ -4651,10 +4821,13 @@ window.LZ_SEED.teamPhotos = {
 /* ==================================================================
    views.js — the screens of My Lesko Zone.
 
-   Two split tabs — Ask a question · Create my call sheet — each with
-   a small ☰ that opens its list. Forms submit with a red button on
-   the right. A call sheet opens straight into the working list:
-   called-tick, phone, email, website, a note, and the date.
+   One window, like the Messages panel inside Mighty. The first thing
+   a member sees is the list of their conversations — the team member's
+   face, the title, their name, how long ago — with a red pill to ask a
+   new question. A conversation is a chat: the member in blue on the
+   right, the team's photo and answer on the left. The dropdown at the
+   right of the navy band moves between the aspects of the zone:
+   the chat and the call sheets.
    Views are pure: state in, markup out. app.js wires interaction
    through data-act attributes.
    ================================================================== */
@@ -4733,6 +4906,27 @@ window.LZ_SEED.teamPhotos = {
     return fmtDate(iso);
   }
 
+  /** "3d", "1mo", "2y" — the way a messages list says it. */
+  function shortAgo(iso) {
+    var then = new Date(iso).getTime();
+    if (isNaN(then)) return "";
+    var s = Math.max(0, (Date.now() - then) / 1000);
+    if (s < 60) return "now";
+    var m = Math.round(s / 60);
+    if (m < 60) return m + "m";
+    var h = Math.round(m / 60);
+    if (h < 24) return h + "h";
+    var d = Math.round(h / 24);
+    if (d < 30) return d + "d";
+    var mo = Math.round(d / 30);
+    if (mo < 12) return mo + "mo";
+    return Math.round(mo / 12) + "y";
+  }
+
+  function firstName(name) {
+    return String(name || "").trim().split(" ")[0];
+  }
+
   /** Attachment chips on a team answer — files the team sent along. */
   function fileChips(list) {
     if (!list || !list.length) return "";
@@ -4763,90 +4957,135 @@ window.LZ_SEED.teamPhotos = {
     );
   }
 
-  /* ==================================== CHAT WITH A TEAM MEMBER (chat) */
+  /* ------------------------------------------------------------ team */
+
+  var GENERIC = "Lesko Help Team";
 
   /** A team member's face: their real photo when it loads, otherwise a
-      coloured circle with their initial — like every chat app. */
+      coloured circle with their initial — like every chat app. The
+      generic team account shows the Lesko question mark. */
   function avatar(name, cls) {
     var photos = global.LZ_SEED.teamPhotos || {};
-    var src = photos[name] || "";
-    var initial = String(name || "?").trim().charAt(0).toUpperCase() || "?";
-    var tone = "t" + ((initial.charCodeAt(0) % 3) + 1);
+    var team = global.LZ_SEED.team || [];
+    var who = name || GENERIC;
+    var src = photos[who] || "";
+    var generic = who === GENERIC;
+    var initial = generic ? "?" : String(who).trim().charAt(0).toUpperCase() || "?";
+    var at = team.indexOf(who);
+    var tone = generic ? "mark" : "t" + ((at < 0 ? 0 : at) % 4 + 1);
     return (
       '<span class="' + cls + " " + tone + '" aria-hidden="true">' +
       '<span class="ini">' + esc(initial) + "</span>" +
-      (src
-        ? '<img src="' + esc(src) + '" alt="" loading="lazy" onerror="this.remove()">'
-        : "") +
+      (src ? '<img src="' + esc(src) + '" alt="" loading="lazy">' : "") +
       "</span>"
     );
   }
 
-  /** The navy band at the top of the chat window — same as the other
-      Lesko chat apps: the team's face, LESKO HELP over the room name. */
+  /** The team member who last answered this conversation, if any. */
+  function lastTeam(q) {
+    for (var i = q.messages.length - 1; i >= 0; i--) {
+      if (q.messages[i].role === "team") return q.messages[i].name;
+    }
+    return "";
+  }
+
+  function lastAt(q) {
+    var m = q.messages[q.messages.length - 1];
+    return (m && m.createdAt) || q.createdAt;
+  }
+
+  /* ------------------------------------------------- the navy band */
+
+  /** The dropdown at the right: the aspects of the zone. */
+  function menu(active) {
+    var n = store.counts();
+    var items = [
+      { to: "chats", label: "Chat with a Team Member", badge: n.unread, count: 0 },
+      { to: "sheets", label: "My call sheets", badge: 0, count: n.sheets },
+    ];
+    return (
+      '<div class="dd">' +
+      '<button type="button" class="dd-btn" data-act="dd-toggle" aria-haspopup="menu" ' +
+      'aria-expanded="false">Menu <span aria-hidden="true">&#9662;</span>' +
+      (n.unread ? '<span class="dd-dot" aria-hidden="true"></span>' : "") +
+      "</button>" +
+      '<div class="dd-menu" role="menu" hidden>' +
+      items
+        .map(function (it) {
+          return (
+            '<button type="button" role="menuitem" class="dd-item' +
+            (it.to === active ? " on" : "") + '" data-act="go" data-to="' + it.to + '">' +
+            it.label +
+            (it.badge
+              ? '<span class="bub">' + it.badge + '<span class="sr-only"> new answers</span></span>'
+              : it.count
+              ? '<span class="dd-count">' + it.count + "</span>"
+              : "") +
+            "</button>"
+          );
+        })
+        .join("") +
+      "</div></div>"
+    );
+  }
+
   function chatHead(opts) {
-    opts = opts || {};
     return (
       '<div class="chat-head">' +
       (opts.back
         ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
-          '" aria-label="Back to my conversations">&larr;</button>'
+          '" aria-label="Back">&larr;</button>'
         : "") +
-      avatar("Lesko Help Team", "chat-ava") +
+      avatar(opts.who || GENERIC, "chat-ava") +
       '<span class="chat-name"><span class="ch-over">Lesko Help</span>' +
-      '<span class="ch-title">Chat with a Team Member</span></span>' +
-      (opts.right || '<span class="chat-priv">&#128274; Private</span>') +
+      '<span class="ch-title">' + esc(opts.title) + "</span></span>" +
+      menu(opts.active) +
       "</div>"
     );
   }
 
-  function questionRows() {
-    return store.state.questions
+  /* ============================== CHAT WITH A TEAM MEMBER: the list */
+
+  function chats() {
+    var qs = store.state.questions;
+
+    var rows = qs
       .map(function (q) {
-        var dot = q.unread ? "new" : q.status === "answered" ? "" : "waiting";
-        var st = q.unread
-          ? '<span class="st-new">New answer</span>'
-          : q.status === "answered"
-          ? '<span class="st-ok">Answered &#10003;</span>'
+        var who = lastTeam(q);
+        var sub = q.unread
+          ? '<span class="st-new">New answer from ' + esc(firstName(who)) + "</span>"
+          : who
+          ? esc(who)
           : '<span class="st-wait">No answer yet</span>';
         return (
-          '<button class="convo' + (q.unread ? " unread" : "") +
+          '<button class="mrow' + (q.unread ? " unread" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
-          '<span class="c-dot ' + dot + '" aria-hidden="true"></span>' +
-          "<span>" +
-          '<span class="c-subj">' + esc(q.subject) + "</span>" +
-          '<span class="c-meta">' + st + "</span>" +
+          avatar(who || GENERIC, "m-ava") +
+          '<span class="m-main">' +
+          '<span class="m-title">' + esc(q.subject) + "</span>" +
+          '<span class="m-sub">' + sub + "</span>" +
           "</span>" +
-          '<span class="c-when">' + esc(niceDate(q.createdAt)) + "</span></button>"
+          '<span class="m-when">' + esc(shortAgo(lastAt(q))) + "</span>" +
+          "</button>"
         );
       })
       .join("");
-  }
 
-  /* The tab opens on a fresh chat — a greeting from the team and the bar
-     to start. Earlier conversations live behind ☰ (My questions). */
-  function ask() {
-    var first = esc((store.member.name || "").split(" ")[0]);
+    var empty =
+      '<div class="m-empty"><b>No conversations yet</b>' +
+      "Ask us anything &mdash; money for bills, your business, school, whatever " +
+      "is going on. A real person on the team answers, usually within a day.</div>";
 
     return (
       '<section class="panel">' +
-      '<div class="chat blank">' +
-      chatHead() +
-      '<div class="chat-body" id="chat-body">' +
-      '<div class="brow team">' +
-      avatar("Lesko Help Team", "b-ava") +
-      '<div class="bubble"><span class="b-who">Lesko Help team</span>' +
-      "How can we help, " + first + "? Tell us what is going on in your own " +
-      "words &mdash; as much detail as you like, and where you are, so we can " +
-      "find help near you. A real person on the team reads it and answers " +
-      "you right here.</div></div>" +
-      "</div>" +
-      '<div class="chat-foot">' +
-      '<div class="compose">' +
-      '<button type="button" class="compose-fake" data-act="ask-open">Describe what you need&hellip;</button>' +
-      '<button type="button" class="ask-btn" data-act="ask-open">Ask</button>' +
-      "</div></div>" +
-      "</div>" +
+      '<div class="chat">' +
+      chatHead({ title: "Chat with a Team Member", active: "chats" }) +
+      '<div class="msgbox">' +
+      '<div class="msglist" id="chat-body">' + (rows || empty) + "</div>" +
+      '<div class="msg-cta">' +
+      '<button type="button" class="pill-cta" data-act="ask-open">Ask us a question ' +
+      '<span aria-hidden="true">&#10148;</span></button>' +
+      "</div></div></div>" +
       privateLine() +
       "</section>"
     );
@@ -4859,7 +5098,7 @@ window.LZ_SEED.teamPhotos = {
       '<div class="overlay" id="ask-modal" role="dialog" aria-modal="true" aria-labelledby="am-title">' +
       '<form class="modal" id="ask-form" novalidate>' +
       '<div class="modal-head">' +
-      '<h3 id="am-title">Ask a Team Member</h3>' +
+      '<h3 id="am-title">Ask us a question</h3>' +
       '<button type="button" class="modal-x" data-act="ask-close" aria-label="Close">&times;</button>' +
       "</div>" +
       '<div class="field-row two">' +
@@ -4879,33 +5118,13 @@ window.LZ_SEED.teamPhotos = {
     );
   }
 
-  /* ============================================== MY QUESTIONS (list) */
-
-  function questions() {
-    var qs = store.state.questions;
-    if (!qs.length) {
-      return (
-        '<section class="panel"><div class="card empty-note">' +
-        '<div class="q" aria-hidden="true">?</div>' +
-        "<h3>No questions yet</h3>" +
-        '<button class="btn red" data-act="go" data-to="ask">Ask your first question</button>' +
-        "</div></section>"
-      );
-    }
-
-    return (
-      '<section class="panel">' +
-      '<div class="convos">' + questionRows() + "</div>" +
-      privateLine() +
-      "</section>"
-    );
-  }
-
-  /* ---------------------------------------------------- one thread */
+  /* ------------------------------------------- one conversation */
 
   function thread(id) {
     var q = store.getQuestion(id);
-    if (!q) return notFound("conversation", "questions");
+    if (!q) return notFound("conversation", "chats");
+
+    var who = lastTeam(q);
 
     var msgs = q.messages
       .map(function (m) {
@@ -4934,10 +5153,13 @@ window.LZ_SEED.teamPhotos = {
       '<section class="panel">' +
       '<div class="chat">' +
       chatHead({
-        back: "ask",
-        right: '<span class="chat-when">' + esc(niceDate(q.createdAt)) + "</span>",
+        back: "chats",
+        who: who || GENERIC,
+        title: who || "Lesko Help team",
+        active: "chats",
       }) +
       '<div class="chat-body" id="chat-body">' +
+      '<div class="day-mark">' + esc(niceDate(q.createdAt)) + "</div>" +
       msgs +
       feedbackBlock(q) +
       '<div id="typing-slot"></div>' +
@@ -4993,7 +5215,7 @@ window.LZ_SEED.teamPhotos = {
 
   /** The animated "the team is typing" bubble, injected by app.js. */
   function typingBubble() {
-    var who = (global.LZ_SEED.autoReply || {}).name || "Lesko Help Team";
+    var who = (global.LZ_SEED.autoReply || {}).name || GENERIC;
     return (
       '<div class="brow team typing">' +
       avatar(who, "b-ava") +
@@ -5003,65 +5225,10 @@ window.LZ_SEED.teamPhotos = {
     );
   }
 
-  /* ========================================= CREATE MY CALL SHEET (form) */
-
-  function build() {
-    var topics = store.copy.topics || [];
-    var opts = '<option value="">Choose one&hellip;</option>';
-    topics.forEach(function (t) {
-      opts += '<option value="' + esc(t.key) + '">' + esc(t.label) + "</option>";
-    });
-
-    return (
-      '<section class="panel">' +
-      '<form class="form-card" id="build-form" novalidate>' +
-      '<div class="field">' +
-      '<label for="b-topic">What do you need help with?</label>' +
-      '<select id="b-topic">' + opts + "</select></div>" +
-      '<div class="field-row three">' +
-      '<div class="field"><label for="b-zip">ZIP code</label>' +
-      '<input id="b-zip" inputmode="numeric" autocomplete="postal-code" placeholder="14604"></div>' +
-      '<div class="field"><label for="b-city">City</label>' +
-      '<input id="b-city" autocomplete="address-level2" placeholder="Rochester"></div>' +
-      '<div class="field"><label for="b-state">State</label>' +
-      '<input id="b-state" autocomplete="address-level1" placeholder="New York"></div>' +
-      "</div>" +
-      '<div class="field">' +
-      '<label for="b-problem">Tell us what&rsquo;s going on</label>' +
-      '<textarea id="b-problem" rows="4" placeholder="Your own words are perfect — spelling doesn&rsquo;t matter."></textarea>' +
-      "</div>" +
-      '<p class="form-error" id="build-error"></p>' +
-      '<div class="form-actions">' +
-      '<button class="btn red big" type="submit">Create my call sheet</button>' +
-      "</div></form>" +
-      privateLine() +
-      "</section>"
-    );
-  }
-
-  function generating() {
-    return (
-      '<section class="panel"><div class="card generating">' +
-      '<div class="suits" aria-hidden="true"><span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span></div>' +
-      '<p class="progress-msg" id="progress-msg" role="status" aria-live="polite"></p>' +
-      '<div class="bar"><i id="progress-bar"></i></div>' +
-      "</div></section>"
-    );
-  }
-
   /* ============================================= MY CALL SHEETS (list) */
 
   function sheets() {
     var list = store.state.sheets;
-    if (!list.length) {
-      return (
-        '<section class="panel"><div class="card empty-note">' +
-        '<div class="q" aria-hidden="true">?</div>' +
-        "<h3>No call sheets yet</h3>" +
-        '<button class="btn red" data-act="go" data-to="build">Create your first call sheet</button>' +
-        "</div></section>"
-      );
-    }
 
     var rows = list
       .map(function (sh) {
@@ -5083,9 +5250,17 @@ window.LZ_SEED.teamPhotos = {
       })
       .join("");
 
+    var empty =
+      '<div class="m-empty"><b>No call sheets yet</b>' +
+      "Every call sheet the team makes for you is kept here, for good.</div>";
+
     return (
       '<section class="panel">' +
-      '<div class="convos">' + rows + "</div>" +
+      '<div class="chat">' +
+      chatHead({ title: "My call sheets", active: "sheets" }) +
+      '<div class="chat-body grow">' +
+      (rows ? '<div class="convos">' + rows + "</div>" : empty) +
+      "</div></div>" +
       privateLine() +
       "</section>"
     );
@@ -5101,18 +5276,21 @@ window.LZ_SEED.teamPhotos = {
       return workRow(sh, o);
     }).join("");
 
+    var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
+
     return (
       '<section class="panel">' +
-      '<div class="thread-head">' +
-      '<button class="backlink" data-act="go" data-to="sheets" style="margin:0">&larr; My call sheets</button>' +
-      '<span class="c-when">' + esc(niceDate(sh.createdAt)) + "</span>" +
-      "</div>" +
+      '<div class="chat">' +
+      chatHead({ back: "sheets", title: sh.title, active: "sheets" }) +
+      '<div class="chat-body grow">' +
       '<div class="w-titlebar">' +
-      '<h2 class="sheet-title" style="margin:0">' + esc(sh.title) + "</h2>" +
+      '<span class="c-when">' + esc(niceDate(sh.createdAt)) + " &nbsp;&middot;&nbsp; " +
+      esc(place) + "</span>" +
       '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) +
       '">&#11015; Download</button>' +
       "</div>" +
       '<div class="work">' + rows + "</div>" +
+      "</div></div>" +
       "</section>"
     );
   }
@@ -5180,14 +5358,11 @@ window.LZ_SEED.teamPhotos = {
 
   global.LZ = global.LZ || {};
   global.LZ.views = {
-    ask: ask,
+    chats: chats,
     askModal: askModal,
-    questions: questions,
     thread: thread,
     typingBubble: typingBubble,
-    build: build,
     sheets: sheets,
-    generating: generating,
     sheet: sheet,
     workRow: workRow,
     niceDate: niceDate,
@@ -5198,7 +5373,7 @@ window.LZ_SEED.teamPhotos = {
 </script>
 <script>
 /* ==================================================================
-   app.js — two tabs, a chat, a call sheet builder.
+   app.js — one window: the conversations, a chat, the call sheets.
 
    Hash routing on purpose: the widget works opened straight from
    disk and inside a Mighty Networks iframe, and a member can be
@@ -5220,46 +5395,12 @@ window.LZ_SEED.teamPhotos = {
   var typingTimer = null;
   var resetTimer = null;
 
-  /* ------------------------------------------------------------- tabs */
-
-  /* Two split tabs. The main part opens the form; the small ☰ opens
-     that side's list, so the archive is always one tap away. */
-  var TABS = [
-    { key: "ask", list: "questions", label: "Chat with a Team Member", listLabel: "My questions" },
-    { key: "build", list: "sheets", label: "Create my call sheet", listLabel: "My call sheets" },
-  ];
-
-  function renderTabs(activeName) {
-    var n = store.counts();
-    document.getElementById("tabbar").innerHTML = TABS.map(function (t) {
-      var section =
-        activeName === t.key ||
-        activeName === t.list ||
-        (t.list === "questions" && activeName === "thread") ||
-        (t.list === "sheets" && activeName === "sheet");
-      var onList = section && activeName !== t.key;
-      var bub = "";
-      if (t.list === "questions" && n.unread) {
-        bub = '<span class="bub">' + n.unread + '<span class="sr-only"> new answers</span></span>';
-      }
-      return (
-        '<div class="tabsplit' + (section ? " active" : "") + '">' +
-        '<button class="tab-main" data-act="go" data-to="' + t.key + '">' +
-        t.label + "</button>" +
-        '<button class="tab-list' + (onList ? " on" : "") +
-        '" data-act="go" data-to="' + t.list + '" aria-label="' + t.listLabel + '">' +
-        "&#9776;" + bub + "</button>" +
-        "</div>"
-      );
-    }).join("");
-  }
-
   /* ----------------------------------------------------------- router */
 
   function parseHash() {
     var h = (global.location.hash || "").replace(/^#\/?/, "");
     var parts = h.split("/").filter(Boolean);
-    return { name: parts[0] || "ask", id: parts[1] || null };
+    return { name: parts[0] || "chats", id: parts[1] || null };
   }
 
   function go(to, id) {
@@ -5273,15 +5414,9 @@ window.LZ_SEED.teamPhotos = {
     var html;
 
     switch (r.name) {
-      case "questions":
-        html = views.questions();
-        break;
       case "thread":
         store.markRead(r.id);
         html = views.thread(r.id);
-        break;
-      case "build":
-        html = views.build();
         break;
       case "sheets":
         html = views.sheets();
@@ -5290,12 +5425,11 @@ window.LZ_SEED.teamPhotos = {
         html = views.sheet(r.id);
         break;
       default:
-        r.name = "ask";
-        html = views.ask();
+        r.name = "chats";
+        html = views.chats();
     }
 
     face.innerHTML = html;
-    renderTabs(r.name);
 
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
@@ -5315,7 +5449,6 @@ window.LZ_SEED.teamPhotos = {
       }
       store.clearNew(r.id);
     }
-    if (r.name === "build") wireBuildForm();
   }
 
   /* ------------------------------------------------------------ toast */
@@ -5327,6 +5460,25 @@ window.LZ_SEED.teamPhotos = {
     toastTimer = setTimeout(function () {
       toastEl.hidden = true;
     }, 3200);
+  }
+
+  /* --------------------------------------------- the dropdown menu */
+
+  function closeMenus() {
+    var menus = document.querySelectorAll(".dd-menu");
+    for (var i = 0; i < menus.length; i++) menus[i].hidden = true;
+    var btns = document.querySelectorAll(".dd-btn");
+    for (var j = 0; j < btns.length; j++) btns[j].setAttribute("aria-expanded", "false");
+  }
+
+  function toggleMenu(btn) {
+    var menu = btn.parentNode.querySelector(".dd-menu");
+    var wasHidden = menu.hidden;
+    closeMenus();
+    if (wasHidden) {
+      menu.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+    }
   }
 
   /* ------------------------------------------------------------- chat */
@@ -5415,7 +5567,10 @@ window.LZ_SEED.teamPhotos = {
   }
 
   document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") closeAskModal();
+    if (e.key === "Escape") {
+      closeAskModal();
+      closeMenus();
+    }
   });
 
   function onReply(body, form) {
@@ -5447,87 +5602,26 @@ window.LZ_SEED.teamPhotos = {
       } else {
         thread.unread = true;
         store.save();
-        renderTabs(here.name);
+        /* the list and the menu badge show the new answer straight away */
+        if (here.name === "chats" || here.name === "sheets") route();
         toast("The Lesko Help team replied to your question.");
       }
     }, 5200);
   }
 
-  /* ------------------------------------------------ build a call sheet */
-
-  /* A tiny ZIP lookup so the demo shows a real place name. */
-  var ZIPS = {
-    "14604": ["Rochester", "New York"],
-    "91302": ["Calabasas", "California"],
-    "73110": ["Midwest City", "Oklahoma"],
-    "77044": ["Houston", "Texas"],
-    "83702": ["Boise", "Idaho"],
-  };
-
-  function wireBuildForm() {
-    var form = document.getElementById("build-form");
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      var topicKey = document.getElementById("b-topic").value;
-      var zip = document.getElementById("b-zip").value.trim();
-      var city = document.getElementById("b-city").value.trim();
-      var state = document.getElementById("b-state").value.trim();
-      var problem = document.getElementById("b-problem").value.trim();
-      var err = document.getElementById("build-error");
-
-      var missing = [];
-      if (!topicKey) missing.push("pick what you need help with");
-      if (!zip && !city) missing.push("add your ZIP code or your city");
-      if (!problem) missing.push("tell us what is going on");
-
-      if (missing.length) {
-        err.textContent = "Almost there — please " + missing.join(", and ") + ".";
-        err.classList.add("show");
-        return;
+  /* A photo that cannot load (outside images are blocked in some
+     previews) quietly gives way to the coloured initial under it. */
+  document.addEventListener(
+    "error",
+    function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== "IMG" || !img.parentNode) return;
+      if (/\b(chat-ava|b-ava|m-ava)\b/.test(img.parentNode.className || "")) {
+        img.parentNode.removeChild(img);
       }
-      err.classList.remove("show");
-
-      if (zip && !city && ZIPS[zip]) {
-        city = ZIPS[zip][0];
-        state = state || ZIPS[zip][1];
-      }
-
-      runGeneration({
-        topicKey: topicKey,
-        zip: zip,
-        city: city,
-        state: state,
-        problem: problem,
-      });
-    });
-  }
-
-  function runGeneration(input) {
-    face.innerHTML = views.generating();
-    global.scrollTo(0, 0);
-
-    var msgs = store.copy.callsheet.progress;
-    var msgEl = document.getElementById("progress-msg");
-    var barEl = document.getElementById("progress-bar");
-    var i = 0;
-
-    function tick() {
-      if (i < msgs.length) {
-        msgEl.textContent = msgs[i];
-        barEl.style.width = Math.round(((i + 1) / msgs.length) * 100) + "%";
-        i++;
-        setTimeout(tick, 1000);
-      } else {
-        var sheet = store.buildSheet(input);
-        go("sheet", sheet.id);
-        toast("Saved under Call sheets — it is yours for good.");
-      }
-    }
-    setTimeout(tick, 250);
-  }
+    },
+    true
+  );
 
   /* ------------------------------------------- spreadsheet export
      Keeps the original 14 research columns, plus Called. */
@@ -5580,35 +5674,6 @@ window.LZ_SEED.teamPhotos = {
       URL.revokeObjectURL(url);
     }, 1500);
     toast("Downloading your call sheet as a spreadsheet.");
-  }
-
-  /* ------------------------------------------------ copy to clipboard */
-
-  function copyText(text) {
-    function done() {
-      toast("Copied. Paste it anywhere.");
-    }
-    function fallback() {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.select();
-      try {
-        document.execCommand("copy");
-        done();
-      } catch (e) {
-        toast("Select the words and copy them by hand.");
-      }
-      document.body.removeChild(ta);
-    }
-    if (global.navigator.clipboard && global.navigator.clipboard.writeText) {
-      global.navigator.clipboard.writeText(text).then(done, fallback);
-    } else {
-      fallback();
-    }
   }
 
   /* ------------------------------------------ per-row notes on a sheet */
@@ -5672,6 +5737,10 @@ window.LZ_SEED.teamPhotos = {
 
   document.addEventListener("click", function (e) {
     if (!e.target || !e.target.closest) return;
+
+    /* a tap anywhere outside the dropdown puts it away */
+    if (!e.target.closest(".dd")) closeMenus();
+
     var t = e.target.closest("[data-act]");
     if (!t) return;
     var act = t.getAttribute("data-act");
@@ -5681,29 +5750,16 @@ window.LZ_SEED.teamPhotos = {
         go(t.getAttribute("data-to"));
         break;
 
+      case "dd-toggle":
+        toggleMenu(t);
+        break;
+
       case "thread":
         go("thread", t.getAttribute("data-id"));
         break;
 
       case "sheet":
         go("sheet", t.getAttribute("data-id"));
-        break;
-
-      case "toggle-org": {
-        var detail = document.getElementById(t.getAttribute("data-target") + "-d");
-        var open = detail.hidden;
-        detail.hidden = !open;
-        t.setAttribute("aria-expanded", open ? "true" : "false");
-        t.querySelector("span[aria-hidden]").innerHTML = open ? "&#9652;" : "&#9662;";
-        break;
-      }
-
-      case "copy":
-        copyText(t.getAttribute("data-text"));
-        break;
-
-      case "print":
-        global.print();
         break;
 
       case "export-csv":
@@ -5743,7 +5799,7 @@ window.LZ_SEED.teamPhotos = {
       case "reset": {
         if (t.getAttribute("data-armed") === "yes") {
           store.reset();
-          go("ask");
+          go("chats");
           route();
           toast("The demo is back to how it started.");
           t.removeAttribute("data-armed");
@@ -5765,7 +5821,7 @@ window.LZ_SEED.teamPhotos = {
       var sheetId = t.getAttribute("data-sheet");
       var orgId = t.getAttribute("data-org");
       var on = store.toggleCalled(sheetId, orgId);
-      var row = t.closest(".wrow") || t.closest(".org");
+      var row = t.closest(".wrow");
       if (row) {
         row.classList.toggle("done", on);
         var slot = row.querySelector('[data-slot="called"]');
@@ -5784,7 +5840,7 @@ window.LZ_SEED.teamPhotos = {
   global.addEventListener("hashchange", route);
 
   store.init();
-  if (!global.location.hash) global.location.hash = "/ask";
+  if (!global.location.hash) global.location.hash = "/chats";
   route();
 
   /* A quiet way to reset the demo before showing it to someone. */
