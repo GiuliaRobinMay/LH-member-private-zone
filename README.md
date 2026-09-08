@@ -11,20 +11,21 @@ borders, system fonts.
 
 ## What it is
 
-One narrow rectangle — `min(640px, 94vw)` — made to sit inside a Mighty Networks space without
-competing with it. One window with a navy band on top; the dropdown at the right of the band moves
-between the aspects of the zone:
+A page, not a widget. The layout language comes from the Mighty pricing page: one split
+card with a colour panel beside a white one, big bold numbers, quiet grey labels, hairline
+rules and a lot of air — in Lesko Help's own colours.
 
-| Aspect | What it does |
+| Where | What it does |
 |---|---|
-| **Chat with a Team Member** | Opens on the list of your conversations, like the Messages panel inside Mighty: the team member's photo, the title, their name, and how long ago. A red **Ask us a question** pill floats over the list and opens a pop-up — ZIP code, state, and a big box to really describe what you need. Each conversation is a chat: your messages in solid blue on the right, the team's photo and answer as white cards on the left, with the links and files they send along, and *Was this helpful?* under an answer. Replies go from the bar at the bottom. |
-| **My call sheets** | Every call sheet made for you, with its date and how many calls are ticked. A sheet opens straight into the working list: Called tick (stamps the date), phone, email, website, a private note per row, and **Download** for Excel. Call sheets are made elsewhere and land here. |
+| **The hero card** | Colour panel on the left with the member's own numbers (conversations, call sheets, new answers). White panel on the right with the three grant coaches, what happens when you ask, and a full-width **Ask a grant coach** button. |
+| **My conversations** | Every conversation: the coach's face, their name on top, what it was about underneath in italics, how long ago on the right. An unread answer is one small blue dot. A red pill floats over the list to start a new one. |
+| **One conversation** | On a wide screen the list stays on the left and the conversation opens beside it; on a phone the conversation takes the window. The member's words are the community blue on the right, the coach's are soft grey cards with their face on the left, with any files they sent. |
+| **The pop-up** | ZIP code, state and a big box to describe what you need — with **Speak it instead**, the browser's own dictation, where the browser allows it. |
+| **My call sheets** | Every sheet with its date and how many calls are ticked. A sheet opens straight into the working list: Called tick (stamps the date), phone, email, website, a private note per row, and **Download** for Excel. |
 
-The team is **Rose, Misty and Tony**. Their real profile photos from the community are wired in
-(`assets/js/seed.js`, `teamPhotos`) and load when the widget is hosted; where outside images are
-blocked, a coloured initial shows instead. Rose's full name and photo are still to be added.
-
-No sidebar, no home page, no app-in-an-app.
+The coaches are **Tony, Misty and Rose**. Their real profile photos from the community are
+wired in (`assets/js/seed.js`, `teamPhotos`) and load when the widget is hosted; until then
+the illustrated mock-up portraits stand in. Rose's full name and photo are still to come.
 
 ---
 
@@ -40,7 +41,8 @@ Netlify, embed it. Rebuild with `node tools/bundle.js`.
 
 **Embedding in Mighty Networks:** host the folder (Netlify / GitHub Pages, like the other App Lab
 tools) and embed the URL. Hash routes (`#/chats`, `#/thread/…`, `#/sheets`, `#/sheet/…`) survive
-the iframe and deep-link.
+the iframe and deep-link. The microphone needs the embedding iframe to allow it; where it is
+blocked the button says so and points at the phone keyboard's own mic.
 
 **Demo reset:** *Start the demo over* in the footer (two taps), or `LZ.resetDemo()` in the console.
 

@@ -1,13 +1,13 @@
 /* ==================================================================
    views.js — the screens of My Lesko Zone.
 
-   One quiet window, like the Messages panel inside Mighty. The first thing
-   a member sees is the list of their conversations — the team member's
-   face, the title, their name, how long ago — with a red pill to ask a
-   new question. A conversation is a chat: the member in blue on the
-   right, the team's photo and answer on the left. The dropdown at the
-   right of the navy band moves between the aspects of the zone:
-   the chat and the call sheets.
+   A page, not a widget: a header with the nav, a split hero card
+   (colour on the left, what you can do on the right), and below it
+   the work — the conversations, one conversation, the call sheets.
+   The split card, the big type, the hairline rules and the roomy
+   spacing come from the Mighty pricing page Giulia sent; the colours
+   stay Lesko Help's own.
+
    Views are pure: state in, markup out. app.js wires interaction
    through data-act attributes.
    ================================================================== */
@@ -103,11 +103,7 @@
     return Math.round(mo / 12) + "y";
   }
 
-  function firstName(name) {
-    return String(name || "").trim().split(" ")[0];
-  }
-
-  /** Attachment chips on a team answer — files the team sent along. */
+  /** Attachment chips on a team answer — files the coach sent along. */
   function fileChips(list) {
     if (!list || !list.length) return "";
     return (
@@ -130,12 +126,12 @@
     );
   }
 
-  /* ------------------------------------------------------------ team */
+  /* ---------------------------------------------------------- coaches */
 
   var GENERIC = "Lesko Help Team";
 
-  /** A team member's face: the illustrated mock-up portrait, with their
-      real photo laid over it when it loads (it is removed if it cannot). */
+  /** A coach's face: the illustrated mock-up portrait, with their real
+      photo laid over it when it loads (it is removed if it cannot). */
   function avatar(name, cls) {
     var photos = global.LZ_SEED.teamPhotos || {};
     var art = global.LZ_SEED.teamArt || {};
@@ -152,7 +148,7 @@
     );
   }
 
-  /** The team member who last answered this conversation, if any. */
+  /** The coach who last answered this conversation, if any. */
   function lastTeam(q) {
     for (var i = q.messages.length - 1; i >= 0; i--) {
       if (q.messages[i].role === "team") return q.messages[i].name;
@@ -165,15 +161,15 @@
     return (m && m.createdAt) || q.createdAt;
   }
 
-  /* ------------------------------------------------- the navy band */
+  /* ------------------------------------------------------------- nav */
 
-  /** The dropdown at the right: the aspects of the zone. */
+  /** The dropdown in the page header — the aspects of the zone. */
   function menu(active) {
     var n = store.counts();
     var items = [
-      { act: "ask-open", label: "Chat with a Team Member" },
-      { to: "sheets", label: "My call sheets", count: n.sheets },
+      { act: "ask-open", label: "Ask a grant coach" },
       { to: "chats", label: "My conversations", badge: n.unread },
+      { to: "sheets", label: "My call sheets", count: n.sheets },
     ];
     return (
       '<div class="dd">' +
@@ -200,29 +196,75 @@
     );
   }
 
-  function chatHead(opts) {
+  /* -------------------------------------------------- the hero card */
+
+  /** The split card at the top: what the zone holds for this member on
+      the colour side, what they can do with it on the white side. */
+  function hero() {
+    var n = store.counts();
+    var team = global.LZ_SEED.team || [];
+
+    var coaches = team
+      .map(function (name) {
+        return (
+          '<span class="coach">' + avatar(name, "coach-ava") +
+          '<span class="coach-name">' + esc(name.split(" ")[0]) + "</span></span>"
+        );
+      })
+      .join("");
+
+    var promises = [
+      "A real person reads it and writes back to you",
+      "Every answer stays here, in one private place",
+      "They send the numbers and the words to say",
+    ]
+      .map(function (line) {
+        return (
+          '<li><span class="tick" aria-hidden="true">&#10003;</span>' +
+          esc(line) + "</li>"
+        );
+      })
+      .join("");
+
     return (
-      '<div class="chat-head">' +
-      (opts.back
-        ? '<button class="chat-back" data-act="go" data-to="' + esc(opts.back) +
-          '" aria-label="Back">&larr;</button>'
-        : "") +
-      (opts.who ? avatar(opts.who, "chat-ava") : "") +
-      '<span class="chat-name">' +
-      '<span class="ch-title">' + esc(opts.title) + "</span>" +
-      (opts.sub ? '<span class="ch-sub">' + esc(opts.sub) + "</span>" : "") +
-      "</span>" +
-      menu(opts.active) +
-      "</div>"
+      '<section class="hero">' +
+      '<div class="hero-figure">' +
+      '<div class="hero-mid">' +
+      '<p class="hero-kicker">your private zone</p>' +
+      '<p class="hero-number">' + n.questions + "</p>" +
+      '<p class="hero-note">conversations with your grant coaches</p>' +
+      "</div>" +
+      '<div class="hero-stats">' +
+      '<div class="stat"><p class="stat-label">Call sheets</p>' +
+      '<p class="stat-value">' + n.sheets + "</p></div>" +
+      '<div class="stat"><p class="stat-label">New answers</p>' +
+      '<p class="stat-value">' + n.unread + "</p></div>" +
+      "</div>" +
+      "</div>" +
+
+      '<div class="hero-panel">' +
+      '<p class="field-label">Your grant coaches</p>' +
+      '<div class="coaches">' + coaches + "</div>" +
+      '<div class="plan-card">' +
+      '<div class="plan-head">' +
+      "<h3>When you ask</h3>" +
+      '<p class="plan-price">free<span>always</span></p>' +
+      "</div>" +
+      '<ul class="plan-list">' + promises + "</ul>" +
+      "</div>" +
+      '<button type="button" class="btn-wide" data-act="ask-open">Ask a grant coach</button>' +
+      "</div>" +
+      "</section>" +
+      '<p class="hero-foot">*Your coaches are ' +
+      esc(team.join(", ").replace(/,([^,]*)$/, " and$1")) +
+      ". Answers usually come back within a day.</p>"
     );
   }
 
-  /* ============================== CHAT WITH A TEAM MEMBER: the list */
+  /* ------------------------------------------- the conversation rows */
 
-  function chats() {
-    var qs = store.state.questions;
-
-    var rows = qs
+  function rows(activeId) {
+    return store.state.questions
       .map(function (q) {
         var who = lastTeam(q);
         /* the person first, then what the conversation was about */
@@ -231,6 +273,7 @@
           : '<span class="m-wait">Waiting for a reply</span>';
         return (
           '<button class="mrow' + (q.unread ? " unread" : "") +
+          (q.id === activeId ? " on" : "") +
           '" data-act="thread" data-id="' + esc(q.id) + '">' +
           avatar(who || GENERIC, "m-ava") +
           '<span class="m-main">' +
@@ -244,18 +287,28 @@
         );
       })
       .join("");
+  }
 
-    var empty =
+  function emptyList() {
+    return (
       '<div class="m-empty"><b>No conversations yet</b>' +
-      "Ask us anything &mdash; money for bills, your business, school, whatever " +
-      "is going on. A real person on the team answers, usually within a day.</div>";
+      "Ask a grant coach anything &mdash; money for bills, your business, " +
+      "school, whatever is going on.</div>"
+    );
+  }
 
+  /* ================================================ HOME: hero + list */
+
+  function chats() {
+    var list = rows("");
     return (
       '<section class="panel">' +
-      '<div class="chat">' +
-      chatHead({ title: "My conversations", active: "chats" }) +
-      '<div class="msgbox">' +
-      '<div class="msglist" id="chat-body">' + (rows || empty) + "</div>" +
+      hero() +
+      '<div class="card">' +
+      '<div class="card-head"><h2>My conversations</h2>' +
+      '<p class="card-note">' + store.counts().questions + " in all</p></div>" +
+      '<div class="msgbox"><div class="msglist" id="chat-body">' +
+      (list || emptyList()) + "</div>" +
       '<div class="msg-cta">' +
       '<button type="button" class="pill-cta" data-act="ask-open">Ask a grant coach ' +
       '<span aria-hidden="true">&#10148;</span></button>' +
@@ -275,29 +328,29 @@
       '<button type="button" class="modal-x" data-act="ask-close" aria-label="Close">&times;</button>' +
       "</div>" +
       '<div class="field-row two">' +
-      '<div class="field"><label for="am-zip">ZIP code</label>' +
+      '<div class="field"><label class="field-label" for="am-zip">ZIP code</label>' +
       '<input id="am-zip" inputmode="numeric" autocomplete="postal-code" placeholder="14604"></div>' +
-      '<div class="field"><label for="am-state">State</label>' +
+      '<div class="field"><label class="field-label" for="am-state">State</label>' +
       '<input id="am-state" autocomplete="address-level1" placeholder="New York"></div>' +
       "</div>" +
       '<div class="field">' +
-      '<label for="am-body">Describe what you need</label>' +
+      '<label class="field-label" for="am-body">Describe what you need</label>' +
       '<textarea id="am-body" rows="7" placeholder="Take your time. What is going on, what you have already tried, and what would help. Your own words are perfect &mdash; spelling doesn&rsquo;t matter."></textarea>' +
       '<div class="mic-row" id="mic-row" hidden>' +
       '<button type="button" class="mic-btn" id="mic-btn">' +
       '<span class="mic-dot" aria-hidden="true"></span>Speak it instead</button>' +
       '<span class="mic-note" id="mic-note"></span>' +
       "</div>" +
-      '<p class="hint">Private &mdash; only you and the Lesko Help team can see this.</p>' +
+      '<p class="hint">Private &mdash; only you and your grant coaches can see this.</p>' +
       "</div>" +
       '<p class="form-error" id="am-error"></p>' +
       '<div class="form-actions">' +
-      '<button class="btn red big" type="submit">Send my question</button>' +
+      '<button class="btn-wide" type="submit">Send my question</button>' +
       "</div></form></div>"
     );
   }
 
-  /* ------------------------------------------- one conversation */
+  /* ============================ ONE CONVERSATION: list beside the chat */
 
   function thread(id) {
     var q = store.getQuestion(id);
@@ -322,19 +375,24 @@
 
     var waitingNote =
       q.status === "waiting"
-        ? '<p class="quiet">Your question is with the team &mdash; answers usually come back within a day or two.</p>'
+        ? '<p class="quiet">Your question is with your coach &mdash; answers usually come back within a day or two.</p>'
         : "";
 
     return (
       '<section class="panel">' +
-      '<div class="chat">' +
-      chatHead({
-        back: "chats",
-        who: who || GENERIC,
-        title: who || "Lesko Help team",
-        sub: q.subject,
-        active: "chats",
-      }) +
+      '<div class="ws">' +
+      '<aside class="ws-list">' +
+      '<div class="card-head"><h2>My conversations</h2></div>' +
+      '<div class="msglist">' + rows(q.id) + "</div>" +
+      "</aside>" +
+      '<div class="ws-main">' +
+      '<div class="chat-head">' +
+      '<button class="chat-back" data-act="go" data-to="chats" aria-label="Back">&larr;</button>' +
+      avatar(who || GENERIC, "chat-ava") +
+      '<span class="chat-name">' +
+      '<span class="ch-title">' + esc(who || "Your grant coach") + "</span>" +
+      '<span class="ch-sub">' + esc(q.subject) + "</span>" +
+      "</span></div>" +
       '<div class="chat-body" id="chat-body">' +
       '<div class="day-mark">' + esc(niceDate(q.createdAt)) + "</div>" +
       msgs +
@@ -346,22 +404,21 @@
       '<div class="compose">' +
       '<label class="sr-only" for="reply-input">Write back</label>' +
       '<textarea id="reply-input" rows="1" placeholder="Write back&hellip;"></textarea>' +
-      '<button class="ask-btn" type="submit" data-id="' + esc(q.id) +
-      '">Send</button>' +
+      '<button class="ask-btn" type="submit" data-id="' + esc(q.id) + '">Send</button>' +
       "</div></form>" +
-      "</div>" +
+      "</div></div>" +
       "</section>"
     );
   }
 
-  /** "Was this helpful?" under the team's answer. */
+  /** "Was this helpful?" under the coach's answer. */
   function feedbackBlock(q) {
     if (q.status !== "answered") return "";
 
     if (q.feedback && q.feedback.val) {
       return (
         '<div class="feedback done"><span aria-hidden="true">&#10003;</span> ' +
-        "Thank you for your feedback — the team reads every one.</div>"
+        "Thank you for your feedback — your coach reads every one.</div>"
       );
     }
 
@@ -369,12 +426,12 @@
     if (explaining) {
       return (
         '<div class="feedback">' +
-        '<span class="fb-q">What was missing? Tell us and the team will try again.</span>' +
+        '<span class="fb-q">What was missing? Tell us and your coach will try again.</span>' +
         '<form class="compose" id="fb-form" style="margin:8px 0 0">' +
         '<label class="sr-only" for="fb-note">What was missing?</label>' +
         '<textarea id="fb-note" rows="1" placeholder="Tell us in your own words&hellip;"></textarea>' +
-        '<button class="send" type="submit" data-act="fb-send" data-id="' + esc(q.id) +
-        '" aria-label="Send feedback">&#8593;</button>' +
+        '<button class="ask-btn" type="submit" data-act="fb-send" data-id="' + esc(q.id) +
+        '">Send</button>' +
         "</form></div>"
       );
     }
@@ -382,32 +439,32 @@
     return (
       '<div class="feedback">' +
       '<span class="fb-q">Was this answer helpful?</span>' +
-      '<button class="btn ghost" data-act="fb-yes" data-id="' + esc(q.id) +
-      '">&#128077; Yes</button>' +
-      '<button class="btn ghost" data-act="fb-no" data-id="' + esc(q.id) +
-      '">&#128078; Not yet</button>' +
+      '<button class="btn-quiet" data-act="fb-yes" data-id="' + esc(q.id) +
+      '">Yes</button>' +
+      '<button class="btn-quiet" data-act="fb-no" data-id="' + esc(q.id) +
+      '">Not yet</button>' +
       "</div>"
     );
   }
 
-  /** The animated "the team is typing" bubble, injected by app.js. */
+  /** The animated "your coach is typing" bubble, injected by app.js. */
   function typingBubble() {
     var who = (global.LZ_SEED.autoReply || {}).name || GENERIC;
     return (
       '<div class="brow team typing">' +
       avatar(who, "b-ava") +
-      '<div class="bubble" aria-label="The team is typing">' +
+      '<div class="bubble" aria-label="Your coach is typing">' +
       '<span class="d"></span><span class="d"></span><span class="d"></span>' +
       "</div></div>"
     );
   }
 
-  /* ============================================= MY CALL SHEETS (list) */
+  /* ========================================= MY CALL SHEETS (the list) */
 
   function sheets() {
     var list = store.state.sheets;
 
-    var rows = list
+    var out = list
       .map(function (sh) {
         var called = (sh.called || []).length;
         var place = [sh.city, sh.state].filter(Boolean).join(", ") || sh.zip;
@@ -427,15 +484,15 @@
 
     var empty =
       '<div class="m-empty"><b>No call sheets yet</b>' +
-      "Every call sheet the team makes for you is kept here, for good.</div>";
+      "Every call sheet your coach makes for you is kept here, for good.</div>";
 
     return (
       '<section class="panel">' +
-      '<div class="chat">' +
-      chatHead({ title: "My call sheets", active: "sheets" }) +
-      '<div class="msgbox"><div class="msglist plain">' + (rows || empty) + "</div></div>" +
-      "</div>" +
-      "</section>"
+      '<div class="card">' +
+      '<div class="card-head"><h2>My call sheets</h2>' +
+      '<p class="card-note">' + list.length + " in all</p></div>" +
+      '<div class="msglist plain">' + (out || empty) + "</div>" +
+      "</div></section>"
     );
   }
 
@@ -445,7 +502,7 @@
     var sh = store.getSheet(id);
     if (!sh) return notFound("call sheet", "sheets");
 
-    var rows = sh.orgs.map(function (o) {
+    var out = sh.orgs.map(function (o) {
       return workRow(sh, o);
     }).join("");
 
@@ -453,18 +510,17 @@
 
     return (
       '<section class="panel">' +
-      '<div class="chat">' +
-      chatHead({ back: "sheets", title: sh.title, active: "sheets" }) +
-      '<div class="chat-body grow">' +
-      '<div class="w-titlebar">' +
-      '<span class="c-when">' + esc(niceDate(sh.createdAt)) + " &nbsp;&middot;&nbsp; " +
-      esc(place) + "</span>" +
-      '<button class="btn ghost" data-act="export-csv" data-sheet="' + esc(sh.id) +
+      '<div class="card">' +
+      '<div class="card-head sheet-head">' +
+      '<button class="chat-back" data-act="go" data-to="sheets" aria-label="Back">&larr;</button>' +
+      "<span><h2>" + esc(sh.title) + "</h2>" +
+      '<p class="card-note">' + esc(niceDate(sh.createdAt)) + " &nbsp;&middot;&nbsp; " +
+      esc(place) + "</p></span>" +
+      '<button class="btn-quiet" data-act="export-csv" data-sheet="' + esc(sh.id) +
       '">&#11015; Download</button>' +
       "</div>" +
-      '<div class="work">' + rows + "</div>" +
-      "</div></div>" +
-      "</section>"
+      '<div class="work">' + out + "</div>" +
+      "</div></section>"
     );
   }
 
@@ -519,9 +575,10 @@
 
   function notFound(what, backTo) {
     return (
-      '<section class="panel"><div class="card empty-note">' +
-      "<h3>We could not find that " + esc(what) + "</h3>" +
-      '<button class="btn red" data-act="go" data-to="' + esc(backTo) + '">Go back</button>' +
+      '<section class="panel"><div class="card">' +
+      '<div class="m-empty"><b>We could not find that ' + esc(what) + "</b>" +
+      '<button class="btn-wide" data-act="go" data-to="' + esc(backTo) +
+      '" style="max-width:260px;margin:14px auto 0">Go back</button></div>' +
       "</div></section>"
     );
   }
@@ -530,6 +587,7 @@
 
   global.LZ = global.LZ || {};
   global.LZ.views = {
+    menu: menu,
     chats: chats,
     askModal: askModal,
     thread: thread,

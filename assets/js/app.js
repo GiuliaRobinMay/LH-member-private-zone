@@ -13,6 +13,7 @@
   var views = global.LZ.views;
 
   var face = document.getElementById("face");
+  var navEl = document.getElementById("nav");
   var toastEl = document.getElementById("toast");
 
   var toastTimer = null;
@@ -57,6 +58,8 @@
     }
 
     face.innerHTML = html;
+    /* the nav lives in the page header and carries the live counts */
+    navEl.innerHTML = views.menu(r.name === "sheet" ? "sheets" : r.name);
 
     if (firstRender) firstRender = false;
     else global.scrollTo(0, 0);
@@ -315,8 +318,8 @@
       } else {
         thread.unread = true;
         store.save();
-        /* the list and the menu badge show the new answer straight away */
-        if (here.name === "chats" || here.name === "sheets") route();
+        /* the list and the nav badge show the new answer straight away */
+        route();
         toast("The Lesko Help team replied to your question.");
       }
     }, 5200);

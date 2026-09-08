@@ -4,31 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>My Lesko Zone</title>
-<meta name="description" content="Chat privately with the Lesko Help team and keep every conversation and call sheet in one place.">
+<meta name="description" content="Talk to a grant coach 1:1 and keep every answer and call sheet in one private place.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>?</text></svg>">
 <link rel="stylesheet" href="assets/css/app.css">
 </head>
 <body>
 
-<div class="wrap">
+<div class="page">
 
-  <div class="topbar">
+  <header class="pagehead">
     <p class="tagline">Talk to a grant coach 1:1</p>
-    <div class="suits" aria-hidden="true">
-      <span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span>
+    <div class="head-right">
+      <nav id="nav"></nav>
+      <div class="suits" aria-hidden="true">
+        <span>&spades;</span><span>&hearts;</span><span>&diams;</span><span>&clubs;</span>
+      </div>
     </div>
-  </div>
+  </header>
 
   <main id="face"></main>
 
   <footer class="foot">
+    <p class="footnote">Private &mdash; only you and your grant coaches can see what is in here.</p>
     <button class="reset-link" data-act="reset" type="button">Start the demo over</button>
   </footer>
 
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
-<div id="modal" hidden></div>
 
 <script src="assets/js/seed.js"></script>
 <script src="assets/js/store.js"></script>
