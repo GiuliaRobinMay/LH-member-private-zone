@@ -287,28 +287,28 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 38px 40px 34px;
+  padding: 24px 36px 20px;
   text-align: center;
 }
 
 .hero-kicker {
   margin: 0;
-  font-size: clamp(21px, 2vw, 26px);
+  font-size: clamp(19px, 1.8vw, 23px);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .hero-number {
-  margin: 2px 0 0;
-  font-size: clamp(52px, 6vw, 76px);
+  margin: 0;
+  font-size: clamp(42px, 4.6vw, 58px);
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 1;
 }
 
 .hero-note {
-  margin: 8px 0 0;
-  font-size: 15px;
+  margin: 5px 0 0;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -319,7 +319,7 @@ a {
 }
 
 .stat {
-  padding: 15px 16px 18px;
+  padding: 10px 16px 12px;
   text-align: center;
 }
 
@@ -329,19 +329,19 @@ a {
 
 .stat-label {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.9);
 }
 
 .stat-value {
-  margin: 1px 0 0;
-  font-size: 26px;
+  margin: 0;
+  font-size: 22px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .hero-panel {
-  padding: 30px 40px 32px;
+  padding: 16px 36px 18px;
   background: var(--white);
 }
 
@@ -353,19 +353,18 @@ a {
 
 .coaches {
   display: flex;
-  gap: 24px;
-  margin-bottom: 22px;
+  gap: 22px;
+  margin-bottom: 12px;
 }
 
 .coach {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 
 .coach-name {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
 }
 
@@ -376,7 +375,7 @@ a {
   border-radius: var(--radius-md);
   overflow: hidden;
   background: var(--white);
-  margin-bottom: 18px;
+  margin-bottom: 11px;
 }
 
 .plan-head {
@@ -384,20 +383,20 @@ a {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  padding: 13px 20px;
+  padding: 9px 18px;
   border-bottom: 1px solid var(--line);
 }
 
 .plan-head h3 {
   margin: 0;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
 .plan-price {
   margin: 0;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 800;
 }
 
@@ -411,15 +410,15 @@ a {
 .plan-list {
   list-style: none;
   margin: 0;
-  padding: 12px 20px 14px;
+  padding: 8px 18px 10px;
 }
 
 .plan-list li {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
-  font-size: 15px;
-  padding: 5px 0;
+  gap: 10px;
+  font-size: 14.5px;
+  padding: 2.5px 0;
 }
 
 .tick {
@@ -443,7 +442,7 @@ a {
   background: linear-gradient(90deg, var(--red-soft), var(--red));
   border: 0;
   border-radius: var(--radius-sm);
-  padding: 16px 20px;
+  padding: 12px 20px;
   cursor: pointer;
   transition: filter 0.12s ease;
 }
@@ -715,9 +714,9 @@ a {
 }
 
 .coach-ava {
-  width: 60px;
-  height: 60px;
-  font-size: 23px;
+  width: 46px;
+  height: 46px;
+  font-size: 19px;
 }
 
 .chat-ava {
@@ -1539,11 +1538,11 @@ a {
   }
 
   .hero-mid {
-    padding: 34px 26px 28px;
+    padding: 26px 24px 22px;
   }
 
   .hero-panel {
-    padding: 26px 24px 28px;
+    padding: 20px 22px 22px;
   }
 
   /* on a phone the open conversation takes the whole window */
