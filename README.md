@@ -39,8 +39,8 @@ python3 -m http.server   # or serve it, to test inside an iframe
 `dist/my-lesko-zone.html` is the whole widget inlined into one file — email it, drop it on
 Netlify, embed it. Rebuild with `node tools/bundle.js`.
 
-**Embedding in Mighty Networks:** host the folder (Netlify / GitHub Pages, like the other App Lab
-tools) and embed the URL. Hash routes (`#/chats`, `#/thread/…`, `#/sheets`, `#/sheet/…`) survive
+**Embedding in Mighty Networks:** live at <https://lh-questions-1on1.netlify.app/> &mdash; the
+ready-to-paste iframe is in [`docs/embed.md`](docs/embed.md). Hash routes (`#/chats`, `#/thread/…`, `#/sheets`, `#/sheet/…`) survive
 the iframe and deep-link. The microphone needs the embedding iframe to allow it; where it is
 blocked the button says so and points at the phone keyboard's own mic.
 
