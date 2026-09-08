@@ -243,7 +243,6 @@
       "</div>" +
 
       '<div class="hero-panel">' +
-      '<p class="field-label">Your grant coaches</p>' +
       '<div class="coaches">' + coaches + "</div>" +
       '<div class="plan-card">' +
       '<div class="plan-head">' +
@@ -254,10 +253,7 @@
       "</div>" +
       '<button type="button" class="btn-wide" data-act="ask-open">Ask a grant coach</button>' +
       "</div>" +
-      "</section>" +
-      '<p class="hero-foot">*Your coaches are ' +
-      esc(team.join(", ").replace(/,([^,]*)$/, " and$1")) +
-      ". Answers usually come back within a day.</p>"
+      "</section>"
     );
   }
 

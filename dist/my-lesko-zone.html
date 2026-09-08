@@ -19,7 +19,7 @@
    ================================================================== */
 
 :root {
-  --paper: #faf6ec;
+  --paper: #f5eeda;
   --white: #fff;
   --ink: #16223f;
   --ink-soft: #4a5570;
@@ -49,8 +49,8 @@
     "Helvetica Neue", Arial, sans-serif;
   --suit-font: "DejaVu Sans", "Segoe UI Symbol", "Apple Symbols", var(--sans);
 
-  --shadow: 0 1px 2px rgba(22, 34, 63, 0.04),
-    0 24px 48px -32px rgba(22, 34, 63, 0.45);
+  --shadow: 0 1px 2px rgba(22, 34, 63, 0.05),
+    0 16px 34px -20px rgba(22, 34, 63, 0.42);
 }
 
 * {
@@ -117,6 +117,16 @@ a {
   letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--ink-soft);
+}
+
+/* wide tracking closes up around the ratio, so 1:1 stays 1:1 */
+.ratio {
+  letter-spacing: 0;
+  font-size: 12px;
+}
+
+.colon {
+  padding: 0 0.5px;
 }
 
 .head-right {
@@ -286,28 +296,28 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 56px 44px;
+  padding: 38px 40px 34px;
   text-align: center;
 }
 
 .hero-kicker {
   margin: 0;
-  font-size: clamp(24px, 2.4vw, 31px);
+  font-size: clamp(21px, 2vw, 26px);
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .hero-number {
-  margin: 6px 0 0;
-  font-size: clamp(64px, 8vw, 104px);
+  margin: 2px 0 0;
+  font-size: clamp(52px, 6vw, 76px);
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 1;
 }
 
 .hero-note {
-  margin: 12px 0 0;
-  font-size: 15.5px;
+  margin: 8px 0 0;
+  font-size: 15px;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -318,7 +328,7 @@ a {
 }
 
 .stat {
-  padding: 22px 18px 26px;
+  padding: 15px 16px 18px;
   text-align: center;
 }
 
@@ -333,14 +343,15 @@ a {
 }
 
 .stat-value {
-  margin: 2px 0 0;
-  font-size: 30px;
+  margin: 1px 0 0;
+  font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .hero-panel {
-  padding: 40px 44px 44px;
+  padding: 30px 40px 32px;
+  background: var(--white);
 }
 
 .field-label {
@@ -351,8 +362,8 @@ a {
 
 .coaches {
   display: flex;
-  gap: 26px;
-  margin-bottom: 26px;
+  gap: 24px;
+  margin-bottom: 22px;
 }
 
 .coach {
@@ -373,7 +384,8 @@ a {
   border: 1px solid var(--green);
   border-radius: var(--radius-md);
   overflow: hidden;
-  margin-bottom: 22px;
+  background: var(--white);
+  margin-bottom: 18px;
 }
 
 .plan-head {
@@ -381,7 +393,7 @@ a {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 13px 20px;
   border-bottom: 1px solid var(--line);
 }
 
@@ -408,15 +420,15 @@ a {
 .plan-list {
   list-style: none;
   margin: 0;
-  padding: 16px 20px 18px;
+  padding: 12px 20px 14px;
 }
 
 .plan-list li {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  font-size: 15.5px;
-  padding: 7px 0;
+  font-size: 15px;
+  padding: 5px 0;
 }
 
 .tick {
@@ -425,11 +437,6 @@ a {
   line-height: 1.4;
 }
 
-.hero-foot {
-  margin: 14px 4px 0;
-  font-size: 13px;
-  color: var(--ink-faint);
-}
 
 /* ---------------------------------------------------------- buttons */
 
@@ -445,7 +452,7 @@ a {
   background: linear-gradient(90deg, var(--red-soft), var(--red));
   border: 0;
   border-radius: var(--radius-sm);
-  padding: 18px 20px;
+  padding: 16px 20px;
   cursor: pointer;
   transition: filter 0.12s ease;
 }
@@ -501,7 +508,8 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 24px 28px;
+  padding: 22px 28px;
+  background: var(--white);
   border-bottom: 1px solid var(--line);
 }
 
@@ -536,6 +544,7 @@ a {
 .msglist {
   max-height: clamp(420px, 56vh, 620px);
   overflow-y: auto;
+  background: var(--white);
   padding-bottom: 96px;
   scrollbar-width: thin;
   scrollbar-color: rgba(22, 34, 63, 0.14) transparent;
@@ -576,7 +585,7 @@ a {
 }
 
 .mrow.on {
-  background: var(--tint-yellow);
+  background: rgba(21, 96, 208, 0.07);
 }
 
 .mrow.noava {
@@ -766,6 +775,7 @@ a {
 
 .ws-list {
   border-right: 1px solid var(--line);
+  background: var(--white);
   min-width: 0;
 }
 
@@ -1473,16 +1483,10 @@ a {
 .foot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 14px;
   flex-wrap: wrap;
-  padding: 22px 4px 34px;
-}
-
-.footnote {
-  margin: 0;
-  font-size: 13px;
-  color: var(--ink-faint);
+  padding: 18px 4px 34px;
 }
 
 .reset-link {
@@ -1544,11 +1548,11 @@ a {
   }
 
   .hero-mid {
-    padding: 44px 28px 34px;
+    padding: 34px 26px 28px;
   }
 
   .hero-panel {
-    padding: 30px 26px 32px;
+    padding: 26px 24px 28px;
   }
 
   /* on a phone the open conversation takes the whole window */
@@ -1680,7 +1684,7 @@ a {
 <div class="page">
 
   <header class="pagehead">
-    <p class="tagline">Talk to a grant coach 1:1</p>
+    <p class="tagline">Talk to a grant coach <span class="ratio">1<span class="colon">:</span>1</span></p>
     <div class="head-right">
       <nav id="nav"></nav>
       <div class="suits" aria-hidden="true">
@@ -1692,7 +1696,6 @@ a {
   <main id="face"></main>
 
   <footer class="foot">
-    <p class="footnote">Private &mdash; only you and your grant coaches can see what is in here.</p>
     <button class="reset-link" data-act="reset" type="button">Start the demo over</button>
   </footer>
 
@@ -4316,7 +4319,6 @@ window.LZ_SEED.teamArt = {
       "</div>" +
 
       '<div class="hero-panel">' +
-      '<p class="field-label">Your grant coaches</p>' +
       '<div class="coaches">' + coaches + "</div>" +
       '<div class="plan-card">' +
       '<div class="plan-head">' +
@@ -4327,10 +4329,7 @@ window.LZ_SEED.teamArt = {
       "</div>" +
       '<button type="button" class="btn-wide" data-act="ask-open">Ask a grant coach</button>' +
       "</div>" +
-      "</section>" +
-      '<p class="hero-foot">*Your coaches are ' +
-      esc(team.join(", ").replace(/,([^,]*)$/, " and$1")) +
-      ". Answers usually come back within a day.</p>"
+      "</section>"
     );
   }
 
