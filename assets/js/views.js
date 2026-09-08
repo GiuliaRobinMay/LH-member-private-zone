@@ -231,10 +231,12 @@
       '<div class="hero-figure">' +
       '<div class="hero-mid">' +
       '<p class="hero-kicker">your private zone</p>' +
-      '<p class="hero-number">' + n.questions + "</p>" +
-      '<p class="hero-note">conversations with your grant coaches</p>' +
+      '<p class="hero-number">1<span class="hero-colon">:</span>1</p>' +
+      '<p class="hero-note">just you and a real grant coach</p>' +
       "</div>" +
       '<div class="hero-stats">' +
+      '<div class="stat"><p class="stat-label">Conversations</p>' +
+      '<p class="stat-value">' + n.questions + "</p></div>" +
       '<div class="stat"><p class="stat-label">Call sheets</p>' +
       '<p class="stat-value">' + n.sheets + "</p></div>" +
       '<div class="stat"><p class="stat-label">New answers</p>' +
@@ -375,7 +377,8 @@
         : "";
 
     return (
-      '<section class="panel">' +
+      '<section class="panel with-thread">' +
+      hero() +
       '<div class="ws">' +
       '<aside class="ws-list">' +
       '<div class="card-head"><h2>My conversations</h2></div>' +

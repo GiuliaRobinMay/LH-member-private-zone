@@ -311,8 +311,13 @@ a {
   margin: 0;
   font-size: clamp(42px, 4.6vw, 58px);
   font-weight: 800;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.015em;
   line-height: 1;
+}
+
+/* the colon needs air at this weight, or 1:1 collapses into 11 */
+.hero-colon {
+  padding: 0 0.06em;
 }
 
 .hero-note {
@@ -323,7 +328,7 @@ a {
 
 .hero-stats {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid rgba(255, 255, 255, 0.35);
 }
 
@@ -1555,6 +1560,10 @@ a {
   }
 
   /* on a phone the open conversation takes the whole window */
+  .with-thread .hero {
+    display: none;
+  }
+
   .ws {
     grid-template-columns: 1fr;
   }
@@ -4306,10 +4315,12 @@ window.LZ_SEED.teamArt = {
       '<div class="hero-figure">' +
       '<div class="hero-mid">' +
       '<p class="hero-kicker">your private zone</p>' +
-      '<p class="hero-number">' + n.questions + "</p>" +
-      '<p class="hero-note">conversations with your grant coaches</p>' +
+      '<p class="hero-number">1<span class="hero-colon">:</span>1</p>' +
+      '<p class="hero-note">just you and a real grant coach</p>' +
       "</div>" +
       '<div class="hero-stats">' +
+      '<div class="stat"><p class="stat-label">Conversations</p>' +
+      '<p class="stat-value">' + n.questions + "</p></div>" +
       '<div class="stat"><p class="stat-label">Call sheets</p>' +
       '<p class="stat-value">' + n.sheets + "</p></div>" +
       '<div class="stat"><p class="stat-label">New answers</p>' +
@@ -4450,7 +4461,8 @@ window.LZ_SEED.teamArt = {
         : "";
 
     return (
-      '<section class="panel">' +
+      '<section class="panel with-thread">' +
+      hero() +
       '<div class="ws">' +
       '<aside class="ws-list">' +
       '<div class="card-head"><h2>My conversations</h2></div>' +

@@ -17,9 +17,9 @@ rules and a lot of air — in Lesko Help's own colours.
 
 | Where | What it does |
 |---|---|
-| **The hero card** | Colour panel on the left with the member's own numbers (conversations, call sheets, new answers). White panel on the right with the three grant coaches, what happens when you ask, and a full-width **Ask a grant coach** button. |
+| **The card at the top** | Colour panel on the left: the **1:1** mark, and the member's own counts along the bottom (conversations, call sheets, new answers). White panel on the right with the three grant coaches, what happens when you ask, and a full-width **Ask a grant coach** button. It stays put when a conversation opens. |
 | **My conversations** | Every conversation: the coach's face, their name on top, what it was about underneath in italics, how long ago on the right. An unread answer is one small blue dot. A red pill floats over the list to start a new one. |
-| **One conversation** | On a wide screen the list stays on the left and the conversation opens beside it; on a phone the conversation takes the window. The member's words are the community blue on the right, the coach's are soft grey cards with their face on the left, with any files they sent. |
+| **One conversation** | On a wide screen the card stays at the top and the conversation opens beside the list, in the same window &mdash; nothing pops up; on a phone the conversation takes the window. The member's words are the community blue on the right, the coach's are soft grey cards with their face on the left, with any files they sent. |
 | **The pop-up** | ZIP code, state and a big box to describe what you need — with **Speak it instead**, the browser's own dictation, where the browser allows it. |
 | **My call sheets** | Every sheet with its date and how many calls are ticked. A sheet opens straight into the working list: Called tick (stamps the date), phone, email, website, a private note per row, and **Download** for Excel. |
 
